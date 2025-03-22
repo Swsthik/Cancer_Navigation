@@ -58,13 +58,66 @@ app.get("/login", (req, res) => {
   res.render("pages/auth/login.ejs");
 });
 
-app.post(
-  "/login",
-  passport.authenticate("local", {
-    successRedirect: "/navigator/dashboard",
-    failureRedirect: "/login",
-  })
-);
+app.post("/login", (req, res, next) => {
+  const { username, password, userType } = req.body;
+
+  passport.authenticate("local", (err, user, info) => {
+    if (err) {
+      return res.status(500).json({
+        success: false,
+        message: "An error occurred during login",
+      });
+    }
+
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid username or password",
+      });
+    }
+
+    // Check if selected user type matches the registered user type
+    if (user.userType !== userType) {
+      return res.status(401).json({
+        success: false,
+        message: `You are registered as a ${user.userType}. Please select the correct user type.`,
+      });
+    }
+
+    req.logIn(user, (err) => {
+      if (err) {
+        return res.status(500).json({
+          success: false,
+          message: "An error occurred during login",
+        });
+      }
+
+      // Redirect based on user type
+      switch (user.userType) {
+        case "Patient":
+          return res.status(200).json({
+            success: true,
+            redirect: "/patient/dashboard",
+          });
+        case "Patient-Navigator":
+          return res.status(200).json({
+            success: true,
+            redirect: "/navigator/dashboard",
+          });
+        case "Caregiver":
+          return res.status(200).json({
+            success: true,
+            redirect: "/caregiver/dashboard",
+          });
+        default:
+          return res.status(401).json({
+            success: false,
+            message: "Invalid user type",
+          });
+      }
+    });
+  })(req, res, next);
+});
 
 app.get("/signup", (req, res) => {
   res.render("pages/auth/signup.ejs");
@@ -83,6 +136,19 @@ app.post("/signup", async (req, res) => {
       address,
       userType,
     } = req.body;
+
+    // Check if user already exists
+    const existingUser = await User.findOne({ $or: [{ username }, { email }] });
+    if (existingUser) {
+      return res.status(400).json({
+        success: false,
+        message:
+          existingUser.username === username
+            ? "Username already exists"
+            : "Email already registered",
+      });
+    }
+
     const user = new User({
       username,
       fullName,
@@ -93,13 +159,23 @@ app.post("/signup", async (req, res) => {
       address,
       userType,
     });
+
     await User.register(user, password);
+
+    // Log the user in after registration
     passport.authenticate("local")(req, res, function () {
-      res.redirect("/navigator/dashboard");
+      res.status(200).json({
+        success: true,
+        message: "Account created successfully!",
+        redirect: `/${userType.toLowerCase()}/dashboard`,
+      });
     });
   } catch (error) {
     console.error(error);
-    res.redirect("/signup");
+    res.status(500).json({
+      success: false,
+      message: "An error occurred during registration",
+    });
   }
 });
 
@@ -112,8 +188,25 @@ app.get("/logout", (req, res) => {
   });
 });
 
+app.get("/patient/dashboard", isLoggedIn, (req, res) => {
+  if (req.user.userType !== "Patient") {
+    return res.redirect(`/${req.user.userType.toLowerCase()}/dashboard`);
+  }
+  res.render("pages/patient/dashboard.ejs", { user: req.user });
+});
+
 app.get("/navigator/dashboard", isLoggedIn, (req, res) => {
-  res.render("pages/navigator/dashboard.ejs");
+  if (req.user.userType !== "Patient-Navigator") {
+    return res.redirect(`/${req.user.userType.toLowerCase()}/dashboard`);
+  }
+  res.render("pages/navigator/dashboard.ejs", { user: req.user });
+});
+
+app.get("/caregiver/dashboard", isLoggedIn, (req, res) => {
+  if (req.user.userType !== "Caregiver") {
+    return res.redirect(`/${req.user.userType.toLowerCase()}/dashboard`);
+  }
+  res.render("pages/caregiver/dashboard.ejs", { user: req.user });
 });
 
 app.listen(process.env.PORT, () => {

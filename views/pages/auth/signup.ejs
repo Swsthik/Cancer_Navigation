@@ -183,10 +183,71 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Add SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
       $(document).ready(function () {
         $("#signupForm").submit(function (e) {
-          // Remove the default form handling since we're using server-side now
+          e.preventDefault();
+
+          const formData = {
+            username: $('input[name="username"]').val(),
+            password: $('input[name="password"]').val(),
+            fullName: $('input[name="fullName"]').val(),
+            email: $('input[name="email"]').val(),
+            age: $('input[name="age"]').val(),
+            phone: $('input[name="phone"]').val(),
+            sex: $('input[name="sex"]:checked').val(),
+            address: $('textarea[name="address"]').val(),
+            userType: $('select[name="userType"]').val(),
+          };
+
+          // Basic validation
+          if (!formData.sex) {
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: "Please select your sex",
+            });
+            return;
+          }
+
+          if (!formData.userType) {
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: "Please select a user type",
+            });
+            return;
+          }
+
+          $.ajax({
+            type: "POST",
+            url: "/signup",
+            data: formData,
+            success: function (response) {
+              if (response.success) {
+                Swal.fire({
+                  icon: "success",
+                  title: "Success!",
+                  text: response.message,
+                  timer: 1500,
+                  showConfirmButton: false,
+                }).then(() => {
+                  window.location.href = response.redirect;
+                });
+              }
+            },
+            error: function (xhr) {
+              const response = xhr.responseJSON;
+              Swal.fire({
+                icon: "error",
+                title: "Registration Failed",
+                text:
+                  response.message || "An error occurred during registration",
+              });
+            },
+          });
         });
       });
     </script>
