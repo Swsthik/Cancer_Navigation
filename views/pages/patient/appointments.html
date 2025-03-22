@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MedConnect - Appointments</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary-blue: #2a5c82;
+        --secondary-blue: #5c9baf;
+        --accent-teal: #4ecdc4;
+      }
+
+      body {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        min-height: 100vh;
+      }
+
+      .medical-header {
+        background: var(--primary-blue);
+        padding: 1rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .dashboard-container {
+        background: rgba(255, 255, 255, 0.95);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+      }
+
+      .btn-medical {
+        background: var(--accent-teal);
+        color: white;
+        padding: 12px 30px;
+        transition: all 0.3s ease;
+      }
+
+      .btn-medical:hover {
+        background: var(--secondary-blue);
+        transform: translateY(-2px);
+      }
+
+      .btn-outline-medical {
+        color: var(--accent-teal);
+        border: 1px solid var(--accent-teal);
+        transition: all 0.3s ease;
+      }
+
+      .btn-outline-medical:hover {
+        background: var(--accent-teal);
+        color: white;
+      }
+
+      .card-medical {
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+      }
+
+      .card-medical:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .sidebar {
+        background: var(--primary-blue);
+        color: white;
+      }
+
+      .nav-link {
+        color: rgba(255, 255, 255, 0.8);
+        transition: all 0.3s ease;
+        padding: 0.8rem 1rem;
+        border-radius: 10px;
+        margin-bottom: 0.5rem;
+      }
+
+      .nav-link:hover, .nav-link.active {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+      }
+
+      .nav-link i {
+        margin-right: 10px;
+      }
+
+      .health-metric {
+        height: 6px;
+        border-radius: 3px;
+      }
+
+      .decorative-wave {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 150px;
+        background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg"><path fill="%232A5C82" fill-opacity="0.1" d="M0,160L48,170.7C96,181,192,203,288,186.7C384,171,480,117,576,101.3C672,85,768,107,864,138.7C960,171,1056,213,1152,208C1248,203,1344,149,1392,122.7L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
+      }
+
+      .appointment-date {
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        padding: 12px;
+        text-align: center;
+        min-width: 70px;
+      }
+
+      .appointment-upcoming {
+        border-left: 4px solid var(--accent-teal);
+      }
+
+      .appointment-completed {
+        border-left: 4px solid #28a745;
+      }
+
+      .appointment-canceled {
+        border-left: 4px solid #dc3545;
+      }
+
+      .doctor-avatar {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        object-fit: cover;
+        background-color: #e9ecef;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--primary-blue);
+        font-size: 24px;
+      }
+
+      .nav-tabs .nav-link {
+        color: #6c757d;
+        border: none;
+        padding: 1rem 1.5rem;
+        border-radius: 0;
+        margin-bottom: 0;
+      }
+
+      .nav-tabs .nav-link.active {
+        color: var(--primary-blue);
+        border-bottom: 3px solid var(--accent-teal);
+        background: transparent;
+      }
+
+      .tab-content {
+        padding: 2rem 0;
+      }
+
+      .badge-medical {
+        background-color: var(--accent-teal);
+        color: white;
+      }
+
+      .badge-success {
+        background-color: #28a745;
+      }
+
+      .badge-danger {
+        background-color: #dc3545;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar medical-header">
+      <div class="container">
+        <a class="navbar-brand text-white" href="#">
+          <i class="fas fa-hospital me-2"></i>MedConnect
+        </a>
+        <div class="dropdown">
+          <button class="btn text-white dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fas fa-user-circle me-2"></i>John Doe
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+            <li><a class="dropdown-item" href="profile.html"><i class="fas fa-id-card me-2"></i>Profile</a></li>
+            <li><a class="dropdown-item" href="settings.html"><i class="fas fa-cog me-2"></i>Settings</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="/logout"><i class="fas fa-sign-out-alt me-2"></i>Log Out</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="w-full">
+      <div class="dashboard-container row g-0">
+        <!-- Sidebar -->
+        <div class="col-md-3 sidebar p-4">
+          <div class="d-flex align-items-center mb-4">
+            <i class="fas fa-user-circle fs-1 me-3"></i>
+            <div>
+              <h5 class="mb-0">John Doe</h5>
+              <small class="text-light">Patient</small>
+            </div>
+          </div>
+          <div class="nav flex-column">
+            <a href="dashboard.html" class="nav-link">
+              <i class="fas fa-home"></i>Dashboard
+            </a>
+            <a href="appointments.html" class="nav-link active">
+              <i class="fas fa-calendar-check"></i>Appointments
+            </a>
+            <a href="reports.html" class="nav-link">
+              <i class="fas fa-file-medical"></i>Reports
+            </a>
+            <a href="care-plan.html" class="nav-link">
+              <i class="fas fa-clipboard-list"></i>Care Plan
+            </a>
+            <a href="resources.html" class="nav-link">
+              <i class="fas fa-book-medical"></i>Resources
+            </a>
+            <a href="profile.html" class="nav-link">
+              <i class="fas fa-user"></i>Profile
+            </a>
+            <a href="feedback.html" class="nav-link">
+              <i class="fas fa-comment-dots"></i>Feedback
+            </a>
+          </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="col-md-9 p-4 bg-white">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>My Appointments</h2>
+            <button class="btn btn-medical" data-bs-toggle="modal" data-bs-target="#newAppointmentModal">
+              <i class="fas fa-plus me-2"></i>New Appointment
+            </button>
+          </div>
+          
+          <!-- Notifications -->
+          <div class="alert alert-info d-flex align-items-center mb-4" role="alert">
+            <i class="fas fa-bell fs-5 me-3"></i>
+            <div>Reminder: You have an appointment with Dr. Smith tomorrow at 10:00 AM</div>
+          </div>
+          
+          <!-- Tabs -->
+          <ul class="nav nav-tabs" id="appointmentTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="upcoming-tab" data-bs-toggle="tab" data-bs-target="#upcoming" type="button" role="tab" aria-controls="upcoming" aria-selected="true">
+                <i class="fas fa-calendar-day me-2"></i>Upcoming (3)
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="completed-tab" data-bs-toggle="tab" data-bs-target="#completed" type="button" role="tab" aria-controls="completed" aria-selected="false">
+                <i class="fas fa-check-circle me-2"></i>Completed (5)
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="canceled-tab" data-bs-toggle="tab" data-bs-target="#canceled" type="button" role="tab" aria-controls="canceled" aria-selected="false">
+                <i class="fas fa-times-circle me-2"></i>Canceled (1)
+              </button>
+            </li>
+          </ul>
+          
+          <div class="tab-content" id="appointmentTabsContent">
+            <!-- Upcoming Appointments -->
+            <div class="tab-pane fade show active" id="upcoming" role="tabpanel" aria-labelledby="upcoming-tab">
+              <!-- Appointment Card 1 -->
+              <div class="card card-medical mb-3 appointment-upcoming">
+                <div class="card-body d-flex">
+                  <div class="appointment-date me-4">
+                    <div class="fw-bold text-primary">23</div>
+                    <small>MAR</small>
+                  </div>
+                  
+                  <div class="flex-grow-1 d-md-flex justify-content-between align-items-center">
+                    <div class="mb-3 mb-md-0">
+                      <div class="d-flex align-items-center mb-2">
+                        <span class="badge badge-medical me-2">Consultation</span>
+                        <span class="text-muted"><i class="far fa-clock me-1"></i>10:00 - 11:00 AM</span>
+                      </div>
+                      <h5 class="mb-1">Dr. Sarah Smith</h5>
+                      <div class="text-muted"><i class="fas fa-stethoscope me-1"></i>Cardiology</div>
+                      <div class="text-muted"><i class="fas fa-map-marker-alt me-1"></i>Main Hospital, Room 302</div>
+                    </div>
+                    
+                    <div class="d-flex align-items-center">
+                      <div class="doctor-avatar me-3 d-none d-lg-flex">
+                        <i class="fas fa-user-md"></i>
+                      </div>
+                      <div>
+                        <button class="btn btn-outline-medical mb-2" data-bs-toggle="modal" data-bs-target="#appointmentDetailsModal" 
+                                data-appointment-id="1" data-doctor="Dr. Sarah Smith" data-specialty="Cardiology" 
+                                data-date="March 23, 2025" data-time="10:00 - 11:00 AM" data-location="Main Hospital, Room 302"
+                                data-reason="Regular checkup for heart condition">
+                          <i class="fas fa-eye me-1"></i>Details
+                        </button>
+                        <div class="d-flex">
+                          <button class="btn btn-outline-danger me-2" data-bs-toggle="modal" data-bs-target="#cancelAppointmentModal"
+                                  data-appointment-id="1" data-doctor="Dr. Sarah Smith" data-date="March 23, 2025" data-time="10:00 - 11:00 AM">
+                            <i class="fas fa-times me-1"></i>Cancel
+                          </button>
+                          <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#rescheduleAppointmentModal"
+                                  data-appointment-id="1" data-doctor="Dr. Sarah Smith" data-date="March 23, 2025" data-time="10:00 - 11:00 AM">
+                            <i class="fas fa-sync-alt me-1"></i>Reschedule
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Appointment Card 2 -->
+              <div class="card card-medical mb-3 appointment-upcoming">
+                <div class="card-body d-flex">
+                  <div class="appointment-date me-4">
+                    <div class="fw-bold text-primary">28</div>
+                    <small>MAR</small>
+                  </div>
+                  
+                  <div class="flex-grow-1 d-md-flex justify-content-between align-items-center">
+                    <div class="mb-3 mb-md-0">
+                      <div class="d-flex align-items-center mb-2">
+                        <span class="badge badge-medical me-2">Follow-up</span>
+                        <span class="text-muted"><i class="far fa-clock me-1"></i>2:30 - 3:30 PM</span>
+                      </div>
+                      <h5 class="mb-1">Dr. Michael Johnson</h5>
+                      <div class="text-muted"><i class="fas fa-stethoscope me-1"></i>General Medicine</div>
+                      <div class="text-muted"><i class="fas fa-map-marker-alt me-1"></i>Clinic B, Room 105</div>
+                    </div>
+                    
+                    <div class="d-flex align-items-center">
+                      <div class="doctor-avatar me-3 d-none d-lg-flex">
+                        <i class="fas fa-user-md"></i>
+                      </div>
+                      <div>
+                        <button class="btn btn-outline-medical mb-2" data-bs-toggle="modal" data-bs-target="#appointmentDetailsModal"
+                                data-appointment-id="2" data-doctor="Dr. Michael Johnson" data-specialty="General Medicine" 
+                                data-date="March 28, 2025" data-time="2:30 - 3:30 PM" data-location="Clinic B, Room 105"
+                                data-reason="Follow-up on recent test results">
+                          <i class="fas fa-eye me-1"></i>Details
+                        </button>
+                        <div class="d-flex">
+                          <button class="btn btn-outline-danger me-2" data-bs-toggle="modal" data-bs-target="#cancelAppointmentModal"
+                                  data-appointment-id="2" data-doctor="Dr. Michael Johnson" data-date="March 28, 2025" data-time="2:30 - 3:30 PM">
+                            <i class="fas fa-times me-1"></i>Cancel
+                          </button>
+                          <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#rescheduleAppointmentModal"
+                                  data-appointment-id="2" data-doctor="Dr. Michael Johnson" data-date="March 28, 2025" data-time="2:30 - 3:30 PM">
+                            <i class="fas fa-sync-alt me-1"></i>Reschedule
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Appointment Card 3 -->
+              <div class="card card-medical mb-3 appointment-upcoming">
+                <div class="card-body d-flex">
+                  <div class="appointment-date me-4">
+                    <div class="fw-bold text-primary">02</div>
+                    <small>APR</small>
+                  </div>
+                  
+                  <div class="flex-grow-1 d-md-flex justify-content-between align-items-center">
+                    <div class="mb-3 mb-md-0">
+                      <div class="d-flex align-items-center mb-2">
+                        <span class="badge badge-medical me-2">Specialist</span>
+                        <span class="text-muted"><i class="far fa-clock me-1"></i>11:15 AM - 12:00 PM</span>
+                      </div>
+                      <h5 class="mb-1">Dr. Emily Chen</h5>
+                      <div class="text-muted"><i class="fas fa-stethoscope me-1"></i>Endocrinology</div>
+                      <div class="text-muted"><i class="fas fa-map-marker-alt me-1"></i>Medical Tower, Floor 5</div>
+                    </div>
+                    
+                    <div class="d-flex align-items-center">
+                      <div class="doctor-avatar me-3 d-none d-lg-flex">
+                        <i class="fas fa-user-md"></i>
+                      </div>
+                      <div>
+                        <button class="btn btn-outline-medical mb-2" data-bs-toggle="modal" data-bs-target="#appointmentDetailsModal"
+                                data-appointment-id="3" data-doctor="Dr. Emily Chen" data-specialty="Endocrinology" 
+                                data-date="April 2, 2025" data-time="11:15 AM - 12:00 PM" data-location="Medical Tower, Floor 5"
+                                data-reason="Consultation regarding blood sugar management">
+                          <i class="fas fa-eye me-1"></i>Details
+                        </button>
+                        <div class="d-flex">
+                          <button class="btn btn-outline-danger me-2" data-bs-toggle="modal" data-bs-target="#cancelAppointmentModal"
+                                  data-appointment-id="3" data-doctor="Dr. Emily Chen" data-date="April 2, 2025" data-time="11:15 AM - 12:00 PM">
+                            <i class="fas fa-times me-1"></i>Cancel
+                          </button>
+                          <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#rescheduleAppointmentModal"
+                                  data-appointment-id="3" data-doctor="Dr. Emily Chen" data-date="April 2, 2025" data-time="11:15 AM - 12:00 PM">
+                            <i class="fas fa-sync-alt me-1"></i>Reschedule
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Completed Appointments -->
+            <div class="tab-pane fade" id="completed" role="tabpanel" aria-labelledby="completed-tab">
+              <!-- Completed Appointment 1 -->
+              <div class="card card-medical mb-3 appointment-completed">
+                <div class="card-body d-flex">
+                  <div class="appointment-date me-4">
+                    <div class="fw-bold text-success">15</div>
+                    <small>MAR</small>
+                  </div>
+                  
+                  <div class="flex-grow-1 d-md-flex justify-content-between align-items-center">
+                    <div class="mb-3 mb-md-0">
+                      <div class="d-flex align-items-center mb-2">
+                        <span class="badge badge-success me-2">Completed</span>
+                        <span class="text-muted"><i class="far fa-clock me-1"></i>9:00 - 10:00 AM</span>
+                      </div>
+                      <h5 class="mb-1">Dr. Robert Williams</h5>
+                      <div class="text-muted"><i class="fas fa-stethoscope me-1"></i>General Medicine</div>
+                      <div class="text-muted"><i class="fas fa-map-marker-alt me-1"></i>Main Hospital, Room 203</div>
+                    </div>
+                    
+                    <div class="d-flex align-items-center">
+                      <div class="doctor-avatar me-3 d-none d-lg-flex">
+                        <i class="fas fa-user-md"></i>
+                      </div>
+                      <div>
+                        <button class="btn btn-outline-medical mb-2" data-bs-toggle="modal" data-bs-target="#appointmentDetailsModal"
+                                data-appointment-id="4" data-doctor="Dr. Robert Williams" data-specialty="General Medicine" 
+                                data-date="March 15, 2025" data-time="9:00 - 10:00 AM" data-location="Main Hospital, Room 203"
+                                data-reason="Annual physical examination" data-notes="Patient in good health. Follow-up in 6 months recommended.">
+                          <i class="fas fa-eye me-1"></i>Details
+                        </button>
+                        <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#newAppointmentModal"
+                                data-doctor="Dr. Robert Williams">
+                          <i class="fas fa-calendar-plus me-1"></i>Book Again
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- More completed appointments would go here -->
+              <div class="card card-medical mb-3 appointment-completed">
+                <div class="card-body d-flex">
+                  <div class="appointment-date me-4">
+                    <div class="fw-bold text-success">08</div>
+                    <small>MAR</small>
+                  </div>
+                  
+                  <div class="flex-grow-1 d-md-flex justify-content-between align-items-center">
+                    <div class="mb-3 mb-md-0">
+                      <div class="d-flex align-items-center mb-2">
+                        <span class="badge badge-success me-2">Completed</span>
+                        <span class="text-muted"><i class="far fa-clock me-1"></i>1:30 - 2:15 PM</span>
+                      </div>
+                      <h5 class="mb-1">Dr. Emily Chen</h5>
+                      <div class="text-muted"><i class="fas fa-stethoscope me-1"></i>Endocrinology</div>
+                      <div class="text-muted"><i class="fas fa-map-marker-alt me-1"></i>Medical Tower, Floor 5</div>
+                    </div>
+                    
+                    <div class="d-flex align-items-center">
+                      <div class="doctor-avatar me-3 d-none d-lg-flex">
+                        <i class="fas fa-user-md"></i>
+                      </div>
+                      <div>
+                        <button class="btn btn-outline-medical mb-2" data-bs-toggle="modal" data-bs-target="#appointmentDetailsModal"
+                                data-appointment-id="5" data-doctor="Dr. Emily Chen" data-specialty="Endocrinology" 
+                                data-date="March 8, 2025" data-time="1:30 - 2:15 PM" data-location="Medical Tower, Floor 5"
+                                data-reason="Blood sugar monitoring" data-notes="Advised dietary changes. New medication prescribed.">
+                          <i class="fas fa-eye me-1"></i>Details
+                        </button>
+                        <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#newAppointmentModal"
+                                data-doctor="Dr. Emily Chen">
+                          <i class="fas fa-calendar-plus me-1"></i>Book Again
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Canceled Appointments -->
+            <div class="tab-pane fade" id="canceled" role="tabpanel" aria-labelledby="canceled-tab">
+              <!-- Canceled Appointment 1 -->
+              <div class="card card-medical mb-3 appointment-canceled">
+                <div class="card-body d-flex">
+                  <div class="appointment-date me-4">
+                    <div class="fw-bold text-danger">05</div>
+                    <small>MAR</small>
+                  </div>
+                  
+                  <div class="flex-grow-1 d-md-flex justify-content-between align-items-center">
+                    <div class="mb-3 mb-md-0">
+                      <div class="d-flex align-items-center mb-2">
+                        <span class="badge badge-danger me-2">Canceled</span>
+                        <span class="text-muted"><i class="far fa-clock me-1"></i>2:00 - 3:00 PM</span>
+                      </div>
+                      <h5 class="mb-1">Dr. Michael Johnson</h5>
+                      <div class="text-muted"><i class="fas fa-stethoscope me-1"></i>General Medicine</div>
+                      <div class="text-muted"><i class="fas fa-map-marker-alt me-1"></i>Clinic B, Room 105</div>
+                    </div>
+                    
+                    <div class="d-flex align-items-center">
+                      <div class="doctor-avatar me-3 d-none d-lg-flex">
+                        <i class="fas fa-user-md"></i>
+                      </div>
+                      <div>
+                        <div class="text-muted mb-2"><i class="fas fa-info-circle me-1"></i>Canceled by you on Mar 4</div>
+                        <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#newAppointmentModal"
+                                data-doctor="Dr. Michael Johnson">
+                          <i class="fas fa-calendar-plus me-1"></i>Reschedule
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- New Appointment Modal -->
+    <div class="modal fade" id="newAppointmentModal" tabindex="-1" aria-labelledby="newAppointmentModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="newAppointmentModalLabel">Schedule New Appointment</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form id="newAppointmentForm">
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="appointmentType" class="form-label">Appointment Type</label>
+                  <select class="form-select" id="appointmentType" required>
+                    <option value="" selected disabled>Select appointment type</option>
+                    <option value="consultation">Consultation</option>
+                    <option value="followup">Follow-up</option>
+                    <option value="specialist">Specialist Referral</option>
+                    <option value="procedure">Medical Procedure</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label for="specialtySelect" class="form-label">Specialty</label>
+                  <select class="form-select" id="specialtySelect" required>
+                    <option value="" selected disabled>Select specialty</option>
+                    <option value="cardiology">Cardiology</option>
+                    <option value="dermatology">Dermatology</option>
+                    <option value="endocrinology">Endocrinology</option>
+                    <option value="gastroenterology">Gastroenterology</option>
+                    <option value="general">General Medicine</option>
+                    <option value="neurology">Neurology</option>
+                    <option value="orthopedics">Orthopedics</option>
+                    <option value="pediatrics">Pediatrics</option>
+                    <option value="psychiatry">Psychiatry</option>
+                  </select>
+                </div>
+              </div>
+              
+              <div class="mb-3">
+                <label for="doctorSelect" class="form-label">Select Doctor</label>
+                <select class="form-select" id="doctorSelect" required>
+                  <option value="" selected disabled>Select a doctor</option>
+                  <option value="dr-smith">Dr. Sarah Smith (Cardiology)</option>
+                  <option value="dr-johnson">Dr. Michael Johnson (General Medicine)</option>
+                  <option value="dr-chen">Dr. Emily Chen (Endocrinology)</option>
+                  <option value="dr-williams">Dr. Robert Williams (General Medicine)</option>
+                  <option value="dr-patel">Dr. Anita Patel (Neurology)</option>
+                </select>
+            </div>
+              
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="appointmentDate" class="form-label">Date</label>
+                <input type="date" class="form-control" id="appointmentDate" required min="2025-03-22">
+              </div>
+              <div class="col-md-6">
+                <label for="appointmentTime" class="form-label">Time</label>
+                <select class="form-select" id="appointmentTime" required>
+                  <option value="" selected disabled>Select a time slot</option>
+                  <option value="09:00">9:00 AM - 10:00 AM</option>
+                  <option value="10:00">10:00 AM - 11:00 AM</option>
+                  <option value="11:00">11:00 AM - 12:00 PM</option>
+                  <option value="13:00">1:00 PM - 2:00 PM</option>
+                  <option value="14:00">2:00 PM - 3:00 PM</option>
+                  <option value="15:00">3:00 PM - 4:00 PM</option>
+                  <option value="16:00">4:00 PM - 5:00 PM</option>
+                </select>
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <label for="appointmentReason" class="form-label">Reason for Visit</label>
+              <textarea class="form-control" id="appointmentReason" rows="3" placeholder="Please describe your symptoms or reason for visit" required></textarea>
+            </div>
+            
+            <div class="mb-3">
+              <label for="appointmentLocation" class="form-label">Preferred Location</label>
+              <select class="form-select" id="appointmentLocation" required>
+                <option value="" selected disabled>Select location</option>
+                <option value="main-hospital">Main Hospital</option>
+                <option value="clinic-a">Clinic A - Downtown</option>
+                <option value="clinic-b">Clinic B - Westside</option>
+                <option value="medical-tower">Medical Tower</option>
+                <option value="virtual">Virtual Appointment</option>
+              </select>
+            </div>
+            
+            <div class="mb-3 form-check">
+              <input type="checkbox" class="form-check-input" id="insuranceCheck">
+              <label class="form-check-label" for="insuranceCheck">I'll be using my insurance</label>
+            </div>
+            
+            <div id="insuranceDetails" class="mb-3" style="display: none;">
+              <label for="insuranceProvider" class="form-label">Insurance Provider</label>
+              <select class="form-select" id="insuranceProvider">
+                <option value="" selected disabled>Select provider</option>
+                <option value="bluecross">Blue Cross Blue Shield</option>
+                <option value="aetna">Aetna</option>
+                <option value="cigna">Cigna</option>
+                <option value="unitedhealth">UnitedHealthcare</option>
+                <option value="medicare">Medicare</option>
+                <option value="medicaid">Medicaid</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-medical" id="submitAppointment">Schedule Appointment</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Appointment Details Modal -->
+  <div class="modal fade" id="appointmentDetailsModal" tabindex="-1" aria-labelledby="appointmentDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="appointmentDetailsModalLabel">Appointment Details</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="d-flex align-items-center mb-4">
+            <div class="doctor-avatar me-3">
+              <i class="fas fa-user-md"></i>
+            </div>
+            <div>
+              <h5 id="detailsDoctor">Dr. Name</h5>
+              <div id="detailsSpecialty" class="text-muted"><i class="fas fa-stethoscope me-1"></i>Specialty</div>
+            </div>
+          </div>
+          
+          <div class="mb-3">
+            <div class="fw-bold mb-1">Date & Time:</div>
+            <div id="detailsDateTime" class="ps-3"><i class="far fa-calendar-alt me-2"></i>Date and time here</div>
+          </div>
+          
+          <div class="mb-3">
+            <div class="fw-bold mb-1">Location:</div>
+            <div id="detailsLocation" class="ps-3"><i class="fas fa-map-marker-alt me-2"></i>Location here</div>
+          </div>
+          
+          <div class="mb-3">
+            <div class="fw-bold mb-1">Reason for Visit:</div>
+            <div id="detailsReason" class="ps-3">Reason here</div>
+          </div>
+          
+          <div class="mb-3" id="notesSection" style="display: none;">
+            <div class="fw-bold mb-1">Doctor's Notes:</div>
+            <div id="detailsNotes" class="ps-3 bg-light p-2 rounded">Notes here</div>
+          </div>
+          
+          <div class="mb-3">
+            <div class="fw-bold mb-1">Additional Information:</div>
+            <ul class="ps-4">
+              <li>Please arrive 15 minutes before your appointment time</li>
+              <li>Bring your insurance card and ID</li>
+              <li>List of current medications</li>
+              <li>Any recent test results or medical records</li>
+            </ul>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cancel Appointment Modal -->
+  <div class="modal fade" id="cancelAppointmentModal" tabindex="-1" aria-labelledby="cancelAppointmentModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="cancelAppointmentModalLabel">Cancel Appointment</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure you want to cancel your appointment with <span id="cancelDoctor">Dr. Name</span> on <span id="cancelDate">Date</span> at <span id="cancelTime">Time</span>?</p>
+          
+          <div class="alert alert-warning">
+            <i class="fas fa-exclamation-triangle me-2"></i>Cancellations within 24 hours of the appointment may incur a fee.
+          </div>
+          
+          <div class="mb-3">
+            <label for="cancelReason" class="form-label">Reason for Cancellation</label>
+            <select class="form-select" id="cancelReason" required>
+              <option value="" selected disabled>Select a reason</option>
+              <option value="schedule">Schedule conflict</option>
+              <option value="feeling-better">Feeling better</option>
+              <option value="reschedule">Need to reschedule</option>
+              <option value="telehealth">Prefer telehealth appointment</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          
+          <div class="mb-3" id="otherReasonDiv" style="display: none;">
+            <label for="otherReason" class="form-label">Please Specify</label>
+            <textarea class="form-control" id="otherReason" rows="2"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Keep Appointment</button>
+          <button type="button" class="btn btn-danger" id="confirmCancel">Cancel Appointment</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reschedule Appointment Modal -->
+  <div class="modal fade" id="rescheduleAppointmentModal" tabindex="-1" aria-labelledby="rescheduleAppointmentModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="rescheduleAppointmentModalLabel">Reschedule Appointment</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Current appointment: <span id="rescheduleDoctor">Dr. Name</span> on <span id="rescheduleDate">Date</span> at <span id="rescheduleTime">Time</span></p>
+          
+          <div class="mb-3">
+            <label for="newDate" class="form-label">New Date</label>
+            <input type="date" class="form-control" id="newDate" required min="2025-03-22">
+          </div>
+          
+          <div class="mb-3">
+            <label for="newTime" class="form-label">New Time</label>
+            <select class="form-select" id="newTime" required>
+              <option value="" selected disabled>Select a time slot</option>
+              <option value="09:00">9:00 AM - 10:00 AM</option>
+              <option value="10:00">10:00 AM - 11:00 AM</option>
+              <option value="11:00">11:00 AM - 12:00 PM</option>
+              <option value="13:00">1:00 PM - 2:00 PM</option>
+              <option value="14:00">2:00 PM - 3:00 PM</option>
+              <option value="15:00">3:00 PM - 4:00 PM</option>
+              <option value="16:00">4:00 PM - 5:00 PM</option>
+            </select>
+          </div>
+          
+          <div class="mb-3">
+            <label for="rescheduleReason" class="form-label">Reason for Rescheduling</label>
+            <textarea class="form-control" id="rescheduleReason" rows="2"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" id="confirmReschedule">Reschedule</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Initialize tooltips and popovers
+    document.addEventListener('DOMContentLoaded', function() {
+      // Show insurance details when checkbox is checked
+      const insuranceCheck = document.getElementById('insuranceCheck');
+      const insuranceDetails = document.getElementById('insuranceDetails');
+      
+      if(insuranceCheck) {
+        insuranceCheck.addEventListener('change', function() {
+          insuranceDetails.style.display = this.checked ? 'block' : 'none';
+        });
+      }
+      
+      // Handle appointment details modal
+      const appointmentDetailsModal = document.getElementById('appointmentDetailsModal');
+      if(appointmentDetailsModal) {
+        appointmentDetailsModal.addEventListener('show.bs.modal', function(event) {
+          const button = event.relatedTarget;
+          const doctor = button.getAttribute('data-doctor');
+          const specialty = button.getAttribute('data-specialty');
+          const date = button.getAttribute('data-date');
+          const time = button.getAttribute('data-time');
+          const location = button.getAttribute('data-location');
+          const reason = button.getAttribute('data-reason');
+          const notes = button.getAttribute('data-notes');
+          
+          document.getElementById('detailsDoctor').textContent = doctor;
+          document.getElementById('detailsSpecialty').innerHTML = `<i class="fas fa-stethoscope me-1"></i>${specialty}`;
+          document.getElementById('detailsDateTime').innerHTML = `<i class="far fa-calendar-alt me-2"></i>${date}, ${time}`;
+          document.getElementById('detailsLocation').innerHTML = `<i class="fas fa-map-marker-alt me-2"></i>${location}`;
+          document.getElementById('detailsReason').textContent = reason;
+          
+          const notesSection = document.getElementById('notesSection');
+          if(notes) {
+            document.getElementById('detailsNotes').textContent = notes;
+            notesSection.style.display = 'block';
+          } else {
+            notesSection.style.display = 'none';
+          }
+        });
+      }
+      
+      // Handle cancel appointment modal
+      const cancelAppointmentModal = document.getElementById('cancelAppointmentModal');
+      if(cancelAppointmentModal) {
+        cancelAppointmentModal.addEventListener('show.bs.modal', function(event) {
+          const button = event.relatedTarget;
+          const doctor = button.getAttribute('data-doctor');
+          const date = button.getAttribute('data-date');
+          const time = button.getAttribute('data-time');
+          
+          document.getElementById('cancelDoctor').textContent = doctor;
+          document.getElementById('cancelDate').textContent = date;
+          document.getElementById('cancelTime').textContent = time;
+        });
+        
+        // Show "other" reason field if "other" is selected
+        const cancelReason = document.getElementById('cancelReason');
+        const otherReasonDiv = document.getElementById('otherReasonDiv');
+        
+        if(cancelReason) {
+          cancelReason.addEventListener('change', function() {
+            otherReasonDiv.style.display = this.value === 'other' ? 'block' : 'none';
+          });
+        }
+        
+        // Handle cancel confirmation
+        const confirmCancel = document.getElementById('confirmCancel');
+        if(confirmCancel) {
+          confirmCancel.addEventListener('click', function() {
+            // Here you would add AJAX call to cancel the appointment
+            alert('Appointment canceled successfully.');
+            // Close modal and refresh page
+            const modal = bootstrap.Modal.getInstance(cancelAppointmentModal);
+            modal.hide();
+            location.reload();
+          });
+        }
+      }
+      
+      // Handle reschedule appointment modal
+      const rescheduleAppointmentModal = document.getElementById('rescheduleAppointmentModal');
+      if(rescheduleAppointmentModal) {
+        rescheduleAppointmentModal.addEventListener('show.bs.modal', function(event) {
+          const button = event.relatedTarget;
+          const doctor = button.getAttribute('data-doctor');
+          const date = button.getAttribute('data-date');
+          const time = button.getAttribute('data-time');
+          
+          document.getElementById('rescheduleDoctor').textContent = doctor;
+          document.getElementById('rescheduleDate').textContent = date;
+          document.getElementById('rescheduleTime').textContent = time;
+        });
+        
+        // Handle reschedule confirmation
+        const confirmReschedule = document.getElementById('confirmReschedule');
+        if(confirmReschedule) {
+          confirmReschedule.addEventListener('click', function() {
+            const newDate = document.getElementById('newDate').value;
+            const newTime = document.getElementById('newTime').value;
+            
+            if(!newDate || !newTime) {
+              alert('Please select a new date and time.');
+              return;
+            }
+            
+            // Here you would add AJAX call to reschedule the appointment
+            alert('Appointment rescheduled successfully.');
+            // Close modal and refresh page
+            const modal = bootstrap.Modal.getInstance(rescheduleAppointmentModal);
+            modal.hide();
+            location.reload();
+          });
+        }
+      }
+      
+      // Handle new appointment submission
+      const submitAppointment = document.getElementById('submitAppointment');
+      if(submitAppointment) {
+        submitAppointment.addEventListener('click', function() {
+          const form = document.getElementById('newAppointmentForm');
+          if(!form.checkValidity()) {
+            // Trigger browser's native validation UI
+            form.reportValidity();
+            return;
+          }
+          
+          // Here you would add AJAX call to submit the appointment
+          alert('Appointment scheduled successfully!');
+          // Close modal and refresh page
+          const modal = bootstrap.Modal.getInstance(document.getElementById('newAppointmentModal'));
+          modal.hide();
+          location.reload();
+        });
+      }
+    });
+  </script>
+</body>
+</html>
