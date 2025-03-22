@@ -58,7 +58,7 @@ npm install
 1. Start the server:
 
 ```bash
-npm start
+npm start  or node app.js
 ```
 
 2. Access the application:
