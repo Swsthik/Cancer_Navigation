@@ -63,7 +63,7 @@ npm start  or node app.js
 
 2. Access the application:
 
-- Open your browser and navigate to `http://localhost:3000`
+- Open your browser and navigate to `http://localhost:2000`
 - You will be redirected to the login page
 
 ## User Types and Access
