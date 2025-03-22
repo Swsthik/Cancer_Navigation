@@ -28,7 +28,7 @@ Before running this application, make sure you have the following installed:
 Create a `.env` file in the root directory with the following variables:
 
 ```env
-PORT=3000
+PORT=2000
 ATLASDB_URL=your_mongodb_connection_string
 SESSION_SECRET=your_session_secret
 ```
