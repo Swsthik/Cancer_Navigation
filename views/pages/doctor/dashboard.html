@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MedConnect - Doctor Dashboard</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary-blue: #2a5c82;
+        --secondary-blue: #5c9baf;
+        --accent-teal: #4ecdc4;
+        --high-risk: #dc3545;
+        --medium-risk: #ffc107;
+        --low-risk: #28a745;
+      }
+
+      body {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        min-height: 100vh;
+      }
+
+      .medical-header {
+        background: var(--primary-blue);
+        padding: 1rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .dashboard-container {
+        background: rgba(255, 255, 255, 0.95);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+      }
+
+      .btn-medical {
+        background: var(--accent-teal);
+        color: white;
+        padding: 12px 30px;
+        transition: all 0.3s ease;
+      }
+
+      .btn-medical:hover {
+        background: var(--secondary-blue);
+        transform: translateY(-2px);
+      }
+
+      .btn-outline-medical {
+        color: var(--accent-teal);
+        border: 1px solid var(--accent-teal);
+        transition: all 0.3s ease;
+      }
+
+      .btn-outline-medical:hover {
+        background: var(--accent-teal);
+        color: white;
+      }
+
+      .card-medical {
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+      }
+
+      .card-medical:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .sidebar {
+        background: var(--primary-blue);
+        color: white;
+      }
+
+      .nav-link {
+        color: rgba(255, 255, 255, 0.8);
+        transition: all 0.3s ease;
+        padding: 0.8rem 1rem;
+        border-radius: 10px;
+        margin-bottom: 0.5rem;
+      }
+
+      .nav-link:hover, .nav-link.active {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+      }
+
+      .nav-link i {
+        margin-right: 10px;
+      }
+
+      .health-metric {
+        height: 6px;
+        border-radius: 3px;
+      }
+
+      .risk-badge-high {
+        background-color: var(--high-risk);
+        color: white;
+      }
+
+      .risk-badge-medium {
+        background-color: var(--medium-risk);
+        color: black;
+      }
+
+      .risk-badge-low {
+        background-color: var(--low-risk);
+        color: white;
+      }
+
+      .decorative-wave {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 150px;
+        background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg"><path fill="%232A5C82" fill-opacity="0.1" d="M0,160L48,170.7C96,181,192,203,288,186.7C384,171,480,117,576,101.3C672,85,768,107,864,138.7C960,171,1056,213,1152,208C1248,203,1344,149,1392,122.7L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar medical-header">
+      <div class="container">
+        <a class="navbar-brand text-white" href="#">
+          <i class="fas fa-hospital me-2"></i>MedConnect
+        </a>
+        <div class="dropdown">
+          <button class="btn text-white dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fas fa-user-md me-2"></i>Dr. Sarah Wilson
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+            <li><a class="dropdown-item" href="profile.html"><i class="fas fa-id-card me-2"></i>Profile</a></li>
+            <li><a class="dropdown-item" href="settings.html"><i class="fas fa-cog me-2"></i>Settings</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="/logout"><i class="fas fa-sign-out-alt me-2"></i>Log Out</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="w-full">
+      <div class="dashboard-container row g-0 w-full" >
+        <!-- Sidebar -->
+        <div class="col-md-3 sidebar p-4">
+          <div class="d-flex align-items-center mb-4">
+            <i class="fas fa-user-md fs-1 me-3"></i>
+            <div>
+              <h5 class="mb-0">Dr. Sarah Wilson</h5>
+              <small class="text-light">Oncologist</small>
+            </div>
+          </div>
+          <div class="nav flex-column">
+            <a href="dashboard.html" class="nav-link active">
+              <i class="fas fa-home"></i>Dashboard
+            </a>
+            <a href="appointment-management.html" class="nav-link">
+              <i class="fas fa-calendar-check"></i>Appointments
+            </a>
+            <a href="patient-info.html" class="nav-link">
+              <i class="fas fa-user-injured"></i>Patient Info
+            </a>
+            <a href="progress-reports.html" class="nav-link">
+              <i class="fas fa-chart-line"></i>Progress Reports
+            </a>
+            <a href="feedback-management.html" class="nav-link">
+              <i class="fas fa-comment-medical"></i>Feedback
+            </a>
+            <a href="resources.html" class="nav-link">
+              <i class="fas fa-book-medical"></i>Resources
+            </a>
+            <a href="profile.html" class="nav-link">
+              <i class="fas fa-user"></i>Profile
+            </a>
+          </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="col-md-9 p-4 bg-white">
+          <h2 class="mb-4">Welcome, Dr. Wilson</h2>
+          
+          <!-- Notifications -->
+          <div class="alert alert-info d-flex align-items-center" role="alert">
+            <i class="fas fa-bell fs-5 me-3"></i>
+            <div>You have 5 new appointment requests pending approval</div>
+          </div>
+          
+          <!-- Quick Stats -->
+          <div class="row mb-4">
+            <div class="col-md-3">
+              <div class="card card-medical">
+                <div class="card-body">
+                  <h6 class="text-muted mb-2">Today's Appointments</h6>
+                  <div class="d-flex align-items-center">
+                    <h3 class="me-2">8</h3>
+                    <i class="fas fa-calendar-check text-primary"></i>
+                  </div>
+                  <small class="text-muted">Next: 10:30 AM - Michael Brown</small>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card card-medical">
+                <div class="card-body">
+                  <h6 class="text-muted mb-2">Pending Requests</h6>
+                  <div class="d-flex align-items-center">
+                    <h3 class="me-2">5</h3>
+                    <i class="fas fa-hourglass-half text-warning"></i>
+                  </div>
+                  <small class="text-muted">Needs approval</small>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card card-medical">
+                <div class="card-body">
+                  <h6 class="text-muted mb-2">Patient Feedback</h6>
+                  <div class="d-flex align-items-center">
+                    <h3 class="me-2">12</h3>
+                    <i class="fas fa-comment-dots text-success"></i>
+                  </div>
+                  <small class="text-muted">3 new this week</small>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card card-medical">
+                <div class="card-body">
+                  <h6 class="text-muted mb-2">High Risk Patients</h6>
+                  <div class="d-flex align-items-center">
+                    <h3 class="me-2">4</h3>
+                    <i class="fas fa-exclamation-triangle text-danger"></i>
+                  </div>
+                  <small class="text-muted">Needs immediate attention</small>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="row">
+            <!-- Patient Risk Classification -->
+            <div class="col-md-6 mb-4">
+              <div class="card card-medical h-100">
+                <div class="card-header bg-white">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Patient Risk Classification</h5>
+                    <a href="patient-info.html" class="text-decoration-none text-primary">View all patients</a>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <div class="mb-3">
+                    <div class="d-flex justify-content-between align-items-center p-3 border-bottom">
+                      <div class="d-flex align-items-center">
+                        <span class="badge risk-badge-high p-2 me-3">High</span>
+                        <div>
+                          <h6 class="mb-1">Emma Thompson</h6>
+                          <small class="text-muted">Stage 3 Breast Cancer</small>
+                        </div>
+                      </div>
+                      <a href="patient-info.html?id=123" class="btn btn-sm btn-outline-primary">View</a>
+                    </div>
+                  </div>
+                  
+                  <div class="mb-3">
+                    <div class="d-flex justify-content-between align-items-center p-3 border-bottom">
+                      <div class="d-flex align-items-center">
+                        <span class="badge risk-badge-high p-2 me-3">High</span>
+                        <div>
+                          <h6 class="mb-1">Robert Davis</h6>
+                          <small class="text-muted">Metastatic Lung Cancer</small>
+                        </div>
+                      </div>
+                      <a href="patient-info.html?id=124" class="btn btn-sm btn-outline-primary">View</a>
+                    </div>
+                  </div>
+                  
+                  <div class="mb-3">
+                    <div class="d-flex justify-content-between align-items-center p-3 border-bottom">
+                      <div class="d-flex align-items-center">
+                        <span class="badge risk-badge-medium p-2 me-3">Medium</span>
+                        <div>
+                          <h6 class="mb-1">Jennifer Clark</h6>
+                          <small class="text-muted">Stage 2 Colorectal Cancer</small>
+                        </div>
+                      </div>
+                      <a href="patient-info.html?id=125" class="btn btn-sm btn-outline-primary">View</a>
+                    </div>
+                  </div>
+                  
+                  <div class="mb-3">
+                    <div class="d-flex justify-content-between align-items-center p-3">
+                      <div class="d-flex align-items-center">
+                        <span class="badge risk-badge-low p-2 me-3">Low</span>
+                        <div>
+                          <h6 class="mb-1">Michael Brown</h6>
+                          <small class="text-muted">Early Stage Thyroid Cancer</small>
+                        </div>
+                      </div>
+                      <a href="patient-info.html?id=126" class="btn btn-sm btn-outline-primary">View</a>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-footer bg-white">
+                  <a href="patient-info.html" class="btn btn-outline-medical w-100">
+                    <i class="fas fa-users me-2"></i>Manage All Patients
+                  </a>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Upcoming Appointments -->
+            <div class="col-md-6 mb-4">
+              <div class="card card-medical h-100">
+                <div class="card-header bg-white">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Today's Appointments</h5>
+                    <a href="appointment-management.html" class="text-decoration-none text-primary">Manage all</a>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <div class="d-flex mb-3 p-3 border-bottom">
+                    <div class="me-3">
+                      <div class="bg-light rounded p-3 text-center">
+                        <div class="fw-bold text-primary">9:00</div>
+                        <small>AM</small>
+                      </div>
+                    </div>
+                    <div class="flex-grow-1">
+                      <div class="d-flex justify-content-between align-items-center">
+                        <h6>Emma Thompson</h6>
+                        <span class="badge risk-badge-high">High Risk</span>
+                      </div>
+                      <div class="text-muted"><i class="fas fa-clipboard-list me-2"></i>Follow-up Consultation</div>
+                      <div class="text-muted"><i class="fas fa-map-marker-alt me-2"></i>Room 302</div>
+                    </div>
+                  </div>
+                  
+                  <div class="d-flex mb-3 p-3 border-bottom">
+                    <div class="me-3">
+                      <div class="bg-light rounded p-3 text-center">
+                        <div class="fw-bold text-primary">10:30</div>
+                        <small>AM</small>
+                      </div>
+                    </div>
+                    <div class="flex-grow-1">
+                      <div class="d-flex justify-content-between align-items-center">
+                        <h6>Michael Brown</h6>
+                        <span class="badge risk-badge-low">Low Risk</span>
+                      </div>
+                      <div class="text-muted"><i class="fas fa-clipboard-list me-2"></i>Initial Consultation</div>
+                      <div class="text-muted"><i class="fas fa-map-marker-alt me-2"></i>Room 305</div>
+                    </div>
+                  </div>
+                  
+                  <div class="d-flex mb-3 p-3 border-bottom">
+                    <div class="me-3">
+                      <div class="bg-light rounded p-3 text-center">
+                        <div class="fw-bold text-primary">1:15</div>
+                        <small>PM</small>
+                      </div>
+                    </div>
+                    <div class="flex-grow-1">
+                      <div class="d-flex justify-content-between align-items-center">
+                        <h6>Robert Davis</h6>
+                        <span class="badge risk-badge-high">High Risk</span>
+                      </div>
+                      <div class="text-muted"><i class="fas fa-clipboard-list me-2"></i>Treatment Discussion</div>
+                      <div class="text-muted"><i class="fas fa-map-marker-alt me-2"></i>Room 301</div>
+                    </div>
+                  </div>
+                  
+                  <div class="d-flex p-3">
+                    <div class="me-3">
+                      <div class="bg-light rounded p-3 text-center">
+                        <div class="fw-bold text-primary">3:00</div>
+                        <small>PM</small>
+                      </div>
+                    </div>
+                    <div class="flex-grow-1">
+                      <div class="d-flex justify-content-between align-items-center">
+                        <h6>Jennifer Clark</h6>
+                        <span class="badge risk-badge-medium">Medium Risk</span>
+                      </div>
+                      <div class="text-muted"><i class="fas fa-clipboard-list me-2"></i>Test Results Review</div>
+                      <div class="text-muted"><i class="fas fa-map-marker-alt me-2"></i>Room 304</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-footer bg-white">
+                  <a href="appointment-management.html" class="btn btn-medical w-100">
+                    <i class="fas fa-calendar-alt me-2"></i>Manage Appointments
+                  </a>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Treatment Statistics -->
+            <div class="col-md-8 mb-4">
+              <div class="card card-medical">
+                <div class="card-header bg-white">
+                  <h5 class="mb-0">Patient Progress Overview</h5>
+                </div>
+                <div class="card-body">
+                  <div class="row mb-4">
+                    <div class="col-md-3 text-center">
+                      <div class="display-6 text-primary mb-2">78%</div>
+                      <div class="text-muted">Positive Response</div>
+                    </div>
+                    <div class="col-md-3 text-center">
+                      <div class="display-6 text-warning mb-2">15%</div>
+                      <div class="text-muted">Stable Condition</div>
+                    </div>
+                    <div class="col-md-3 text-center">
+                      <div class="display-6 text-danger mb-2">7%</div>
+                      <div class="text-muted">Progressive Disease</div>
+                    </div>
+                    <div class="col-md-3 text-center">
+                      <div class="display-6 text-success mb-2">24</div>
+                      <div class="text-muted">New Diagnoses</div>
+                    </div>
+                  </div>
+                  
+                  <div class="d-flex align-items-center p-3 bg-light rounded">
+                    <i class="fas fa-robot text-primary me-3 fs-4"></i>
+                    <div>
+                      <h6 class="mb-1">AI-Powered Insight</h6>
+                      <p class="mb-0 small">Patients who complete their full course of immunotherapy show a 32% higher recovery rate. Consider discussing adherence with patients showing irregular attendance.</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-footer bg-white">
+                  <a href="progress-reports.html" class="btn btn-outline-medical w-100">
+                    <i class="fas fa-chart-line me-2"></i>View Detailed Analytics
+                  </a>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Recent Feedback -->
+            <div class="col-md-4 mb-4">
+              <div class="card card-medical">
+                <div class="card-header bg-white">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Recent Feedback</h5>
+                    <a href="feedback-management.html" class="text-decoration-none text-primary">View all</a>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <div class="mb-3 pb-3 border-bottom">
+                    <div class="d-flex align-items-center mb-2">
+                      <div class="text-warning me-2">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                      </div>
+                      <small class="text-muted">March 20, 2025</small>
+                    </div>
+                    <p class="mb-1 small">"Dr. Wilson was incredibly thorough and took the time to explain my treatment options. I feel much more confident now."</p>
+                    <small class="text-muted">- Jennifer C.</small>
+                  </div>
+                  
+                  <div class="mb-3 pb-3 border-bottom">
+                    <div class="d-flex align-items-center mb-2">
+                      <div class="text-warning me-2">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                      </div>
+                      <small class="text-muted">March 19, 2025</small>
+                    </div>
+                    <p class="mb-1 small">"Great doctor who really listens. Would appreciate more detailed follow-up instructions."</p>
+                    <small class="text-muted">- Robert D.</small>
+                  </div>
+                  
+                  <div>
+                    <div class="d-flex align-items-center mb-2">
+                      <div class="text-warning me-2">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                      </div>
+                      <small class="text-muted">March 18, 2025</small>
+                    </div>
+                    <p class="mb-1 small">"Dr. Wilson has been incredibly supportive throughout my treatment. Her expertise and compassion make a difficult journey easier."</p>
+                    <small class="text-muted">- Michael B.</small>
+                  </div>
+                </div>
+                <div class="card-footer bg-white">
+                  <a href="feedback-management.html" class="btn btn-outline-medical w-100">
+                    <i class="fas fa-comment-dots me-2"></i>Manage Feedback
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="decorative-wave"></div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  </body>
+</html>
