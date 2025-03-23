@@ -12,6 +12,7 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
       rel="stylesheet"
     />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
       :root {
         --primary-blue: #2a5c82;
@@ -93,26 +94,6 @@
 
       .nav-link i {
         margin-right: 10px;
-      }
-
-      .health-metric {
-        height: 6px;
-        border-radius: 3px;
-      }
-
-      .risk-badge-high {
-        background-color: var(--high-risk);
-        color: white;
-      }
-
-      .risk-badge-medium {
-        background-color: var(--medium-risk);
-        color: black;
-      }
-
-      .risk-badge-low {
-        background-color: var(--low-risk);
-        color: white;
       }
 
       .decorative-wave {
@@ -274,5 +255,1135 @@
             <i class="fas fa-user-md me-2"></i>Dr. Sarah Wilson
           </button>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-            <li><a class="dropdown-item" href="profile.html"><i class="fas fa-id-card me-2"></i>Profile</a></li
+            <li><a class="dropdown-item" href="profile.html"><i class="fas fa-id-card me-2"></i>Profile</a></li>
+            <li><a class="dropdown-item" href="settings.html"><i class="fas fa-cog me-2"></i>Settings</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="/logout"><i class="fas fa-sign-out-alt me-2"></i>Log Out</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="w-full">
+      <div class="dashboard-container row g-0 w-full">
+        <!-- Sidebar -->
+        <div class="col-md-3 sidebar p-4">
+          <div class="d-flex align-items-center mb-4">
+            <i class="fas fa-user-md fs-1 me-3"></i>
+            <div>
+              <h5 class="mb-0">Dr. Sarah Wilson</h5>
+              <small class="text-light">Oncologist</small>
+            </div>
+          </div>
+          <div class="nav flex-column">
+            <a href="dashboard.html" class="nav-link">
+              <i class="fas fa-home"></i>Dashboard
+            </a>
+            <a href="appointment-management.html" class="nav-link">
+              <i class="fas fa-calendar-check"></i>Appointments
+            </a>
+            <a href="patient-info.html" class="nav-link">
+              <i class="fas fa-user-injured"></i>Patient Info
+            </a>
+            <a href="progress-reports.html" class="nav-link">
+              <i class="fas fa-chart-line"></i>Progress Reports
+            </a>
+            <a href="feedback-management.html" class="nav-link active">
+              <i class="fas fa-comment-medical"></i>Feedback
+            </a>
+            <a href="resources.html" class="nav-link">
+              <i class="fas fa-book-medical"></i>Resources
+            </a>
+            <a href="profile.html" class="nav-link">
+              <i class="fas fa-user"></i>Profile
+            </a>
+          </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="col-md-9 p-4 bg-white">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Patient Feedback Management</h2>
+            <div class="d-flex">
+              <div class="search-container me-2">
+                <i class="fas fa-search"></i>
+                <input type="text" class="form-control search-input" placeholder="Search feedback...">
+              </div>
+              <button class="btn btn-medical" data-bs-toggle="modal" data-bs-target="#createFeedbackRequestModal">
+                <i class="fas fa-paper-plane me-2"></i>Request Feedback
+              </button>
+            </div>
+          </div>
+          
+          <!-- Feedback Overview Cards -->
+          <div class="row mb-4">
+            <div class="col-md-3">
+              <div class="card card-medical h-100">
+                <div class="card-body text-center">
+                  <h5 class="card-title">Total Feedback</h5>
+                  <div class="display-4 fw-bold text-primary">124</div>
+                  <div class="text-muted">Last 30 days</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card card-medical h-100">
+                <div class="card-body text-center">
+                  <h5 class="card-title">Average Rating</h5>
+                  <div class="display-4 fw-bold text-primary">4.7</div>
+                  <div class="rating-stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card card-medical h-100">
+                <div class="card-body text-center">
+                  <h5 class="card-title">Response Rate</h5>
+                  <div class="display-4 fw-bold text-primary">92%</div>
+                  <div class="text-muted">Average 6h response time</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card card-medical h-100">
+                <div class="card-body text-center">
+                  <h5 class="card-title">Unread Feedback</h5>
+                  <div class="display-4 fw-bold text-danger">7</div>
+                  <div class="text-muted">
+                    <span class="text-danger">3 urgent</span> items
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Feedback Tabs -->
+          <ul class="nav nav-pills mb-4" id="feedbackTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="all-tab" data-bs-toggle="tab" data-bs-target="#all" type="button" role="tab" aria-controls="all" aria-selected="true">
+                <i class="fas fa-comments me-2"></i>All Feedback
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="unread-tab" data-bs-toggle="tab" data-bs-target="#unread" type="button" role="tab" aria-controls="unread" aria-selected="false">
+                <i class="fas fa-envelope me-2"></i>Unread <span class="badge bg-primary rounded-pill ms-1">7</span>
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="urgent-tab" data-bs-toggle="tab" data-bs-target="#urgent" type="button" role="tab" aria-controls="urgent" aria-selected="false">
+                <i class="fas fa-exclamation-circle me-2"></i>Urgent <span class="badge bg-danger rounded-pill ms-1">3</span>
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="analytics-tab" data-bs-toggle="tab" data-bs-target="#analytics" type="button" role="tab" aria-controls="analytics" aria-selected="false">
+                <i class="fas fa-chart-pie me-2"></i>Analytics
+              </button>
+            </li>
+          </ul>
+          
+          <div class="tab-content" id="feedbackTabsContent">
+            <!-- All Feedback Tab -->
+            <div class="tab-pane fade show active" id="all" role="tabpanel" aria-labelledby="all-tab">
+              <!-- Feedback Filters -->
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <div>
+                  <span class="me-2">Filter by:</span>
+                  <div class="btn-group me-2">
+                    <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                      <i class="fas fa-filter me-1"></i>Sentiment
+                    </button>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" href="#"><span class="sentiment-indicator sentiment-positive"></span> Positive</a></li>
+                      <li><a class="dropdown-item" href="#"><span class="sentiment-indicator sentiment-neutral"></span> Neutral</a></li>
+                      <li><a class="dropdown-item" href="#"><span class="sentiment-indicator sentiment-negative"></span> Negative</a></li>
+                      <li><hr class="dropdown-divider"></li>
+                      <li><a class="dropdown-item" href="#">All Sentiments</a></li>
+                    </ul>
+                  </div>
+                  <div class="btn-group me-2">
+                    <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                      <i class="fas fa-calendar-alt me-1"></i>Date
+                    </button>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" href="#">Today</a></li>
+                      <li><a class="dropdown-item" href="#">Last 7 days</a></li>
+                      <li><a class="dropdown-item" href="#">Last 30 days</a></li>
+                      <li><a class="dropdown-item" href="#">Last 90 days</a></li>
+                      <li><hr class="dropdown-divider"></li>
+                      <li><a class="dropdown-item" href="#">Custom Range</a></li>
+                    </ul>
+                  </div>
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                      <i class="fas fa-tag me-1"></i>Category
+                    </button>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" href="#">Treatment</a></li>
+                      <li><a class="dropdown-item" href="#">Communication</a></li>
+                      <li><a class="dropdown-item" href="#">Facilities</a></li>
+                      <li><a class="dropdown-item" href="#">Staff</a></li>
+                      <li><a class="dropdown-item" href="#">Wait Times</a></li>
+                      <li><hr class="dropdown-divider"></li>
+                      <li><a class="dropdown-item" href="#">All Categories</a></li>
+                    </ul>
+                  </div>
+                </div>
+                <div>
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-sm btn-outline-secondary">
+                      <i class="fas fa-sort-amount-down me-1"></i>Newest
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary">
+                      <i class="fas fa-sort-amount-up me-1"></i>Oldest
+                    </button>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Feedback List -->
+              <div class="card card-medical feedback-card unread mb-3">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div class="d-flex align-items-center">
+                      <div class="patient-avatar me-3">
+                        <i class="fas fa-user"></i>
+                      </div>
+                      <div>
+                        <h5 class="mb-0">Emma Thompson</h5>
+                        <div class="text-muted">Patient ID: PT-10045</div>
+                      </div>
+                    </div>
+                    <div>
+                      <span class="badge feedback-badge feedback-badge-unread me-1">Unread</span>
+                      <span class="badge feedback-badge feedback-badge-urgent me-1">Urgent</span>
+                      <span class="badge feedback-badge feedback-badge-negative">Negative</span>
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <div class="rating-stars mb-2">
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="far fa-star"></i>
+                      <i class="far fa-star"></i>
+                      <i class="far fa-star"></i>
+                      <span class="ms-2 text-muted">2.0</span>
+                    </div>
+                    <div class="mb-2">
+                      <span class="category-badge">Side Effects</span>
+                      <span class="category-badge">Communication</span>
+                    </div>
+                    <p class="feedback-message">I've been experiencing severe nausea after my last chemotherapy session and I'm having trouble keeping any food down. I tried calling the office twice yesterday but couldn't get through to anyone. I need help managing these side effects as soon as possible.</p>
+                  </div>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="text-muted">
+                      <i class="far fa-clock me-1"></i>Today, 9:32 AM
+                    </div>
+                    <div>
+                      <button class="btn btn-sm btn-outline-primary me-1" data-bs-toggle="modal" data-bs-target="#respondFeedbackModal">
+                        <i class="fas fa-reply me-1"></i>Respond
+                      </button>
+                      <button class="btn btn-sm btn-outline-secondary me-1">
+                        <i class="fas fa-phone-alt me-1"></i>Call
+                      </button>
+                      <button class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">
+                        <i class="fas fa-ellipsis-v"></i>
+                      </button>
+                      <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>View Patient Profile</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-history me-2"></i>View Feedback History</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-flag me-2"></i>Mark as Resolved</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-exclamation-triangle me-2"></i>Escalate to Supervisor</a></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="card card-medical feedback-card unread mb-3">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div class="d-flex align-items-center">
+                      <div class="patient-avatar me-3">
+                        <i class="fas fa-user"></i>
+                      </div>
+                      <div>
+                        <h5 class="mb-0">Robert Johnson</h5>
+                        <div class="text-muted">Patient ID: PT-10089</div>
+                      </div>
+                    </div>
+                    <div>
+                      <span class="badge feedback-badge feedback-badge-unread me-1">Unread</span>
+                      <span class="badge feedback-badge feedback-badge-neutral">Neutral</span>
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <div class="rating-stars mb-2">
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="far fa-star"></i>
+                      <i class="far fa-star"></i>
+                      <span class="ms-2 text-muted">3.0</span>
+                    </div>
+                    <div class="mb-2">
+                      <span class="category-badge">Wait Times</span>
+                      <span class="category-badge">Facilities</span>
+                    </div>
+                    <p class="feedback-message">My appointment yesterday was scheduled for 2:00 PM but I wasn't seen until 3:30 PM. The waiting area was very crowded and uncomfortable. I understand that delays happen, but it would be helpful to get updates when appointments are running behind schedule.</p>
+                  </div>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="text-muted">
+                      <i class="far fa-clock me-1"></i>Yesterday, 5:45 PM
+                    </div>
+                    <div>
+                      <button class="btn btn-sm btn-outline-primary me-1" data-bs-toggle="modal" data-bs-target="#respondFeedbackModal">
+                        <i class="fas fa-reply me-1"></i>Respond
+                      </button>
+                      <button class="btn btn-sm btn-outline-secondary me-1">
+                        <i class="fas fa-phone-alt me-1"></i>Call
+                      </button>
+                      <button class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">
+                        <i class="fas fa-ellipsis-v"></i>
+                      </button>
+                      <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>View Patient Profile</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-history me-2"></i>View Feedback History</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-flag me-2"></i>Mark as Resolved</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-exclamation-triangle me-2"></i>Escalate to Supervisor</a></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="card card-medical feedback-card mb-3">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div class="d-flex align-items-center">
+                      <div class="patient-avatar me-3">
+                        <i class="fas fa-user"></i>
+                      </div>
+                      <div>
+                        <h5 class="mb-0">Maria Garcia</h5>
+                        <div class="text-muted">Patient ID: PT-10067</div>
+                      </div>
+                    </div>
+                    <div>
+                      <span class="badge feedback-badge feedback-badge-positive">Positive</span>
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <div class="rating-stars mb-2">
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <span class="ms-2 text-muted">5.0</span>
+                    </div>
+                    <div class="mb-2">
+                      <span class="category-badge">Staff</span>
+                      <span class="category-badge">Treatment</span>
+                      <span class="category-badge">Communication</span>
+                    </div>
+                    <p class="feedback-message">I wanted to express my gratitude to Dr. Wilson and the entire oncology team. The care I've received has been exceptional. Dr. Wilson always takes the time to explain my treatment plan and answer all my questions. The nurses are compassionate and professional. I feel very supported during this difficult journey.</p>
+                    <div class="feedback-response">
+                      <div class="d-flex justify-content-between mb-2">
+                        <strong>Response from Dr. Sarah Wilson:</strong>
+                        <span class="text-muted">Mar 20, 2025, 2:15 PM</span>
+                      </div>
+                      <p class="mb-0">Thank you so much for your kind words, Maria. It means a lot to our team to hear that you feel supported and well-cared for. We're committed to providing you with the best possible care throughout your treatment journey. Please don't hesitate to reach out if you need anything at all.</p>
+                    </div>
+                  </div>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="text-muted">
+                      <i class="far fa-clock me-1"></i>Mar 20, 2025, 10:23 AM
+                    </div>
+                    <div>
+                      <button class="btn btn-sm btn-outline-secondary me-1">
+                        <i class="fas fa-phone-alt me-1"></i>Call
+                      </button>
+                      <button class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">
+                        <i class="fas fa-ellipsis-v"></i>
+                      </button>
+                      <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>View Patient Profile</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-history me-2"></i>View Feedback History</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-flag me-2"></i>Mark as Resolved</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-exclamation-triangle me-2"></i>Escalate to Supervisor</a></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="card card-medical feedback-card unread urgent mb-3">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div class="d-flex align-items-center">
+                      <div class="patient-avatar me-3">
+                        <i class="fas fa-user"></i>
+                      </div>
+                      <div>
+                        <h5 class="mb-0">James Wilson</h5>
+                        <div class="text-muted">Patient ID: PT-10112</div>
+                      </div>
+                    </div>
+                    <div>
+                      <span class="badge feedback-badge feedback-badge-unread me-1">Unread</span>
+                      <span class="badge feedback-badge feedback-badge-urgent me-1">Urgent</span>
+                      <span class="badge feedback-badge feedback-badge-negative">Negative</span>
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <div class="rating-stars mb-2">
+                      <i class="fas fa-star"></i>
+                      <i class="far fa-star"></i>
+                      <i class="far fa-star"></i>
+                      <i class="far fa-star"></i>
+                      <i class="far fa-star"></i>
+                      <span class="ms-2 text-muted">1.0</span>
+                    </div>
+                    <div class="mb-2">
+                      <span class="category-badge">Medication</span>
+                      <span class="category-badge">Side Effects</span>
+                    </div>
+                    <p class="feedback-message">I'm experiencing severe chest pain and shortness of breath after starting the new medication yesterday. I've tried calling the emergency line but couldn't get through. Please have someone contact me immediately.</p>
+                  </div>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="text-muted">
+                      <i class="far fa-clock me-1"></i>Today, 7:15 AM
+                    </div>
+                    <div>
+                      <button class="btn btn-sm btn-danger me-1">
+                        <i class="fas fa-exclamation-circle me-1"></i>Immediate Action
+                      </button>
+                      <button class="btn btn-sm btn-outline-primary me-1" data-bs-toggle="modal" data-bs-target="#respondFeedbackModal">
+                        <i class="fas fa-reply me-1"></i>Respond
+                      </button>
+                      <button class="btn btn-sm btn-outline-secondary me-1">
+                        <i class="fas fa-phone-alt me-1"></i>Call
+                      </button>
+                      <button class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">
+                        <i class="fas fa-ellipsis-v"></i>
+                      </button>
+                      <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>View Patient Profile</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-history me-2"></i>View Feedback History</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-flag me-2"></i>Mark as Resolved</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-exclamation-triangle me-2"></i>Escalate to Supervisor</a></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="d-flex justify-content-center mt-4">
+                <nav aria-label="Feedback pagination">
+                  <ul class="pagination">
+                    <li class="page-item disabled">
+                      <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                    </li>
+                    <li class="page-item active" aria-current="page">
+                      <a class="page-link" href="#">1</a>
+                    </li>
+                    <li class="page-item">
+                      <a class="page-link" href="#">2</a>
+                    </li>
+                    <li class="page-item">
+                      <a class="page-link" href="#">3</a>
+                    </li>
+                    <li class="page-item">
+                      <a class="page-link" href="#">Next</a>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+            </div>
+            
+            <!-- Unread Feedback Tab -->
+            <div class="tab-pane fade" id="unread" role="tabpanel" aria-labelledby="unread-tab">
+              <div class="alert alert-info mb-4">
+                <i class="fas fa-info-circle me-2"></i>
+                You have <strong>7 unread</strong> feedback items, including <strong>3 urgent</strong> items that require immediate attention.
+              </div>
+              
+              <!-- Unread Feedback List (Similar structure to All Feedback) -->
+              <div class="card card-medical feedback-card unread mb-3">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div class="d-flex align-items-center">
+                      <div class="patient-avatar me-3">
+                        <i class="fas fa-user"></i>
+                      </div>
+                      <div>
+                        <h5 class="mb-0">Emma Thompson</h5>
+                        <div class="text-muted">Patient ID: PT-10045</div>
+                      </div>
+                    </div>
+                    <div>
+                      <span class="badge feedback-badge feedback-badge-unread me-1">Unread</span>
+                      <span class="badge feedback-badge feedback-badge-urgent me-1">Urgent</span>
+                      <span class="badge feedback-badge feedback-badge-negative">Negative</span>
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <div class="rating-stars mb-2">
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="far fa-star"></i>
+                      <i class="far fa-star"></i>
+                      <i class="far fa-star"></i>
+                      <span class="ms-2 text-muted">2.0</span>
+                    </div>
+                    <div class="mb-2">
+                      <span class="category-badge">Side Effects</span>
+                      <span class="category-badge">Communication</span>
+                    </div>
+                    <p class="feedback-message">I've been experiencing severe nausea after my last chemotherapy session and I'm having trouble keeping any food down. I tried calling the office twice yesterday but couldn't get through to anyone. I need help managing these side effects as soon as possible.</p>
+                  </div>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="text-muted">
+                      <i class="far fa-clock me-1"></i>Today, 9:32 AM
+                    </div>
+                    <div>
+                      <button class="btn btn-sm btn-outline-primary me-1" data-bs-toggle="modal" data-bs-target="#respondFeedbackModal">
+                        <i class="fas fa-reply me-1"></i>Respond
+                      </button>
+                      <button class="btn btn-sm btn-outline-secondary me-1">
+                        <i class="fas fa-phone-alt me-1"></i>Call
+                      </button>
+                      <button class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">
+                        <i class="fas fa-ellipsis-v"></i>
+                      </button>
+                      <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>View Patient Profile</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-history me-2"></i>View Feedback History</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-flag me-2"></i>Mark as Resolved</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-exclamation-triangle me-2"></i>Escalate to Supervisor</a></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- More unread feedback items would go here -->
+            </div>
+            
+            <!-- Urgent Feedback Tab -->
+            <div class="tab-pane fade" id="urgent" role="tabpanel" aria-labelledby="urgent-tab">
+              <div class="alert alert-danger mb-4">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                You have <strong>3 urgent</strong> feedback items that require immediate attention.
+              </div>
+              
+              <!-- Urgent Feedback List (Similar structure to All Feedback) -->
+              <div class="card card-medical feedback-card unread urgent mb-3">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div class="d-flex align-items-center">
+                      <div class="patient-avatar me-3">
+                        <i class="fas fa-user"></i>
+                      </div>
+                      <div>
+                        <h5 class="mb-0">James Wilson</h5>
+                        <div class="text-muted">Patient ID: PT-10112</div>
+                      </div>
+                    </div>
+                    <div>
+                      <span class="badge feedback-badge feedback-badge-unread me-1">Unread</span>
+                      <span class="badge feedback-badge feedback-badge-urgent me-1">Urgent</span>
+                      <span class="badge feedback-badge feedback-badge-negative">Negative</span>
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <div class="rating-stars mb-2">
+                      <i class="fas fa-star"></i>
+                      <i class="far fa-star"></i>
+                      <i class="far fa-star"></i>
+                      <i class="far fa-star"></i>
+                      <i class="far fa-star"></i>
+                      <span class="ms-2 text-muted">1.0</span>
+                    </div>
+                    <div class="mb-2">
+                      <span class="category-badge">Medication</span>
+                      <span class="category-badge">Side Effects</span>
+                    </div>
+                    <p class="feedback-message">I'm experiencing severe chest pain and shortness of breath after starting the new medication yesterday. I've tried calling the emergency line but couldn't get through. Please have someone contact me immediately.</p>
+                  </div>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="text-muted">
+                      <i class="far fa-clock me-1"></i>Today, 7:15 AM
+                    </div>
+                    <div>
+                      <button class="btn btn-sm btn-danger me-1">
+                        <i class="fas fa-exclamation-circle me-1"></i>Immediate Action
+                      </button>
+                      <button class="btn btn-sm btn-outline-primary me-1" data-bs-toggle="modal" data-bs-target="#respondFeedbackModal">
+                        <i class="fas fa-reply me-1"></i>Respond
+                      </button>
+                      <button class="btn btn-sm btn-outline-secondary me-1">
+                        <i class="fas fa-phone-alt me-1"></i>Call
+                      </button>
+                      <button class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">
+                        <i class="fas fa-ellipsis-v"></i>
+                      </button>
+                      <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>View Patient Profile</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-history me-2"></i>View Feedback History</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-flag me-2"></i>Mark as Resolved</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-exclamation-triangle me-2"></i>Escalate to Supervisor</a></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- More urgent feedback items would go here -->
+            </div>
+            
+            <!-- Analytics Tab -->
+            <div class="tab-pane fade" id="analytics" role="tabpanel" aria-labelledby="analytics-tab">
+              <div class="row mb-4">
+                <div class="col-md-6">
+                  <div class="card card-medical h-100">
+                    <div class="card-header bg-white">
+                      <h5 class="mb-0">Feedback Sentiment Trend</h5>
+                    </div>
+                    <div class="card-body">
+                      <div class="chart-container">
+                        <canvas id="sentimentTrendChart"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="card card-medical h-100">
+                    <div class="card-header bg-white">
+                      <h5 class="mb-0">Feedback Categories</h5>
+                    </div>
+                    <div class="card-body">
+                      <div class="chart-container">
+                        <canvas id="categoriesChart"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="row mb-4">
+                <div class="col-md-6">
+                  <div class="card card-medical h-100">
+                    <div class="card-header bg-white">
+                      <h5 class="mb-0">Rating Distribution</h5>
+                    </div>
+                    <div class="card-body">
+                      <div class="chart-container">
+                        <canvas id="ratingDistributionChart"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="card card-medical h-100">
+                    <div class="card-header bg-white">
+                      <h5 class="mb-0">Response Time</h5>
+                    </div>
+                    <div class="card-body">
+                      <div class="chart-container">
+                        <canvas id="responseTimeChart"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="card card-medical">
+                <div class="card-header bg-white">
+                  <h5 class="mb-0">Common Feedback Themes</h5>
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table table-hover">
+                      <thead>
+                        <tr>
+                          <th>Theme</th>
+                          <th>Mentions</th>
+                          <th>Sentiment</th>
+                          <th>Trend</th>
+                          <th>Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>Wait Times</td>
+                          <td>42</td>
+                          <td>
+                            <span class="sentiment-indicator sentiment-negative"></span> Negative
+                          </td>
+                          <td>
+                            <i class="fas fa-arrow-up text-danger"></i> 15%
+                          </td>
+                          <td>
+                            <button class="btn btn-sm btn-outline-primary">View Details</button>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Staff Friendliness</td>
+                          <td>38</td>
+                          <td>
+                            <span class="sentiment-indicator sentiment-positive"></span> Positive
+                          </td>
+                          <td>
+                            <i class="fas fa-arrow-up text-success"></i> 8%
+                          </td>
+                          <td>
+                            <button class="btn btn-sm btn-outline-primary">View Details</button>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Treatment Explanations</td>
+                          <td>35</td>
+                          <td>
+                            <span class="sentiment-indicator sentiment-positive"></span> Positive
+                          </td>
+                          <td>
+                            <i class="fas fa-arrow-up text-success"></i> 12%
+                          </td>
+                          <td>
+                            <button class="btn btn-sm btn-outline-primary">View Details</button>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Side Effect Management</td>
+                          <td>29</td>
+                          <td>
+                            <span class="sentiment-indicator sentiment-neutral"></span> Neutral
+                          </td>
+                          <td>
+                            <i class="fas fa-equals text-warning"></i> 2%
+                          </td>
+                          <td>
+                            <button class="btn btn-sm btn-outline-primary">View Details</button>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Facility Cleanliness</td>
+                          <td>24</td>
+                          <td>
+                            <span class="sentiment-indicator sentiment-positive"></span> Positive
+                          </td>
+                          <td>
+                            <i class="fas fa-arrow-up text-success"></i> 5%
+                          </td>
+                          <td>
+                            <button class="btn btn-sm btn-outline-primary">View Details</button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Respond to Feedback Modal -->
+    <div class="modal fade" id="respondFeedbackModal" tabindex="-1" aria-labelledby="respondFeedbackModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="respondFeedbackModalLabel">Respond to Feedback</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-4">
+              <div class="d-flex align-items-center mb-2">
+                <div class="patient-avatar me-3">
+                  <i class="fas fa-user"></i>
+                </div>
+                <div>
+                  <h5 class="mb-0">Emma Thompson</h5>
+                  <div class="text-muted">Patient ID: PT-10045</div>
+                </div>
+              </div>
+              <div class="alert alert-secondary">
+                <p class="mb-0">I've been experiencing severe nausea after my last chemotherapy session and I'm having trouble keeping any food down. I tried calling the office twice yesterday but couldn't get through to anyone. I need help managing these side effects as soon as possible.</p>
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <label for="responseType" class="form-label">Response Type</label>
+              <select class="form-select" id="responseType">
+                <option value="email">Email</option>
+                <option value="sms">SMS</option>
+                <option value="portal">Patient Portal</option>
+                <option value="call">Phone Call (Log)</option>
+              </select>
+            </div>
+            
+            <div class="mb-3">
+              <label for="responseTemplate" class="form-label">Response Template</label>
+              <select class="form-select" id="responseTemplate">
+                <option value="">Select a template...</option>
+                <option value="side-effects">Side Effects Management</option>
+                <option value="appointment">Schedule Follow-up Appointment</option>
+                <option value="medication">Medication Adjustment</option>
+                <option value="general">General Response</option>
+              </select>
+            </div>
+            
+            <div class="mb-3">
+              <label for="responseContent" class="form-label">Response</label>
+              <textarea class="form-control" id="responseContent" rows="6">Dear Emma,
+
+Thank you for reaching out about the side effects you're experiencing after your chemotherapy session. I'm sorry to hear you're having trouble with nausea and that you had difficulty contacting our office.
+
+I've reviewed your treatment plan and would like to suggest the following to help manage your nausea:
+
+1. Take your prescribed anti-nausea medication (Ondansetron) 30 minutes before meals
+2. Try eating smaller, more frequent meals throughout the day
+3. Stay well-hydrated with clear fluids
+4. Avoid foods with strong smells or flavors
+
+I've also scheduled a follow-up appointment for you tomorrow at 10:00 AM to assess your condition in person. If you're unable to make this appointment, please let us know.
+
+If your symptoms worsen or if you're unable to keep any fluids down for more than 24 hours, please go to the emergency room immediately.
+
+Please don't hesitate to contact me directly at (555) 123-4567 ext. 789 if you have any questions or concerns.
+
+Best regards,
+Dr. Sarah Wilson</textarea>
+            </div>
+            
+            <div class="mb-3">
+              <label for="responseUrgency" class="form-label">Urgency</label>
+              <select class="form-select" id="responseUrgency">
+                <option value="high">High - Immediate Response</option>
+                <option value="medium" selected>Medium - Within 24 Hours</option>
+                <option value="low">Low - Within 48 Hours</option>
+              </select>
+            </div>
+            
+            <div class="mb-3">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="scheduleFollowUp" checked>
+                <label class="form-check-label" for="scheduleFollowUp">
+                  Schedule follow-up appointment
+                </label>
+              </div>
+            </div>
+            
+            <div id="followUpDetails" class="card p-3 mb-3">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label for="followUpDate" class="form-label">Date</label>
+                    <input type="date" class="form-control" id="followUpDate" value="2025-03-23">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label for="followUpTime" class="form-label">Time</label>
+                    <input type="time" class="form-control" id="followUpTime" value="10:00">
+                  </div>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="followUpType" class="form-label">Appointment Type</label>
+                <select class="form-select" id="followUpType">
+                  <option value="in-person" selected>In-Person Consultation</option>
+                  <option value="video">Video Consultation</option>
+                  <option value="phone">Phone Consultation</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="followUpNotes" class="form-label">Notes</label>
+                <textarea class="form-control" id="followUpNotes" rows="2">Follow-up for chemotherapy side effects - severe nausea</textarea>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary">Send Response</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Create Feedback Request Modal -->
+    <div class="modal fade" id="createFeedbackRequestModal" tabindex="-1" aria-labelledby="createFeedbackRequestModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="createFeedbackRequestModalLabel">Request Patient Feedback</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="feedbackRequestType" class="form-label">Request Type</label>
+              <select class="form-select" id="feedbackRequestType">
+                <option value="individual">Individual Patient</option>
+                <option value="group">Patient Group</option>
+                <option value="appointment">Post-Appointment</option>
+                <option value="treatment">Treatment Milestone</option>
+              </select>
+            </div>
+            
+            <div id="individualPatientSection">
+              <div class="mb-3">
+                <label for="patientSearch" class="form-label">Search Patient</label>
+                <input type="text" class="form-control" id="patientSearch" placeholder="Search by name or ID...">
+              </div>
+              
+              <div class="mb-3">
+                <label class="form-label">Selected Patient</label>
+                <div class="card p-3">
+                  <div class="d-flex align-items-center">
+                    <div class="patient-avatar me-3">
+                      <i class="fas fa-user"></i>
+                    </div>
+                    <div>
+                      <h6 class="mb-0">Emma Thompson</h6>
+                      <div class="text-muted">Patient ID: PT-10045</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <label for="feedbackTemplate" class="form-label">Feedback Template</label>
+              <select class="form-select" id="feedbackTemplate">
+                <option value="general">General Feedback</option>
+                <option value="appointment">Appointment Experience</option>
+                <option value="treatment">Treatment Experience</option>
+                <option value="communication">Communication Experience</option>
+                <option value="custom">Custom Template</option>
+              </select>
+            </div>
+            
+            <div class="mb-3">
+              <label for="feedbackMessage" class="form-label">Message</label>
+              <textarea class="form-control" id="feedbackMessage" rows="4">Dear Emma,
+
+We value your feedback and would appreciate if you could take a few minutes to share your experience with your recent treatment. Your insights help us improve our services and provide better care.
+
+Thank you,
+Dr. Sarah Wilson</textarea>
+            </div>
+            
+            <div class="mb-3">
+              <label for="deliveryMethod" class="form-label">Delivery Method</label>
+              <select class="form-select" id="deliveryMethod">
+                <option value="email">Email</option>
+                <option value="sms">SMS</option>
+                <option value="portal">Patient Portal</option>
+              </select>
+            </div>
+            
+            <div class="mb-3">
+              <label for="scheduledDate" class="form-label">Schedule Date</label>
+              <input type="date" class="form-control" id="scheduledDate">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary">Send Request</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="decorative-wave"></div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Initialize charts
+        const sentimentTrendCtx = document.getElementById('sentimentTrendChart').getContext('2d');
+        const sentimentTrendChart = new Chart(sentimentTrendCtx, {
+          type: 'line',
+          data: {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+            datasets: [
+              {
+                label: 'Positive',
+                data: [65, 59, 80, 81, 76, 85],
+                borderColor: '#28a745',
+                backgroundColor: 'rgba(40, 167, 69, 0.1)',
+                tension: 0.4,
+                fill: true
+              },
+              {
+                label: 'Neutral',
+                data: [28, 48, 40, 19, 36, 27],
+                borderColor: '#5c9baf',
+                backgroundColor: 'rgba(92, 155, 175, 0.1)',
+                tension: 0.4,
+                fill: true
+              },
+              {
+                label: 'Negative',
+                data: [18, 12, 15, 9, 12, 8],
+                borderColor: '#dc3545',
+                backgroundColor: 'rgba(220, 53, 69, 0.1)',
+                tension: 0.4,
+                fill: true
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: 'top',
+              },
+              title: {
+                display: true,
+                text: 'Feedback Sentiment Trend'
+              }
+            }
+          }
+        });
+        
+        const categoriesCtx = document.getElementById('categoriesChart').getContext('2d');
+        const categoriesChart = new Chart(categoriesCtx, {
+          type: 'doughnut',
+          data: {
+            labels: ['Treatment', 'Communication', 'Facilities', 'Staff', 'Wait Times', 'Other'],
+            datasets: [{
+              data: [35, 25, 15, 12, 8, 5],
+              backgroundColor: [
+                '#4ecdc4',
+                '#2a5c82',
+                '#5c9baf',
+                '#28a745',
+                '#ffc107',
+                '#6c757d'
+              ],
+              borderWidth: 1
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: 'right',
+              },
+              title: {
+                display: true,
+                text: 'Feedback Categories'
+              }
+            }
+          }
+        });
+        
+        const ratingDistributionCtx = document.getElementById('ratingDistributionChart').getContext('2d');
+        const ratingDistributionChart = new Chart(ratingDistributionCtx, {
+          type: 'bar',
+          data: {
+            labels: ['1 Star', '2 Stars', '3 Stars', '4 Stars', '5 Stars'],
+            datasets: [{
+              label: 'Number of Ratings',
+              data: [5, 8, 15, 42, 54],
+              backgroundColor: [
+                '#dc3545',
+                '#ffc107',
+                '#5c9baf',
+                '#4ecdc4',
+                '#28a745'
+              ],
+              borderWidth: 1
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                display: false
+              },
+              title: {
+                display: true,
+                text: 'Rating Distribution'
+              }
+            },
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+        
+        const responseTimeCtx = document.getElementById('responseTimeChart').getContext('2d');
+        const responseTimeChart = new Chart(responseTimeCtx, {
+          type: 'line',
+          data: {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+            datasets: [{
+              label: 'Average Response Time (hours)',
+              data: [12, 10, 8, 7, 6, 6],
+              borderColor: '#2a5c82',
+              backgroundColor: 'rgba(42, 92, 130, 0.1)',
+              tension: 0.4,
+              fill: true
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: 'top',
+              },
+              title: {
+                display: true,
+                text: 'Average Response Time'
+              }
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+                title: {
+                  display: true,
+                  text: 'Hours'
+                }
+              }
+            }
+          }
+        });
+        
+        // Toggle follow-up appointment details
+        const scheduleFollowUp = document.getElementById('scheduleFollowUp');
+        const followUpDetails = document.getElementById('followUpDetails');
+        
+        if (scheduleFollowUp && followUpDetails) {
+          scheduleFollowUp.addEventListener('change', function() {
+            followUpDetails.style.display = this.checked ? 'block' : 'none';
+          });
+        }
+      });
+    </script>
+  </body>
+</html>
 
