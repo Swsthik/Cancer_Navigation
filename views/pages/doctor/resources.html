@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MedConnect - Resources</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary-blue: #2a5c82;
+        --secondary-blue: #5c9baf;
+        --accent-teal: #4ecdc4;
+        --high-risk: #dc3545;
+        --medium-risk: #ffc107;
+        --low-risk: #28a745;
+      }
+
+      body {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        min-height: 100vh;
+      }
+
+      .medical-header {
+        background: var(--primary-blue);
+        padding: 1rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .dashboard-container {
+        background: rgba(255, 255, 255, 0.95);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+      }
+
+      .btn-medical {
+        background: var(--accent-teal);
+        color: white;
+        padding: 12px 30px;
+        transition: all 0.3s ease;
+      }
+
+      .btn-medical:hover {
+        background: var(--secondary-blue);
+        transform: translateY(-2px);
+      }
+
+      .btn-outline-medical {
+        color: var(--accent-teal);
+        border: 1px solid var(--accent-teal);
+        transition: all 0.3s ease;
+      }
+
+      .btn-outline-medical:hover {
+        background: var(--accent-teal);
+        color: white;
+      }
+
+      .card-medical {
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+      }
+
+      .card-medical:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .sidebar {
+        background: var(--primary-blue);
+        color: white;
+      }
+
+      .nav-link {
+        color: rgba(255, 255, 255, 0.8);
+        transition: all 0.3s ease;
+        padding: 0.8rem 1rem;
+        border-radius: 10px;
+        margin-bottom: 0.5rem;
+      }
+
+      .nav-link:hover, .nav-link.active {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+      }
+
+      .nav-link i {
+        margin-right: 10px;
+      }
+
+      .decorative-wave {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 150px;
+        background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg"><path fill="%232A5C82" fill-opacity="0.1" d="M0,160L48,170.7C96,181,192,203,288,186.7C384,171,480,117,576,101.3C672,85,768,107,864,138.7C960,171,1056,213,1152,208C1248,203,1344,149,1392,122.7L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
+      }
+
+      .resource-card {
+        height: 100%;
+        border-radius: 15px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+      }
+
+      .resource-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .resource-card .card-img-top {
+        height: 160px;
+        object-fit: cover;
+      }
+
+      .resource-card .card-body {
+        padding: 1.5rem;
+      }
+
+      .resource-badge {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 0.7rem;
+        padding: 0.3rem 0.6rem;
+        border-radius: 20px;
+      }
+
+      .resource-badge-new {
+        background-color: var(--accent-teal);
+        color: white;
+      }
+
+      .resource-badge-popular {
+        background-color: var(--primary-blue);
+        color: white;
+      }
+
+      .resource-badge-updated {
+        background-color: var(--medium-risk);
+        color: black;
+      }
+
+      .resource-category {
+        font-size: 0.8rem;
+        color: var(--secondary-blue);
+        margin-bottom: 0.5rem;
+      }
+
+      .resource-meta {
+        font-size: 0.8rem;
+        color: #6c757d;
+      }
+
+      .search-container {
+        position: relative;
+      }
+
+      .search-container i {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #6c757d;
+      }
+
+      .search-input {
+        padding-left: 40px;
+        border-radius: 20px;
+      }
+
+      .category-filter {
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 20px;
+      }
+
+      .category-item {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+      }
+
+      .category-item:hover, .category-item.active {
+        background-color: rgba(76, 205, 196, 0.1);
+      }
+
+      .category-item i {
+        font-size: 1.2rem;
+        margin-right: 10px;
+        color: var(--accent-teal);
+      }
+
+      .category-item.active i {
+        color: var(--primary-blue);
+      }
+
+      .category-count {
+        margin-left: auto;
+        background-color: #e9ecef;
+        color: #6c757d;
+        font-size: 0.8rem;
+        padding: 0.2rem 0.5rem;
+        border-radius: 10px;
+      }
+
+      .nav-pills .nav-link {
+        color: #6c757d;
+        border-radius: 0.5rem;
+      }
+
+      .nav-pills .nav-link.active {
+        background-color: var(--accent-teal);
+        color: white;
+      }
+
+      .resource-detail-header {
+        background-color: #f8f9fa;
+        border-radius: 15px;
+        padding: 30px;
+        margin-bottom: 30px;
+      }
+
+      .resource-detail-meta {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+      }
+
+      .resource-detail-meta-item {
+        display: flex;
+        align-items: center;
+        margin-right: 20px;
+        color: #6c757d;
+        font-size: 0.9rem;
+      }
+
+      .resource-detail-meta-item i {
+        margin-right: 5px;
+        color: var(--accent-teal);
+      }
+
+      .resource-detail-tags {
+        margin-top: 15px;
+      }
+
+      .resource-tag {
+        background-color: rgba(76, 205, 196, 0.1);
+        color: var(--accent-teal);
+        font-size: 0.8rem;
+        padding: 0.3rem 0.6rem;
+        border-radius: 20px;
+        margin-right: 5px;
+        margin-bottom: 5px;
+        display: inline-block;
+      }
+
+      .resource-action {
+        display: flex;
+        align-items: center;
+        padding: 10px 15px;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        margin-bottom: 10px;
+      }
+
+      .resource-action:hover {
+        background-color: rgba(76, 205, 196, 0.1);
+      }
+
+      .resource-action i {
+        font-size: 1.2rem;
+        margin-right: 10px;
+        color: var(--accent-teal);
+      }
+
+      .bookmark-btn {
+        color: #6c757d;
+        transition: all 0.3s ease;
+      }
+
+      .bookmark-btn:hover, .bookmark-btn.active {
+        color: var(--accent-teal);
+      }
+
+      .bookmark-btn.active i {
+        font-weight: 900;
+      }
+
+      .related-resource {
+        display: flex;
+        align-items: center;
+        padding: 15px;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+        margin-bottom: 10px;
+        background-color: #f8f9fa;
+      }
+
+      .related-resource:hover {
+        background-color: rgba(76, 205, 196, 0.1);
+      }
+
+      .related-resource-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        background-color: var(--accent-teal);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 15px;
+      }
+
+      .related-resource-content {
+        flex: 1;
+      }
+
+      .related-resource-title {
+        font-weight: 600;
+        margin-bottom: 5px;
+      }
+
+      .related-resource-meta {
+        font-size: 0.8rem;
+        color: #6c757d;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar medical-header">
+      <div class="container">
+        <a class="navbar-brand text-white" href="#">
+          <i class="fas fa-hospital me-2"></i>MedConnect
+        </a>
+        <div class="dropdown">
+          <button class="btn text-white dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fas fa-user-md me-2"></i>Dr. Sarah Wilson
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+            <li><a class="dropdown-item" href="profile.html"><i class="fas fa-id-card me-2"></i>Profile</a></li>
+            <li><a class="dropdown-item" href="settings.html"><i class="fas fa-cog me-2"></i>Settings</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="/logout"><i class="fas fa-sign-out-alt me-2"></i>Log Out</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="w-full">
+      <div class="dashboard-container row g-0 w-full">
+        <!-- Sidebar -->
+        <div class="col-md-3 sidebar p-4">
+          <div class="d-flex align-items-center mb-4">
+            <i class="fas fa-user-md fs-1 me-3"></i>
+            <div>
+              <h5 class="mb-0">Dr. Sarah Wilson</h5>
+              <small class="text-light">Oncologist</small>
+            </div>
+          </div>
+          <div class="nav flex-column">
+            <a href="dashboard.html" class="nav-link">
+              <i class="fas fa-home"></i>Dashboard
+            </a>
+            <a href="appointment-management.html" class="nav-link">
+              <i class="fas fa-calendar-check"></i>Appointments
+            </a>
+            <a href="patient-info.html" class="nav-link">
+              <i class="fas fa-user-injured"></i>Patient Info
+            </a>
+            <a href="progress-reports.html" class="nav-link">
+              <i class="fas fa-chart-line"></i>Progress Reports
+            </a>
+            <a href="feedback-management.html" class="nav-link">
+              <i class="fas fa-comment-medical"></i>Feedback
+            </a>
+            <a href="resources.html" class="nav-link active">
+              <i class="fas fa-book-medical"></i>Resources
+            </a>
+            <a href="profile.html" class="nav-link">
+              <i class="fas fa-user"></i>Profile
+            </a>
+          </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="col-md-9 p-4 bg-white">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Medical Resources</h2>
+            <div class="d-flex">
+              <div class="search-container me-2">
+                <i class="fas fa-search"></i>
+                <input type="text" class="form-control search-input" placeholder="Search resources...">
+              </div>
+              <button class="btn btn-medical" data-bs-toggle="modal" data-bs-target="#uploadResourceModal">
+                <i class="fas fa-upload me-2"></i>Upload Resource
+              </button>
+            </div>
+          </div>
+          
+          <!-- Resource Tabs -->
+          <ul class="nav nav-pills mb-4" id="resourceTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="all-tab" data-bs-toggle="tab" data-bs-target="#all" type="button" role="tab" aria-controls="all" aria-selected="true">
+                <i class="fas fa-th-large me-2"></i>All Resources
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="guidelines-tab" data-bs-toggle="tab" data-bs-target="#guidelines" type="button" role="tab" aria-controls="guidelines" aria-selected="false">
+                <i class="fas fa-clipboard-list me-2"></i>Guidelines
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="research-tab" data-bs-toggle="tab" data-bs-target="#research" type="button" role="tab" aria-controls="research" aria-selected="false">
+                <i class="fas fa-microscope me-2"></i>Research
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="patient-tab" data-bs-toggle="tab" data-bs-target="#patient" type="button" role="tab" aria-controls="patient" aria-selected="false">
+                <i class="fas fa-user-injured me-2"></i>Patient Education
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="tools-tab" data-bs-toggle="tab" data-bs-target="#tools" type="button" role="tab" aria-controls="tools" aria-selected="false">
+                <i class="fas fa-calculator me-2"></i>Tools
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="bookmarks-tab" data-bs-toggle="tab" data-bs-target="#bookmarks" type="button" role="tab" aria-controls="bookmarks" aria-selected="false">
+                <i class="fas fa-bookmark me-2"></i>Bookmarks
+              </button>
+            </li>
+          </ul>
+          
+          <div class="row mb-4">
+            <div class="col-md-3">
+              <!-- Category Filter -->
+              <div class="category-filter">
+                <h5 class="mb-3">Categories</h5>
+                <div class="category-item active">
+                  <i class="fas fa-th-large"></i>
+                  <span>All Resources</span>
+                  <span class="category-count">42</span>
+                </div>
+                <div class="category-item">
+                  <i class="fas fa-stethoscope"></i>
+                  <span>Oncology</span>
+                  <span class="category-count">18</span>
+                </div>
+                <div class="category-item">
+                  <i class="fas fa-procedures"></i>
+                  <span>Treatment Protocols</span>
+                  <span class="category-count">12</span>
+                </div>
+                <div class="category-item">
+                  <i class="fas fa-flask"></i>
+                  <span>Clinical Trials</span>
+                  <span class="category-count">8</span>
+                </div>
+                <div class="category-item">
+                  <i class="fas fa-pills"></i>
+                  <span>Medications</span>
+                  <span class="category-count">15</span>
+                </div>
+                <div class="category-item">
+                  <i class="fas fa-user-md"></i>
+                  <span>Professional Development</span>
+                  <span class="category-count">6</span>
+                </div>
+                <div class="category-item">
+                  <i class="fas fa-file-medical-alt"></i>
+                  <span>Forms & Templates</span>
+                  <span class="category-count">10</span>
+                </div>
+              </div>
+              
+              <!-- Filter Options -->
+              <div class="card card-medical mb-4">
+                <div class="card-header bg-white">
+                  <h5 class="mb-0">Filter Options</h5>
+                </div>
+                <div class="card-body">
+                  <div class="mb-3">
+                    <label class="form-label">Resource Type</label>
+                    <div class="form-check mb-2">
+                      <input class="form-check-input" type="checkbox" id="typePDF" checked>
+                      <label class="form-check-label" for="typePDF">
+                        PDF Documents
+                      </label>
+                    </div>
+                    <div class="form-check mb-2">
+                      <input class="form-check-input" type="checkbox" id="typeVideo" checked>
+                      <label class="form-check-label" for="typeVideo">
+                        Videos
+                      </label>
+                    </div>
+                    <div class="form-check mb-2">
+                      <input class="form-check-input" type="checkbox" id="typeWebinar" checked>
+                      <label class="form-check-label" for="typeWebinar">
+                        Webinars
+                      </label>
+                    </div>
+                    <div class="form-check mb-2">
+                      <input class="form-check-input" type="checkbox" id="typeInteractive" checked>
+                      <label class="form-check-label" for="typeInteractive">
+                        Interactive Tools
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="typeArticle" checked>
+                      <label class="form-check-label" for="typeArticle">
+                        Articles
+                      </label>
+                    </div>
+                  </div>
+                  
+                  <div class="mb-3">
+                    <label class="form-label">Date Added</label>
+                    <select class="form-select">
+                      <option value="all" selected>All Time</option>
+                      <option value="today">Today</option>
+                      <option value="week">This Week</option>
+                      <option value="month">This Month</option>
+                      <option value="year">This Year</option>
+                    </select>
+                  </div>
+                  
+                  <div class="mb-3">
+                    <label class="form-label">Sort By</label>
+                    <select class="form-select">
+                      <option value="newest" selected>Newest First</option>
+                      <option value="oldest">Oldest First</option>
+                      <option value="popular">Most Popular</option>
+                      <option value="az">A-Z</option>
+                      <option value="za">Z-A</option>
+                    </select>
+                  </div>
+                  
+                  <button class="btn btn-outline-medical w-100">
+                    <i class="fas fa-filter me-1"></i>Apply Filters
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-md-9">
+              <div class="tab-content" id="resourceTabsContent">
+                <!-- All Resources Tab -->
+                <div class="tab-pane fade show active" id="all" role="tabpanel" aria-labelledby="all-tab">
+                  <div class="row">
+                    <div class="col-md-4 mb-4">
+                      <div class="card resource-card">
+                        <span class="resource-badge resource-badge-new">New</span>
+                        <img src="/placeholder.svg?height=160&width=320" class="card-img-top" alt="NCCN Guidelines">
+                        <div class="card-body">
+                          <div class="resource-category">Guidelines</div>
+                          <h5 class="card-title">NCCN Guidelines 2025: Breast Cancer</h5>
+                          <p class="card-text">Updated clinical practice guidelines for breast cancer screening, diagnosis, and treatment.</p>
+                          <div class="resource-meta mb-3">
+                            <i class="far fa-calendar-alt me-1"></i> Mar 15, 2025
+                            <i class="far fa-eye ms-2 me-1"></i> 245 views
+                          </div>
+                          <div class="d-flex justify-content-between align-items-center">
+                            <a href="#" class="btn btn-sm btn-outline-medical">View Resource</a>
+                            <button class="btn btn-sm btn-link bookmark-btn">
+                              <i class="far fa-bookmark"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="col-md-4 mb-4">
+                      <div class="card resource-card">
+                        <span class="resource-badge resource-badge-popular">Popular</span>
+                        <img src="/placeholder.svg?height=160&width=320" class="card-img-top" alt="Immunotherapy Guide">
+                        <div class="card-body">
+                          <div class="resource-category">Treatment Protocols</div>
+                          <h5 class="card-title">Immunotherapy in Cancer Treatment</h5>
+                          <p class="card-text">Comprehensive guide to immunotherapy approaches, patient selection, and management of immune-related adverse events.</p>
+                          <div class="resource-meta mb-3">
+                            <i class="far fa-calendar-alt me-1"></i> Feb 28, 2025
+                            <i class="far fa-eye ms-2 me-1"></i> 512 views
+                          </div>
+                          <div class="d-flex justify-content-between align-items-center">
+                            <a href="#" class="btn btn-sm btn-outline-medical">View Resource</a>
+                            <button class="btn btn-sm btn-link bookmark-btn active">
+                              <i class="fas fa-bookmark"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="col-md-4 mb-4">
+                      <div class="card resource-card">
+                        <img src="/placeholder.svg?height=160&width=320" class="card-img-top" alt="Patient Education Materials">
+                        <div class="card-body">
+                          <div class="resource-category">Patient Education</div>
+                          <h5 class="card-title">Understanding Your Cancer Treatment</h5>
+                          <p class="card-text">Educational materials to help patients understand their diagnosis, treatment options, and side effect management.</p>
+                          <div class="resource-meta mb-3">
+                            <i class="far fa-calendar-alt me-1"></i> Feb 10, 2025
+                            <i class="far fa-eye ms-2 me-1"></i> 378 views
+                          </div>
+                          <div class="d-flex justify-content-between align-items-center">
+                            <a href="#" class="btn btn-sm btn-outline-medical">View Resource</a>
+                            <button class="btn btn-sm btn-link bookmark-btn">
+                              <i class="far fa-bookmark"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="col-md-4 mb-4">
+                      <div class="card resource-card">
+                        <span class="resource-badge resource-badge-updated">Updated</span>
+                        <img src="/placeholder.svg?height=160&width=320" class="card-img-top" alt="Clinical Trial Database">
+                        <div class="card-body">
+                          <div class="resource-category">Clinical Trials</div>
+                          <h5 class="card-title">Oncology Clinical Trials Database</h5>
+                          <p class="card-text">Searchable database of active clinical trials for cancer patients, with eligibility criteria and enrollment information.</p>
+                          <div class="resource-meta mb-3">
+                            <i class="far fa-calendar-alt me-1"></i> Mar 5, 2025
+                            <i class="far fa-eye ms-2 me-1"></i> 203 views
+                          </div>
+                          <div class="d-flex justify-content-between align-items-center">
+                            <a href="#" class="btn btn-sm btn-outline-medical">View Resource</a>
+                            <button class="btn btn-sm btn-link bookmark-btn">
+                              <i class="far fa-bookmark"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="col-md-4 mb-4">
+                      <div class="card resource-card">
+                        <img src="/placeholder.svg?height=160&width=320" class="card-img-top" alt="Chemotherapy Dosing Calculator">
+                        <div class="card-body">
+                          <div class="resource-category">Tools</div>
+                          <h5 class="card-title">Chemotherapy Dosing Calculator</h5>
+                          <p class="card-text">Interactive tool for calculating chemotherapy dosages based on patient parameters and treatment protocols.</p>
+                          <div class="resource-meta mb-3">
+                            <i class="far fa-calendar-alt me-1"></i> Jan 20, 2025
+                            <i class="far fa-eye ms-2 me-1"></i> 412 views
+                          </div>
+                          <div class="d-flex justify-content-between align-items-center">
+                            <a href="#" class="btn btn-sm btn-outline-medical">View Resource</a>
+                            <button class="btn btn-sm btn-link bookmark-btn active">
+                              <i class="fas fa-bookmark"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="col-md-4 mb-4">
+                      <div class="card resource-card">
+                        <img src="/placeholder.svg?height=160&width=320" class="card-img-top" alt="Oncology Webinar">
+                        <div class="card-body">
+                          <div class="resource-category">Professional Development</div>
+                          <h5 class="card-title">Advances in Precision Oncology</h5>
+                          <p class="card-text">Recorded webinar featuring expert discussions on the latest developments in precision medicine for cancer treatment.</p>
+                          <div class="resource-meta mb-3">
+                            <i class="far fa-calendar-alt me-1"></i> Feb 5, 2025
+                            <i class="far fa-eye ms-2 me-1"></i> 187 views
+                          </div>
+                          <div class="d-flex justify-content-between align-items-center">
+                            <a href="#" class="btn btn-sm btn-outline-medical">View Resource</a>
+                            <button class="btn btn-sm btn-link bookmark-btn">
+                              <i class="far fa-bookmark"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="d-flex justify-content-center mt-4">
+                    <nav aria-label="Resource pagination">
+                      <ul class="pagination">
+                        <li class="page-item disabled">
+                          <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                        </li>
+                        <li class="page-item active" aria-current="page">
+                          <a class="page-link" href="#">1</a>
+                        </li>
+                        <li class="page-item">
+                          <a class="page-link" href="#">2</a>
+                        </li>
+                        <li class="page-item">
+                          <a class="page-link" href="#">3</a>
+                        </li>
+                        <li class="page-item">
+                          <a class="page-link" href="#">Next</a>
+                        </li>
+                      </ul>
+                    </nav>
+                  </div>
+                </div>
+                
+                <!-- Guidelines Tab -->
+                <div class="tab-pane fade" id="guidelines" role="tabpanel" aria-labelledby="guidelines-tab">
+                  <div class="row">
+                    <div class="col-md-4 mb-4">
+                      <div class="card resource-card">
+                        <span class="resource-badge resource-badge-new">New</span>
+                        <img src="/placeholder.svg?height=160&width=320" class="card-img-top" alt="NCCN Guidelines">
+                        <div class="card-body">
+                          <div class="resource-category">Guidelines</div>
+                          <h5 class="card-title">NCCN Guidelines 2025: Breast Cancer</h5>
+                          <p class="card-text">Updated clinical practice guidelines for breast cancer screening, diagnosis, and treatment.</p>
+                          <div class="resource-meta mb-3">
+                            <i class="far fa-calendar-alt me-1"></i> Mar 15, 2025
+                            <i class="far fa-eye ms-2 me-1"></i> 245 views
+                          </div>
+                          <div class="d-flex justify-content-between align-items-center">
+                            <a href="#" class="btn btn-sm btn-outline-medical">View Resource</a>
+                            <button class="btn btn-sm btn-link bookmark-btn">
+                              <i class="far fa-bookmark"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="col-md-4 mb-4">
+                      <div class="card resource-card">
+                        <img src="/placeholder.svg?height=160&width=320" class="card-img-top" alt="ASCO Guidelines">
+                        <div class="card-body">
+                          <div class="resource-category">Guidelines</div>
+                          <h5 class="card-title">ASCO Guidelines: Lung Cancer</h5>
+                          <p class="card-text">Evidence-based guidelines for the management of patients with lung cancer, including screening, diagnosis, and treatment.</p>
+                          <div class="resource-meta mb-3">
+                            <i class="far fa-calendar-alt me-1"></i> Jan 30, 2025
+                            <i class="far fa-eye ms-2 me-1"></i> 198 views
+                          </div>
+                          <div class="d-flex justify-content-between align-items-center">
+                            <a href="#" class="btn btn-sm btn-outline-medical">View Resource</a>
+                            <button class="btn btn-sm btn-link bookmark-btn">
+                              <i class="far fa-bookmark"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="col-md-4 mb-4">
+                      <div class="card resource-card">
+                        <img src="/placeholder.svg?height=160&width=320" class="card-img-top" alt="ESMO Guidelines">
+                        <div class="card-body">
+                          <div class="resource-category">Guidelines</div>
+                          <h5 class="card-title">ESMO Guidelines: Colorectal Cancer</h5>
+                          <p class="card-text">European Society for Medical Oncology guidelines for diagnosis, treatment, and follow-up of colorectal cancer.</p>
+                          <div class="resource-meta mb-3">
+                            <i class="far fa-calendar-alt me-1"></i> Feb 12, 2025
+                            <i class="far fa-eye ms-2 me-1"></i> 176 views
+                          </div>
+                          <div class="d-flex justify-content-between align-items-center">
+                            <a href="#" class="btn btn-sm btn-outline-medical">View Resource</a>
+                            <button class="btn btn-sm btn-link bookmark-btn active">
+                              <i class="fas fa-bookmark"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <!-- More guidelines resources would go here -->
+                  </div>
+                </div>
+                
+                <!-- Research Tab -->
+                <div class="tab-pane fade" id="research" role="tabpanel" aria-labelledby="research-tab">
+                  <div class="row">
+                    <div class="col-md-4 mb-4">
+                      <div class="card resource-card">
+                        <span class="resource-badge resource-badge-updated">Updated</span>
+                        <img src="/placeholder.svg?height=160&width=320" class="card-img-top" alt="Clinical Trial Database">
+                        <div class="card-body">
+                          <div class="resource-category">Clinical Trials</div>
+                          <h5 class="card-title">Oncology Clinical Trials Database</h5>
+                          <p class="card-text">Searchable database of active clinical trials for cancer patients, with eligibility criteria and enrollment information.</p>
+                          <div class="resource-meta mb-3">
+                            <i class="far fa-calendar-alt me-1"></i> Mar 5, 2025
+                            <i class="far fa-eye ms-2 me-1"></i> 203 views
+                          </div>
+                          <div class="d-flex justify-content-between align-items-center">
+                            <a href="#" class="btn btn-sm btn-outline-medical">View Resource</a>
+                            <button class="btn btn-sm btn-link bookmark-btn">
+                              <i class="far fa-bookmark"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="col-md-4 mb-4">
+                      <div class="card resource-card">
+                        <img src="/placeholder.svg?height=160&width=320" class="card-img-top" alt="Research Paper">
+                        <div class="card-body">
+                          <div class="resource-category">Research Papers</div>
+                          <h5 class="card-title">Advances in CAR-T Cell Therapy</h5>
+                          <p class="card-text">Recent research on CAR-T cell therapy for solid tumors, including clinical outcomes and future directions.</p>
+                          <div class="resource-meta mb-3">
+                            <i class="far fa-calendar-alt me-1"></i> Feb 18, 2025
+                            <i class="far fa-eye ms-2 me-1"></i> 156 views
+                          </div>
+                          <div class="d-flex justify-content-between align-items-center">
+                            <a href="#" class="btn btn-sm btn-outline-medical">View Resource</a>
+                            <button class="btn btn-sm btn-link bookmark-btn">
+                              <i class="far fa-bookmark"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="col-md-4 mb-4">
+                      <div class="card resource-card">
+                        <img src="/placeholder.svg?height=160&width=320" class="card-img-top" alt="Research Paper">
+                        <div class="card-body">
+                          <div class="resource-category">Research Papers</div>
+                          <h5 class="card-title">Biomarkers in Cancer Immunotherapy</h5>
+                          <p class="card-text">Comprehensive review of biomarkers for predicting response to immunotherapy across different cancer types.</p>
+                          <div class="resource-meta mb-3">
+                            <i class="far fa-calendar-alt me-1"></i> Jan 25, 2025
+                            <i class="far fa-eye ms-2 me-1"></i> 189 views
+                          </div>
+                          <div class="d-flex justify-content-between align-items-center">
+                            <a href="#" class="btn btn-sm btn-outline-medical">View Resource</a>
+                            <button class="btn btn-sm btn-link bookmark-btn active">
+                              <i class="fas fa-bookmark"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <!-- More research resources would go here -->
+                  </div>
+                </div>
+                
+                <!-- Patient Education Tab -->
+                <div class="tab-pane fade" id="patient" role="tabpanel" aria-labelledby="patient-tab">
+                  <div class="row">
+                    <div class="col-md-4 mb-4">
+                      <div class="card resource-card">
+                        <img src="/placeholder.svg?height=160&width=320" class="card-img-top" alt="Patient Education Materials">
+                        <div class="card-body">
+                          <div class="resource-category">Patient Education</div>
+                          <h5 class="card-title">Understanding Your Cancer Treatment</h5>
+                          <p class="card-text">Educational materials to help patients understand their diagnosis, treatment options, and side effect management.</p>
+                          <div class="resource-meta mb-3">
+                            <i class="far fa-calendar-alt me-1"></i> Feb 10, 2025
+                            <i class="far fa-eye ms-2 me-1"></i> 378 views
+                          </div>
+                          <div class="d-flex justify-content-between align-items-center">
+                            <a href="#" class="btn btn-sm btn-outline-medical">View Resource</a>
+                            <button class="btn btn-sm btn-link bookmark-btn">
+                              <i class="far fa-bookmark"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="col-md-4 mb-4">
+                      <div class="card resource-card">
+                        <img src="/placeholder.svg?height=160&width=320" class="card-img-top" alt="Patient Education Video">
+                        <div class="card-body">
+                          <div class="resource-category">Patient Education</div>
+                          <h5 class="card-title">Managing Chemotherapy Side Effects</h5>
+                          <p class="card-text">Video series explaining common chemotherapy side effects and strategies for managing them at home.</p>
+                          <div class="resource-meta mb-3">
+                            <i class="far fa-calendar-alt me-1"></i> Jan 5, 2025
+                            <i class="far fa-eye ms-2 me-1"></i> 412 views
+                          </div>
+                          <div class="d-flex justify-content-between align-items-center">
+                            <a href="#" class="btn btn-sm btn-outline-medical">View Resource</a>
+                            <button class="btn btn-sm btn-link bookmark-btn active">
+                              <i class="fas fa-bookmark"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="col-md-4 mb-4">
+                      <div class="card resource-card">
+                        <img src="/placeholder.svg?height=160&width=320" class="card-img-top" alt="Nutrition Guide">
+                        <div class="card-body">
+                          <div class="resource-category">Patient Education</div>
+                          <h5 class="card-title">Nutrition During Cancer Treatment</h5>
+                          <p class="card-text">Comprehensive guide to maintaining proper nutrition during cancer treatment, with meal plans and recipes.</p>
+                          <div class="resource-meta mb-3">
+                            <i class="far fa-calendar-alt me-1"></i> Feb 22, 2025
+                            <i class="far fa-eye ms-2 me-1"></i> 245 views
+                          </div>
+                          <div class="d-flex justify-content-between align-items-center">
+                            <a href="#" class="btn btn-sm btn-outline-medical">View Resource</a>
+                            <button class="btn btn-sm btn-link bookmark-btn">
+                              <i class="far fa-bookmark"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <!-- More patient education resources would go here -->
+                  </div>
+                </div>
+                
+                <!-- Tools Tab -->
+                <div class="tab-pane fade" id="tools" role="tabpanel" aria-labelledby="tools-tab">
+                  <div class="row">
+                    <div class="col-md-4 mb-4">
+                      <div class="card resource-card">
+                        <img src="/placeholder.svg?height=160&width=320" class="card-img-top" alt="Chemotherapy Dosing Calculator">
+                        <div class="card-body">
+                          <div class="resource-category">Tools</div>
+                          <h5 class="card-title">Chemotherapy Dosing Calculator</h5>
+                          <p class="card-text">Interactive tool for calculating chemotherapy dosages based on patient parameters and treatment protocols.</p>
+                          <div class="resource-meta mb-3">
+                            <i class="far fa-calendar-alt me-1"></i> Jan 20, 2025
+                            <i class="far fa-eye ms-2 me-1"></i> 412 views
+                          </div>
+                          <div class="d-flex justify-content-between align-items-center">
+                            <a href="#" class="btn btn-sm btn-outline-medical">View Resource</a>
+                            <button class="btn btn-sm btn-link bookmark-btn active">
+                              <i class="fas fa-bookmark"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="col-md-4 mb-4">
+                      <div class="card resource-card">
+                        <img src="/placeholder.svg?height=160&width=320" class="card-img-top" alt="Cancer Staging Tool">
+                        <div class="card-body">
+                          <div class="resource-category">Tools</div>
+                          <h5 class="card-title">Cancer Staging Calculator</h5>
+                          <p class="card-text">Interactive tool for TNM staging of various cancer types, with automatic stage determination based on input parameters.</p>
+                          <div class="resource-meta mb-3">
+                            <i class="far fa-calendar-alt me-1"></i> Feb 8, 2025
+                            <i class="far fa-eye ms-2 me-1"></i> 287 views
+                          </div>
+                          <div class="d-flex justify-content-between align-items-center">
+                            <a href="#" class="btn btn-sm btn-outline-medical">View Resource</a>
+                            <button class="btn btn-sm btn-link bookmark-btn">
+                              <i class="far fa-bookmark"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="col-md-4 mb-4">
+                      <div class="card resource-card">
+                        <img src="/placeholder.svg?height=160&width=320" class="card-img-top" alt="Drug Interaction Checker">
+                        <div class="card-body">
+                          <div class="resource-category">Tools</div>
+                          <h5 class="card-title">Oncology Drug Interaction Checker</h5>
+                          <p class="card-text">Tool for checking potential interactions between cancer medications and other drugs, with severity ratings and management recommendations.</p>
+                          <div class="resource-meta mb-3">
+                            <i class="far fa-calendar-alt me-1"></i> Mar 1, 2025
+                            <i class="far fa-eye ms-2 me-1"></i> 198 views
+                          </div>
+                          <div class="d-flex justify-content-between align-items-center">
+                            <a href="#" class="btn btn-sm btn-outline-medical">View Resource</a>
+                            <button class="btn btn-sm btn-link bookmark-btn">
+                              <i class="far fa-bookmark"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <!-- More tools resources would go here -->
+                  </div>
+                </div>
+                
+                <!-- Bookmarks Tab -->
+                <div class="tab-pane fade" id="bookmarks" role="tabpanel" aria-labelledby="bookmarks-tab">
+                  <div class="alert alert-info mb-4">
+                    <i class="fas fa-info-circle me-2"></i>
+                    Your bookmarked resources are saved here for quick access. You currently have <strong>3 bookmarked</strong> resources.
+                  </div>
+                  
+                  <div class="row">
+                    <div class="col-md-4 mb-4">
+                      <div class="card resource-card">
+                        <span class="resource-badge resource-badge-popular">Popular</span>
+                        <img src="/placeholder.svg?height=160&width=320" class="card-img-top" alt="Immunotherapy Guide">
+                        <div class="card-body">
+                          <div class="resource-category">Treatment Protocols</div>
+                          <h5 class="card-title">Immunotherapy in Cancer Treatment</h5>
+                          <p class="card-text">Comprehensive guide to immunotherapy approaches, patient selection, and management of immune-related adverse events.</p>
+                          <div class="resource-meta mb-3">
+                            <i class="far fa-calendar-alt me-1"></i> Feb 28, 2025
+                            <i class="far fa-eye ms-2 me-1"></i> 512 views
+                          </div>
+                          <div class="d-flex justify-content-between align-items-center">
+                            <a href="#" class="btn btn-sm btn-outline-medical">View Resource</a>
+                            <button class="btn btn-sm btn-link bookmark-btn active">
+                              <i class="fas fa-bookmark"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="col-md-4 mb-4">
+                      <div class="card resource-card">
+                        <img src="/placeholder.svg?height=160&width=320" class="card-img-top" alt="Chemotherapy Dosing Calculator">
+                        <div class="card-body">
+                          <div class="resource-category">Tools</div>
+                          <h5 class="card-title">Chemotherapy Dosing Calculator</h5>
+                          <p class="card-text">Interactive tool for calculating chemotherapy dosages based on patient parameters and treatment protocols.</p>
+                          <div class="resource-meta mb-3">
+                            <i class="far fa-calendar-alt me-1"></i> Jan 20, 2025
+                            <i class="far fa-eye ms-2 me-1"></i> 412 views
+                          </div>
+                          <div class="d-flex justify-content-between align-items-center">
+                            <a href="#" class="btn btn-sm btn-outline-medical">View Resource</a>
+                            <button class="btn btn-sm btn-link bookmark-btn active">
+                              <i class="fas fa-bookmark"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="col-md-4 mb-4">
+                      <div class="card resource-card">
+                        <img src="/placeholder.svg?height=160&width=320" class="card-img-top" alt="ESMO Guidelines">
+                        <div class="card-body">
+                          <div class="resource-category">Guidelines</div>
+                          <h5 class="card-title">ESMO Guidelines: Colorectal Cancer</h5>
+                          <p class="card-text">European Society for Medical Oncology guidelines for diagnosis, treatment, and follow-up of colorectal cancer.</p>
+                          <div class="resource-meta mb-3">
+                            <i class="far fa-calendar-alt me-1"></i> Feb 12, 2025
+                            <i class="far fa-eye ms-2 me-1"></i> 176 views
+                          </div>
+                          <div class="d-flex justify-content-between align-items-center">
+                            <a href="#" class="btn btn-sm btn-outline-medical">View Resource</a>
+                            <button class="btn btn-sm btn-link bookmark-btn active">
+                              <i class="fas fa-bookmark"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Upload Resource Modal -->
+    <div class="modal fade" id="uploadResourceModal" tabindex="-1" aria-labelledby="uploadResourceModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="uploadResourceModalLabel">Upload Resource</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="resourceTitle" class="form-label">Resource Title</label>
+              <input type="text" class="form-control" id="resourceTitle" placeholder="Enter a descriptive title">
+            </div>
+            
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="resourceCategory" class="form-label">Category</label>
+                <select class="form-select" id="resourceCategory">
+                  <option value="" selected disabled>Select a category</option>
+                  <option value="guidelines">Guidelines</option>
+                  <option value="treatment">Treatment Protocols</option>
+                  <option value="clinical">Clinical Trials</option>
+                  <option value="medications">Medications</option>
+                  <option value="patient">Patient Education</option>
+                  <option value="professional">Professional Development</option>
+                  <option value="forms">Forms & Templates</option>
+                  <option value="tools">Tools</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label for="resourceType" class="form-label">Resource Type</label>
+                <select class="form-select" id="resourceType">
+                  <option value="" selected disabled>Select a type</option>
+                  <option value="pdf">PDF Document</option>
+                  <option value="video">Video</option>
+                  <option value="webinar">Webinar</option>
+                  <option value="interactive">Interactive Tool</option>
+                  <option value="article">Article</option>
+                  <option value="presentation">Presentation</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <label for="resourceDescription" class="form-label">Description</label>
+              <textarea class="form-control" id="resourceDescription" rows="3" placeholder="Provide a brief description of the resource"></textarea>
+            </div>
+            
+            <div class="mb-3">
+              <label for="resourceTags" class="form-label">Tags</label>
+              <input type="text" class="form-control" id="resourceTags" placeholder="Enter tags separated by commas (e.g., breast cancer, immunotherapy, guidelines)">
+            </div>
+            
+            <div class="mb-3">
+              <label for="resourceFile" class="form-label">Upload File</label>
+              <input class="form-control" type="file" id="resourceFile">
+              <div class="form-text">Accepted formats: PDF, DOCX, PPTX, MP4, JPG, PNG (Max size: 50MB)</div>
+            </div>
+            
+            <div class="mb-3">
+              <label for="resourceThumbnail" class="form-label">Thumbnail Image (Optional)</label>
+              <input class="form-control" type="file" id="resourceThumbnail">
+              <div class="form-text">Recommended size: 320x160px. Accepted formats: JPG, PNG</div>
+            </div>
+            
+            <div class="mb-3">
+              <label for="resourceURL" class="form-label">External URL (Optional)</label>
+              <input type="url" class="form-control" id="resourceURL" placeholder="https://example.com/resource">
+              <div class="form-text">If the resource is hosted externally, provide the URL</div>
+            </div>
+            
+            <div class="mb-3">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="resourceVisibility" checked>
+                <label class="form-check-label" for="resourceVisibility">
+                  Make this resource visible to all doctors
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-medical">Upload Resource</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="decorative-wave"></div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Toggle bookmark buttons
+        const bookmarkButtons = document.querySelectorAll('.bookmark-btn');
+        bookmarkButtons.forEach(button => {
+          button.addEventListener('click', function() {
+            const icon = this.querySelector('i');
+            if (icon.classList.contains('far')) {
+              icon.classList.remove('far');
+              icon.classList.add('fas');
+              this.classList.add('active');
+            } else {
+              icon.classList.remove('fas');
+              icon.classList.add('far');
+              this.classList.remove('active');
+            }
+          });
+        });
+        
+        // Category filter functionality
+        const categoryItems = document.querySelectorAll('.category-item');
+        categoryItems.forEach(item => {
+          item.addEventListener('click', function() {
+            categoryItems.forEach(i => i.classList.remove('active'));
+            this.classList.add('active');
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
+
