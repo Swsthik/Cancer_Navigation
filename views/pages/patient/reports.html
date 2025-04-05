@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MedConnect - Patient Reports</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <style>
+      :root {
+        --primary-blue: #2a5c82;
+        --secondary-blue: #5c9baf;
+        --accent-teal: #4ecdc4;
+        --light-gray: #f8f9fa;
+        --medium-gray: #e9ecef;
+        --white: #ffffff;
+        --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.1);
+        --shadow-md: 0 5px 15px rgba(0, 0, 0, 0.05);
+        --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.1);
+        --transition: all 0.3s ease;
+        --radius-sm: 10px;
+        --radius-md: 15px;
+        --radius-lg: 20px;
+      }
+
+      body {
+        background: linear-gradient(135deg, var(--light-gray) 0%, var(--medium-gray) 100%);
+        min-height: 100vh;
+      }
+
+      .medical-header {
+        background: var(--primary-blue);
+        padding: 1rem;
+        box-shadow: var(--shadow-sm);
+      }
+
+      .dashboard-container {
+        background: rgba(255, 255, 255, 0.95);
+        box-shadow: var(--shadow-lg);
+        transition: var(--transition);
+      }
+
+      .btn-medical {
+        background: var(--accent-teal);
+        color: var(--white);
+        padding: 12px 30px;
+        border: none;
+        transition: var(--transition);
+      }
+
+      .btn-medical:hover {
+        background: var(--secondary-blue);
+        transform: translateY(-2px);
+      }
+
+      .btn-outline-medical {
+        color: var(--accent-teal);
+        background: transparent;
+        border: 1px solid var(--accent-teal);
+        transition: var(--transition);
+      }
+
+      .btn-outline-medical:hover {
+        background: var(--accent-teal);
+        color: var(--white);
+      }
+
+      .sidebar {
+        background: var(--primary-blue);
+        color: var(--white);
+      }
+
+      .nav-link {
+        color: rgba(255, 255, 255, 0.8);
+        transition: var(--transition);
+        padding: 0.8rem 1rem;
+        border-radius: var(--radius-sm);
+        margin-bottom: 0.5rem;
+      }
+
+      .nav-link:hover, .nav-link.active {
+        background: rgba(255, 255, 255, 0.1);
+        color: var(--white);
+      }
+
+      .nav-link i {
+        margin-right: 10px;
+        width: 20px;
+        text-align: center;
+      }
+
+      .report-section {
+        background: var(--white);
+        border-radius: var(--radius-md);
+        box-shadow: var(--shadow-md);
+        padding: 25px;
+        margin-bottom: 25px;
+      }
+
+      .report-card {
+        border-left: 4px solid var(--accent-teal);
+        transition: var(--transition);
+      }
+
+      .report-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-md);
+      }
+
+      .report-icon {
+        font-size: 2rem;
+        color: var(--primary-blue);
+      }
+
+      .badge {
+        font-weight: normal;
+        padding: 8px 12px;
+      }
+
+      .toast-container {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 9999;
+      }
+
+      .decorative-wave {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 150px;
+        background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg"><path fill="%232A5C82" fill-opacity="0.1" d="M0,160L48,170.7C96,181,192,203,288,186.7C384,171,480,117,576,101.3C672,85,768,107,864,138.7C960,171,1056,213,1152,208C1248,203,1344,149,1392,122.7L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
+        pointer-events: none;
+      }
+
+      .modal-header {
+        background-color: var(--primary-blue);
+        color: var(--white);
+      }
+
+      .modal-content {
+        border-radius: var(--radius-md);
+        border: none;
+        box-shadow: var(--shadow-lg);
+      }
+
+      .toast {
+        background-color: var(--white);
+        border-radius: var(--radius-sm);
+        box-shadow: var(--shadow-md);
+      }
+
+      .toast-header {
+        background-color: var(--primary-blue);
+        color: var(--white);
+      }
+
+      .card {
+        transition: var(--transition);
+        border-radius: var(--radius-sm);
+        border: none;
+        box-shadow: var(--shadow-sm);
+      }
+
+      .card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-md);
+      }
+
+      .form-control, .form-select {
+        border-radius: var(--radius-sm);
+        border: 1px solid var(--medium-gray);
+        padding: 0.6rem 1rem;
+      }
+
+      .form-control:focus, .form-select:focus {
+        border-color: var(--accent-teal);
+        box-shadow: 0 0 0 0.25rem rgba(78, 205, 196, 0.25);
+      }
+
+      .dropzone {
+        border: 2px dashed var(--medium-gray);
+        border-radius: var(--radius-md);
+        padding: 30px;
+        text-align: center;
+        cursor: pointer;
+        transition: var(--transition);
+      }
+
+      .dropzone:hover {
+        border-color: var(--accent-teal);
+        background-color: rgba(78, 205, 196, 0.05);
+      }
+
+      .mrn-badge {
+        background-color: var(--primary-blue);
+        color: white;
+        font-size: 1rem;
+        padding: 10px 15px;
+        border-radius: var(--radius-sm);
+      }
+      
+      .report-category {
+        background-color: var(--light-gray);
+        border-radius: var(--radius-sm);
+        padding: 15px;
+        margin-bottom: 20px;
+      }
+      
+      .report-category h5 {
+        color: var(--primary-blue);
+        border-bottom: 2px solid var(--accent-teal);
+        padding-bottom: 10px;
+        margin-bottom: 15px;
+      }
+      
+      .filter-bar {
+        background-color: var(--light-gray);
+        border-radius: var(--radius-sm);
+        padding: 15px;
+        margin-bottom: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Toast Container for Notifications -->
+    <div class="toast-container"></div>
+
+    <nav class="navbar medical-header">
+      <div class="container">
+        <a class="navbar-brand text-white" href="#">
+          <i class="fas fa-hospital me-2"></i>MedConnect
+        </a>
+        <div class="dropdown">
+          <button class="btn text-white dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fas fa-user-circle me-2"></i>John Doe
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+            <li><a class="dropdown-item" href="profile.html"><i class="fas fa-id-card me-2"></i>Profile</a></li>
+            <li><a class="dropdown-item" href="settings.html"><i class="fas fa-cog me-2"></i>Settings</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#" id="logoutBtn"><i class="fas fa-sign-out-alt me-2"></i>Log Out</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="w-full">
+      <div class="row dashboard-container g-0">
+        <!-- Sidebar -->
+        <div class="col-md-3 sidebar p-4">
+          <div class="d-flex align-items-center mb-4">
+            <i class="fas fa-user-circle fs-1 me-3"></i>
+            <div>
+              <h5 class="mb-0">John Doe</h5>
+              <small class="text-light">Patient</small>
+            </div>
+          </div>
+          <div class="nav flex-column">
+            <a href="dashboard.html" class="nav-link">
+              <i class="fas fa-home"></i>Dashboard
+            </a>
+            <a href="appointments.html" class="nav-link">
+              <i class="fas fa-calendar-check"></i>Appointments
+            </a>
+            <a href="reports.html" class="nav-link active">
+              <i class="fas fa-file-medical"></i>Reports
+            </a>
+            <a href="care-plan.html" class="nav-link">
+              <i class="fas fa-clipboard-list"></i>Care Plan
+            </a>
+            <a href="resources.html" class="nav-link">
+              <i class="fas fa-book-medical"></i>Resources
+            </a>
+            <a href="profile.html" class="nav-link">
+              <i class="fas fa-user"></i>Profile
+            </a>
+            <a href="feedback.html" class="nav-link">
+              <i class="fas fa-comment-dots"></i>Feedback
+            </a>
+          </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="col-md-9 p-4 bg-white">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Medical Reports</h2>
+            <div>
+              <button class="btn btn-medical" data-bs-toggle="modal" data-bs-target="#uploadReportModal">
+                <i class="fas fa-upload me-2"></i>Upload Report
+              </button>
+            </div>
+          </div>
+          
+          <!-- Medical Record Number Section -->
+          <div class="report-section mb-4">
+            <div class="row align-items-center">
+              <div class="col-md-6">
+                <h4 class="mb-3">Medical Record Numbers (MRN)</h4>
+                <p class="text-muted">Your unique identifiers across different healthcare facilities</p>
+              </div>
+              <div class="col-md-6 text-md-end">
+                <button class="btn btn-outline-medical" data-bs-toggle="modal" data-bs-target="#addMRNModal">
+                  <i class="fas fa-plus me-2"></i>Add New MRN
+                </button>
+              </div>
+            </div>
+            
+            <div class="row mt-3">
+              <div class="col-md-4 mb-3">
+                <div class="card h-100">
+                  <div class="card-body">
+                    <h5 class="card-title">City General Hospital</h5>
+                    <div class="d-flex align-items-center mt-3">
+                      <span class="mrn-badge me-3">MRN: CGH-12345678</span>
+                      <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#editMRNModal" data-mrn-id="1">
+                        <i class="fas fa-edit"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4 mb-3">
+                <div class="card h-100">
+                  <div class="card-body">
+                    <h5 class="card-title">Westside Medical Center</h5>
+                    <div class="d-flex align-items-center mt-3">
+                      <span class="mrn-badge me-3">MRN: WMC-87654321</span>
+                      <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#editMRNModal" data-mrn-id="2">
+                        <i class="fas fa-edit"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4 mb-3">
+                <div class="card h-100">
+                  <div class="card-body">
+                    <h5 class="card-title">Hillside Clinic</h5>
+                    <div class="d-flex align-items-center mt-3">
+                      <span class="mrn-badge me-3">MRN: HC-98765432</span>
+                      <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#editMRNModal" data-mrn-id="3">
+                        <i class="fas fa-edit"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Reports Filter Bar -->
+          <div class="filter-bar">
+            <div class="row">
+              <div class="col-md-4 mb-2">
+                <label for="reportCategory" class="form-label">Category</label>
+                <select class="form-select" id="reportCategory">
+                  <option value="all" selected>All Categories</option>
+                  <option value="lab">Lab Results</option>
+                  <option value="imaging">Imaging</option>
+                  <option value="procedures">Procedures</option>
+                  <option value="discharge">Discharge Summaries</option>
+                </select>
+              </div>
+              <div class="col-md-4 mb-2">
+                <label for="reportDateRange" class="form-label">Date Range</label>
+                <select class="form-select" id="reportDateRange">
+                  <option value="all" selected>All Time</option>
+                  <option value="month">Last Month</option>
+                  <option value="quarter">Last 3 Months</option>
+                  <option value="year">Last Year</option>
+                </select>
+              </div>
+              <div class="col-md-4 mb-2">
+                <label for="reportSearch" class="form-label">Search</label>
+                <input type="text" class="form-control" id="reportSearch" placeholder="Search reports...">
+              </div>
+            </div>
+          </div>
+          
+          <!-- Reports List -->
+          <div class="report-section">
+            <h4 class="mb-4">Your Medical Reports</h4>
+            
+            <!-- Lab Results Category -->
+            <div class="report-category">
+              <h5><i class="fas fa-vial me-2"></i>Lab Results</h5>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <div class="card report-card">
+                    <div class="card-body">
+                      <div class="d-flex align-items-center">
+                        <div class="report-icon me-3">
+                          <i class="fas fa-file-medical-alt"></i>
+                        </div>
+                        <div>
+                          <h5 class="card-title mb-1">Blood Work Results</h5>
+                          <p class="card-text text-muted mb-1">City General Hospital</p>
+                          <p class="card-text"><small class="text-muted">Date: March 15, 2025</small></p>
+                        </div>
+                      </div>
+                      <div class="d-flex justify-content-end mt-2">
+                        <button class="btn btn-sm btn-outline-secondary me-2" data-bs-toggle="modal" data-bs-target="#viewReportModal" data-report-id="1">
+                          <i class="fas fa-eye me-1"></i>View
+                        </button>
+                        <a href="#" class="btn btn-sm btn-outline-medical">
+                          <i class="fas fa-download me-1"></i>Download
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <div class="card report-card">
+                    <div class="card-body">
+                      <div class="d-flex align-items-center">
+                        <div class="report-icon me-3">
+                          <i class="fas fa-file-medical-alt"></i>
+                        </div>
+                        <div>
+                          <h5 class="card-title mb-1">Cholesterol Panel</h5>
+                          <p class="card-text text-muted mb-1">Westside Medical Center</p>
+                          <p class="card-text"><small class="text-muted">Date: February 10, 2025</small></p>
+                        </div>
+                      </div>
+                      <div class="d-flex justify-content-end mt-2">
+                        <button class="btn btn-sm btn-outline-secondary me-2" data-bs-toggle="modal" data-bs-target="#viewReportModal" data-report-id="2">
+                          <i class="fas fa-eye me-1"></i>View
+                        </button>
+                        <a href="#" class="btn btn-sm btn-outline-medical">
+                          <i class="fas fa-download me-1"></i>Download
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Imaging Category -->
+            <div class="report-category">
+              <h5><i class="fas fa-x-ray me-2"></i>Imaging</h5>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <div class="card report-card">
+                    <div class="card-body">
+                      <div class="d-flex align-items-center">
+                        <div class="report-icon me-3">
+                          <i class="fas fa-lungs"></i>
+                        </div>
+                        <div>
+                          <h5 class="card-title mb-1">Chest X-Ray</h5>
+                          <p class="card-text text-muted mb-1">City General Hospital</p>
+                          <p class="card-text"><small class="text-muted">Date: March 10, 2025</small></p>
+                        </div>
+                      </div>
+                      <div class="d-flex justify-content-end mt-2">
+                        <button class="btn btn-sm btn-outline-secondary me-2" data-bs-toggle="modal" data-bs-target="#viewReportModal" data-report-id="3">
+                          <i class="fas fa-eye me-1"></i>View
+                        </button>
+                        <a href="#" class="btn btn-sm btn-outline-medical">
+                          <i class="fas fa-download me-1"></i>Download
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <div class="card report-card">
+                    <div class="card-body">
+                      <div class="d-flex align-items-center">
+                        <div class="report-icon me-3">
+                          <i class="fas fa-brain"></i>
+                        </div>
+                        <div>
+                          <h5 class="card-title mb-1">MRI - Knee</h5>
+                          <p class="card-text text-muted mb-1">Hillside Clinic</p>
+                          <p class="card-text"><small class="text-muted">Date: January 28, 2025</small></p>
+                        </div>
+                      </div>
+                      <div class="d-flex justify-content-end mt-2">
+                        <button class="btn btn-sm btn-outline-secondary me-2" data-bs-toggle="modal" data-bs-target="#viewReportModal" data-report-id="4">
+                          <i class="fas fa-eye me-1"></i>View
+                        </button>
+                        <a href="#" class="btn btn-sm btn-outline-medical">
+                          <i class="fas fa-download me-1"></i>Download
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Procedures Category -->
+            <div class="report-category">
+              <h5><i class="fas fa-procedures me-2"></i>Procedures</h5>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <div class="card report-card">
+                    <div class="card-body">
+                      <div class="d-flex align-items-center">
+                        <div class="report-icon me-3">
+                          <i class="fas fa-heartbeat"></i>
+                        </div>
+                        <div>
+                          <h5 class="card-title mb-1">Echocardiogram</h5>
+                          <p class="card-text text-muted mb-1">Westside Medical Center</p>
+                          <p class="card-text"><small class="text-muted">Date: February 5, 2025</small></p>
+                        </div>
+                      </div>
+                      <div class="d-flex justify-content-end mt-2">
+                        <button class="btn btn-sm btn-outline-secondary me-2" data-bs-toggle="modal" data-bs-target="#viewReportModal" data-report-id="5">
+                          <i class="fas fa-eye me-1"></i>View
+                        </button>
+                        <a href="#" class="btn btn-sm btn-outline-medical">
+                          <i class="fas fa-download me-1"></i>Download
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Discharge Summaries Category -->
+            <div class="report-category">
+              <h5><i class="fas fa-clipboard-check me-2"></i>Discharge Summaries</h5>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <div class="card report-card">
+                    <div class="card-body">
+                      <div class="d-flex align-items-center">
+                        <div class="report-icon me-3">
+                          <i class="fas fa-hospital-user"></i>
+                        </div>
+                        <div>
+                          <h5 class="card-title mb-1">Inpatient Stay</h5>
+                          <p class="card-text text-muted mb-1">City General Hospital</p>
+                          <p class="card-text"><small class="text-muted">Date: December 15, 2024</small></p>
+                        </div>
+                      </div>
+                      <div class="d-flex justify-content-end mt-2">
+                        <button class="btn btn-sm btn-outline-secondary me-2" data-bs-toggle="modal" data-bs-target="#viewReportModal" data-report-id="6">
+                          <i class="fas fa-eye me-1"></i>View
+                        </button>
+                        <a href="#" class="btn btn-sm btn-outline-medical">
+                          <i class="fas fa-download me-1"></i>Download
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modals -->
+    <!-- Upload Report Modal -->
+    <div class="modal fade" id="uploadReportModal" tabindex="-1">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Upload Medical Report</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form id="uploadReportForm">
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="reportTitle" class="form-label">Report Title</label>
+                  <input type="text" class="form-control" id="reportTitle" placeholder="Enter report title" required>
+                </div>
+                <div class="col-md-6">
+                  <label for="reportDate" class="form-label">Report Date</label>
+                  <input type="date" class="form-control" id="reportDate" required>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="reportType" class="form-label">Report Type</label>
+                  <select class="form-select" id="reportType" required>
+                    <option value="" selected disabled>Select type</option>
+                    <option value="lab">Lab Results</option>
+                    <option value="imaging">Imaging</option>
+                    <option value="procedures">Procedures</option>
+                    <option value="discharge">Discharge Summary</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label for="facilityName" class="form-label">Healthcare Facility</label>
+                  <select class="form-select" id="facilityName" required>
+                    <option value="" selected disabled>Select facility</option>
+                    <option value="City General Hospital">City General Hospital</option>
+                    <option value="Westside Medical Center">Westside Medical Center</option>
+                    <option value="Hillside Clinic">Hillside Clinic</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+              </div>
+              <div class="mb-3 d-none" id="otherFacilityField">
+                <label for="otherFacility" class="form-label">Specify Facility</label>
+                <input type="text" class="form-control" id="otherFacility" placeholder="Enter facility name">
+              </div>
+              <div class="mb-3">
+                <label for="reportDescription" class="form-label">Description (Optional)</label>
+                <textarea class="form-control" id="reportDescription" rows="3" placeholder="Enter additional details about this report"></textarea>
+              </div>
+              <div class="mb-4">
+                <label for="reportFile" class="form-label">Upload File</label>
+                <div class="dropzone" id="reportDropzone">
+                  <input type="file" id="reportFile" class="d-none" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx">
+                  <div class="text-center">
+                    <i class="fas fa-file-upload fs-1 mb-3" style="color: var(--accent-teal);"></i>
+                    <h5>Drag & Drop your file here</h5>
+                    <p class="text-muted">or</p>
+                    <button type="button" class="btn btn-outline-medical" id="browseFilesBtn">Browse Files</button>
+                    <p class="mt-2 text-muted small">Supported formats: PDF, JPG, PNG, DOC, DOCX (Max: 10MB)</p>
+                  </div>
+                </div>
+                <div id="uploadPreview" class="mt-3 d-none">
+                  <div class="alert alert-info d-flex align-items-center">
+                    <i class="fas fa-file-alt me-3 fs-4"></i>
+                    <div>
+                      <span id="uploadFileName">document.pdf</span>
+                      <button type="button" class="btn btn-sm text-danger ms-3" id="removeFileBtn">
+                        <i class="fas fa-times"></i> Remove
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-medical" id="saveReportBtn">Upload Report</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- View Report Modal -->
+    <div class="modal fade" id="viewReportModal" tabindex="-1">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Report Details</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-4 text-center">
+              <h4 id="viewReportTitle">Blood Work Results</h4>
+              <p class="text-muted" id="viewReportFacility">City General Hospital</p>
+              <span class="badge bg-info" id="viewReportType">Lab Results</span>
+              <p class="mt-2"><small id="viewReportDate">March 15, 2025</small></p>
+            </div>
+            
+            <div class="mb-4">
+              <h5 class="mb-3">Report Preview</h5>
+              <div class="report-preview p-3 bg-light border rounded">
+                <div class="text-center py-5">
+                  <i class="fas fa-file-pdf fs-1 mb-3" style="color: var(--primary-blue);"></i>
+                  <h5>Blood Work Results - March 15, 2025.pdf</h5>
+                  <a href="#" class="btn btn-outline-medical mt-3">
+                    <i class="fas fa-download me-2"></i>Download PDF
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-medical" id="shareReportBtn">Share Report</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add MRN Modal -->
+    <div class="modal fade" id="addMRNModal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Add New Medical Record Number</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form id="addMRNForm">
+              <div class="mb-3">
+                <label for="facilityName" class="form-label">Healthcare Facility</label>
+                <input type="text" class="form-control" id="facilityNameInput" placeholder="Enter facility name" required>
+              </div>
+              <div class="mb-3">
+                <label for="mrnNumber" class="form-label">MRN Number</label>
+                <input type="text" class="form-control" id="mrnNumber" placeholder="Enter MRN number" required>
+              </div>
+              <div class="mb-3">
+                <label for="notes" class="form-label">Notes (Optional)</label>
+                <textarea class="form-control" id="notes" rows="3" placeholder="Add any additional information about this MRN"></textarea>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-medical" id="saveMRNBtn">Save MRN</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit MRN Modal -->
+    <div class="modal fade" id="editMRNModal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Edit Medical Record Number</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form id="editMRNForm">
+              <div class="mb-3">
+                <label for="editFacilityName" class="form-label">Healthcare Facility</label>
+                <input type="text" class="form-control" id="editFacilityName" placeholder="Enter facility name" required>
+              </div>
+              <div class="mb-3">
+                <label for="editMRNNumber" class="form-label">MRN Number</label>
+                <input type="text" class="form-control" id="editMRNNumber" placeholder="Enter MRN number" required>
+              </div>
+              <div class="mb-3">
+                <label for="editNotes" class="form-label">Notes (Optional)</label>
+                <textarea class="form-control" id="editNotes" rows="3" placeholder="Add any additional information about this MRN"></textarea>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-danger me-auto" id="deleteMRNBtn">Delete</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-medical" id="updateMRNBtn">Update MRN</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Decorative Wave Background -->
+    <div class="decorative-wave"></div>
+
+    <!-- Bootstrap & jQuery Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+      $(document).ready(function() {
+        // Edit MRN Modal population
+        $('#editMRNModal').on('show.bs.modal', function (event) {
+          let button = $(event.relatedTarget);
+          let mrnId = button.data('mrn-id');
+          
+          // This would be replaced with actual AJAX calls in a real app
+          // For demo purposes, we're using a switch statement
+          switch(mrnId) {
+            case 1:
+              $('#editFacilityName').val('City General Hospital');
+              $('#editMRNNumber').val('CGH-12345678');
+              $('#editNotes').val('Primary care provider');
+              $(this).find('#deleteMRNBtn').data('mrn-id', mrnId);
+              break;
+            case 2:
+              $('#editFacilityName').val('Westside Medical Center');
+              $('#editMRNNumber').val('WMC-87654321');
+              $('#editNotes').val('Specialist care');
+              $(this).find('#deleteMRNBtn').data('mrn-id', mrnId);
+              break;
+            case 3:
+              $('#editFacilityName').val('Hillside Clinic');
+              $('#editMRNNumber').val('HC-98765432');
+              $('#editNotes').val('Physical therapy');
+              $(this).find('#deleteMRNBtn').data('mrn-id', mrnId);
+              break;
+          }
+        });
+
+        // Handle Update MRN button
+        $('#updateMRNBtn').on('click', function() {
+          if ($('#editMRNForm')[0].checkValidity()) {
+            showToast('MRN Updated', 'Your medical record number has been successfully updated.', 'success');
+            $('#editMRNModal').modal('hide');
+            // In a real app, you would update the UI to reflect the changes
+          } else {
+            $('#editMRNForm')[0].reportValidity();
+          }
+        });
+
+        // Handle Delete MRN button
+        $('#deleteMRNBtn').on('click', function() {
+          let mrnId = $(this).data('mrn-id');
+          
+          // Confirm deletion
+          if (confirm('Are you sure you want to delete this Medical Record Number?')) {
+            // In a real app, you would make an API call to delete the MRN
+            showToast('MRN Deleted', 'Your medical record number has been successfully deleted.', 'success');
+            $('#editMRNModal').modal('hide');
+            // In a real app, you would remove the MRN card from the UI
+          }
+        });
+
+        // Handle 'Other' facility selection in upload form
+        $('#facilityName').change(function() {
+          if ($(this).val() === 'other') {
+            $('#otherFacilityField').removeClass('d-none');
+          } else {
+            $('#otherFacilityField').addClass('d-none');
+          }
+        });
+        
+        // Handle dropzone file upload
+        $('#reportDropzone, #browseFilesBtn').on('click', function(e) {
+          if (!$(e.target).is('#removeFileBtn')) {
+            $('#reportFile').click();
+          }
+        });
+        
+        $('#reportFile').change(function() {
+          if (this.files.length > 0) {
+            $('#uploadPreview').removeClass('d-none');
+            $('#uploadFileName').text(this.files[0].name);
+          }
+        });
+        
+        $('#removeFileBtn').on('click', function() {
+          $('#reportFile').val('');
+          $('#uploadPreview').addClass('d-none');
+        });
+        
+        // View Report Modal Population
+        $('#viewReportModal').on('show.bs.modal', function (event) {
+          let button = $(event.relatedTarget);
+          let reportId = button.data('report-id');
+          
+          // This would be replaced with actual AJAX calls in a real app
+          // For demo purposes, we're using a switch statement
+          switch(reportId) {
+            case 1:
+              $('#viewReportTitle').text('Blood Work Results');
+              $('#viewReportFacility').text('City General Hospital');
+              $('#viewReportType').text('Lab Results');
+              $('#viewReportDate').text('March 15, 2025');
+              break;
+            case 2:
+              $('#viewReportTitle').text('Cholesterol Panel');
+              $('#viewReportFacility').text('Westside Medical Center');
+              $('#viewReportType').text('Lab Results');
+              $('#viewReportDate').text('February 10, 2025');
+              break;
+            case 3:
+              $('#viewReportTitle').text('Chest X-Ray');
+              $('#viewReportFacility').text('City General Hospital');
+              $('#viewReportType').text('Imaging');
+              $('#viewReportDate').text('March 10, 2025');
+              break;
+            case 4:
+              $('#viewReportTitle').text('MRI - Knee');
+              $('#viewReportFacility').text('Hillside Clinic');
+              $('#viewReportType').text('Imaging');
+              $('#viewReportDate').text('January 28, 2025');
+              break;
+            case 5:
+              $('#viewReportTitle').text('Echocardiogram');
+              $('#viewReportFacility').text('Westside Medical Center');
+              $('#viewReportType').text('Procedures');
+              $('#viewReportDate').text('February 5, 2025');
+              break;
+            case 6:
+              $('#viewReportTitle').text('Inpatient Stay');
+              $('#viewReportFacility').text('City General Hospital');
+              $('#viewReportType').text('Discharge Summary');
+              $('#viewReportDate').text('December 15, 2024');
+              break;
+          }
+        });
+        
+        // Handle upload report form submission
+        $('#saveReportBtn').on('click', function() {
+          // Validate the form
+          if ($('#uploadReportForm')[0].checkValidity()) {
+            // Show success toast (would be an AJAX call in a real app)
+            showToast('Report Uploaded', 'Your medical report has been successfully uploaded.', 'success');
+            $('#uploadReportModal').modal('hide');
+            
+            // Reset form
+            $('#uploadReportForm')[0].reset();
+            $('#uploadPreview').addClass('d-none');
+          } else {
+            // Trigger HTML5 validation
+            $('#uploadReportForm')[0].reportValidity();
+          }
+        });
+        
+        // Handle MRN form submission
+        $('#saveMRNBtn').on('click', function() {
+          if ($('#addMRNForm')[0].checkValidity()) {
+            showToast('MRN Added', 'Your medical record number has been successfully added.', 'success');
+            $('#addMRNModal').modal('hide');
+            $('#addMRNForm')[0].reset();
+          } else {
+            $('#addMRNForm')[0].reportValidity();
+          }
+        });
+        
+        // Show toast function
+        function showToast(title, message, type) {
+          let iconClass = type === 'success' ? 'fa-check-circle' : 'fa-info-circle';
+          let toastHtml = `
+            <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="5000">
+              <div class="toast-header bg-${type === 'success' ? 'success' : 'primary'} text-white">
+                <i class="fas ${iconClass} me-2"></i>
+                <strong class="me-auto">${title}</strong>
+                <small>Just now</small>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+              </div>
+              <div class="toast-body">
+                ${message}
+              </div>
+            </div>
+          `;
+          
+          $('.toast-container').append(toastHtml);
+          let toastEl = $('.toast').last();
+          let toast = new bootstrap.Toast(toastEl);
+          toast.show();
+          
+          // Remove toast after it's hidden
+          toastEl.on('hidden.bs.toast', function() {
+            $(this).remove();
+          });
+        }
+        
+        // Log out button
+        $('#logoutBtn').on('click', function(e) {
+          e.preventDefault();
+          showToast('Logging Out', 'You are being logged out of your account.', 'info');
+          setTimeout(function() {
+            window.location.href = 'login.html';
+          }, 2000);
+        });
+      });
+    </script>
+  </body>
+</html>
