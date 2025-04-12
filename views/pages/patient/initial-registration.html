@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MedConnect - Patient Registration</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary-blue: #2a5c82;
+        --secondary-blue: #5c9baf;
+        --accent-teal: #4ecdc4;
+      }
+
+      body {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        min-height: 100vh;
+      }
+
+      .medical-header {
+        background: var(--primary-blue);
+        padding: 1rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .registration-container {
+        background: rgba(255, 255, 255, 0.95);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        border-radius: 15px;
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+      }
+
+      .btn-medical {
+        background: var(--accent-teal);
+        color: white;
+        padding: 12px 30px;
+        transition: all 0.3s ease;
+      }
+
+      .btn-medical:hover {
+        background: var(--secondary-blue);
+        transform: translateY(-2px);
+      }
+
+      .btn-outline-medical {
+        color: var(--accent-teal);
+        border: 1px solid var(--accent-teal);
+        transition: all 0.3s ease;
+      }
+
+      .btn-outline-medical:hover {
+        background: var(--accent-teal);
+        color: white;
+      }
+
+      .card-medical {
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+      }
+
+      .card-medical:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .form-control, .form-select {
+        border-radius: 10px;
+        padding: 0.75rem 1rem;
+        border: 1px solid #e2e8f0;
+      }
+
+      .form-control:focus, .form-select:focus {
+        border-color: var(--accent-teal);
+        box-shadow: 0 0 0 0.25rem rgba(78, 205, 196, 0.25);
+      }
+
+      .mrn-option {
+        border: 2px solid #e2e8f0;
+        border-radius: 15px;
+        padding: 20px;
+        margin-bottom: 15px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .mrn-option:hover {
+        border-color: var(--accent-teal);
+        background-color: #f0f9f8;
+      }
+
+      .mrn-option.selected {
+        border-color: var(--accent-teal);
+        background-color: #f0f9f8;
+      }
+
+      .mrn-icon {
+        background-color: #e0f2f1;
+        color: var(--accent-teal);
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 15px;
+      }
+
+      .mrn-form {
+        display: none;
+      }
+
+      .loader-container {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(255, 255, 255, 0.8);
+        z-index: 9999;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      }
+
+      .spinner-border {
+        width: 3rem;
+        height: 3rem;
+        color: var(--accent-teal);
+      }
+
+      .decorative-wave {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 150px;
+        background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg"><path fill="%232A5C82" fill-opacity="0.1" d="M0,160L48,170.7C96,181,192,203,288,186.7C384,171,480,117,576,101.3C672,85,768,107,864,138.7C960,171,1056,213,1152,208C1248,203,1344,149,1392,122.7L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Loading Spinner -->
+    <div class="loader-container" id="loaderContainer">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <p class="mt-3 fw-bold">Fetching patient data from hospital records...</p>
+    </div>
+
+    <nav class="navbar medical-header">
+      <div class="container">
+        <a class="navbar-brand text-white" href="#">
+          <i class="fas fa-hospital me-2"></i>MedConnect
+        </a>
+        <div>
+          <a href="index.html" class="btn btn-outline-light">
+            <i class="fas fa-home me-2"></i>Home
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+      <div class="registration-container p-4 p-md-5">
+        <div class="text-center mb-4">
+          <h2 class="mb-2" style="color: var(--primary-blue);">Patient Registration</h2>
+          <p class="text-muted">Please provide your information to begin the registration process</p>
+        </div>
+
+        <div class="alert alert-info d-flex align-items-center" role="alert">
+          <i class="fas fa-info-circle fs-5 me-3"></i>
+          <div>Fill in your basic information and let us know if you have an existing Medical Record Number (MRN).</div>
+        </div>
+        
+        <form id="initialRegistrationForm">
+          <div class="row mb-3">
+            <div class="col-md-6 mb-3 mb-md-0">
+              <label for="firstName" class="form-label">First Name*</label>
+              <input type="text" class="form-control" id="firstName" required>
+            </div>
+            <div class="col-md-6">
+              <label for="lastName" class="form-label">Last Name*</label>
+              <input type="text" class="form-control" id="lastName" required>
+            </div>
+          </div>
+          
+          <div class="row mb-3">
+            <div class="col-md-6 mb-3 mb-md-0">
+              <label for="mobileNumber" class="form-label">Mobile Number*</label>
+              <input type="tel" class="form-control" id="mobileNumber" required>
+            </div>
+            <div class="col-md-6">
+              <label for="email" class="form-label">Email Address</label>
+              <input type="email" class="form-control" id="email">
+            </div>
+          </div>
+          
+          <div class="row mb-4">
+            <div class="col-md-4 mb-3 mb-md-0">
+              <label for="age" class="form-label">Age*</label>
+              <input type="number" class="form-control" id="age" name="age" min="0" max="120" required>
+            </div>
+            <div class="col-md-8">
+              <label for="gender" class="form-label">Gender*</label>
+              <select class="form-select" id="gender" name="gender" required>
+                <option value="" disabled selected>Select gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+                <option value="prefer-not-to-say">Prefer not to say</option>
+              </select>
+            </div>
+          </div>
+          
+          
+          
+          <hr class="my-4">
+          
+          <h5 class="mb-3" style="color: var(--primary-blue);">Do you have a Medical Record Number (MRN)?</h5>
+          <p class="text-muted mb-4">A Medical Record Number is a unique identifier assigned to you by a hospital or healthcare system.</p>
+          
+          <div class="mrn-option" onclick="selectMRNOption('yes')">
+            <div class="d-flex align-items-center">
+              <div class="mrn-icon">
+                <i class="fas fa-check-circle fa-lg"></i>
+              </div>
+              <div>
+                <h6 class="mb-1">Yes, I have an MRN</h6>
+                <p class="text-muted mb-0">I have been assigned a Medical Record Number by a hospital</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="mrn-option" onclick="selectMRNOption('no')">
+            <div class="d-flex align-items-center">
+              <div class="mrn-icon">
+                <i class="fas fa-times-circle fa-lg"></i>
+              </div>
+              <div>
+                <h6 class="mb-1">No, I don't have an MRN</h6>
+                <p class="text-muted mb-0">I need to register as a new patient</p>
+              </div>
+            </div>
+          </div>
+          
+          <div id="mrnForm" class="mrn-form mt-4">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="mrnNumber" class="form-label">Medical Record Number (MRN)*</label>
+                <input type="text" class="form-control" id="mrnNumber">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="hospitalName" class="form-label">Hospital/Healthcare System*</label>
+                <select class="form-select" id="hospitalName">
+                  <option value="" selected disabled>Select hospital</option>
+                  <option value="city-general">City General Hospital</option>
+                  <option value="memorial">Memorial Cancer Center</option>
+                  <option value="university">University Medical Center</option>
+                  <option value="regional">Regional Healthcare System</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          
+          <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+            <button type="button" class="btn btn-outline-secondary me-md-2" onclick="resetForm()">Reset</button>
+            <button type="submit" class="btn btn-medical">Continue</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="decorative-wave"></div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+      let hasMRN = null;
+      
+      function selectMRNOption(option) {
+        // Remove selected class from all options
+        document.querySelectorAll('.mrn-option').forEach(el => {
+          el.classList.remove('selected');
+        });
+        
+        // Add selected class to clicked option
+        if (option === 'yes') {
+          document.querySelectorAll('.mrn-option')[0].classList.add('selected');
+          document.getElementById('mrnForm').style.display = 'block';
+          hasMRN = true;
+        } else {
+          document.querySelectorAll('.mrn-option')[1].classList.add('selected');
+          document.getElementById('mrnForm').style.display = 'none';
+          hasMRN = false;
+        }
+      }
+      
+      function resetForm() {
+        document.getElementById('initialRegistrationForm').reset();
+        document.querySelectorAll('.mrn-option').forEach(el => {
+          el.classList.remove('selected');
+        });
+        document.getElementById('mrnForm').style.display = 'none';
+        hasMRN = null;
+      }
+      
+      document.getElementById('initialRegistrationForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Validate form
+        if (!hasMRN && hasMRN !== false) {
+          Swal.fire({
+            icon: 'warning',
+            title: 'Selection Required',
+            text: 'Please select whether you have an MRN or not.',
+            confirmButtonColor: '#4ecdc4'
+          });
+          return;
+        }
+        
+        if (hasMRN) {
+          const mrnNumber = document.getElementById('mrnNumber').value;
+          const hospitalName = document.getElementById('hospitalName').value;
+          
+          if (!mrnNumber || !hospitalName) {
+            Swal.fire({
+              icon: 'warning',
+              title: 'Missing Information',
+              text: 'Please enter your MRN and select your hospital.',
+              confirmButtonColor: '#4ecdc4'
+            });
+            return;
+          }
+          
+          // Show loading spinner
+          document.getElementById('loaderContainer').style.display = 'flex';
+          
+          // Simulate API call to fetch patient data
+          setTimeout(function() {
+            // Create FHIR Patient resource with MRN
+            const patientResource = createFHIRPatient(true);
+            
+            // Store patient data in localStorage
+            localStorage.setItem('patientResource', JSON.stringify(patientResource));
+            
+            // Hide loading spinner
+            document.getElementById('loaderContainer').style.display = 'none';
+            
+            // Redirect to patient profile page
+            window.location.href = 'patient-profile.html';
+          }, 2000);
+        } else {
+          // Create basic FHIR Patient resource
+          const patientResource = createFHIRPatient(false);
+          
+          // Store patient data in localStorage
+          localStorage.setItem('patientResource', JSON.stringify(patientResource));
+          
+          // Redirect to complete registration page
+          window.location.href = 'complete-registration.html';
+        }
+      });
+      
+      function createFHIRPatient(withMRN) {
+        const firstName = document.getElementById('firstName').value;
+        const lastName = document.getElementById('lastName').value;
+        const gender = document.getElementById('gender').value;
+        const age = document.getElementById('age').value;
+        const mobileNumber = document.getElementById('mobileNumber').value;
+        const email = document.getElementById('email').value;
+        
+        // Calculate approximate birth date from age
+        const today = new Date();
+        const birthYear = today.getFullYear() - age;
+        const birthDate = `${birthYear}-01-01`;
+        
+        const patientResource = {
+          resourceType: "Patient",
+          meta: {
+            profile: [
+              "http://hl7.org/fhir/us/mcode/StructureDefinition/mcode-cancer-patient"
+            ]
+          },
+          identifier: [
+            {
+              system: "http://hospital.sample/system/id",
+              value: withMRN ? document.getElementById('mrnNumber').value : generateMRN()
+            }
+          ],
+          name: [
+            {
+              family: lastName,
+              given: [firstName]
+            }
+          ],
+          gender: gender,
+          birthDate: birthDate,
+          deceasedBoolean: false,
+          telecom: [
+            {
+              system: "phone",
+              value: mobileNumber
+            }
+          ]
+        };
+        
+        if (email) {
+          patientResource.telecom.push({
+            system: "email",
+            value: email
+          });
+        }
+        
+        if (withMRN) {
+          // Add more detailed information for patients with MRN
+          patientResource.address = [
+            {
+              line: ["123 Main St"],
+              city: "Anytown",
+              state: "CA",
+              postalCode: "12345",
+              country: "USA"
+            }
+          ];
+          
+          patientResource._extension = [
+            {
+              url: "http://hl7.org/fhir/us/core/StructureDefinition/us-core-race",
+              valueCodeableConcept: {
+                coding: [
+                  {
+                    system: "urn:oid:2.16.840.1.113883.6.238",
+                    code: "2106-3",
+                    display: "White"
+                  }
+                ]
+              }
+            },
+            {
+              url: "http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity",
+              valueCodeableConcept: {
+                coding: [
+                  {
+                    system: "urn:oid:2.16.840.1.113883.6.238",
+                    code: "2186-5",
+                    display: "Not Hispanic or Latino"
+                  }
+                ]
+              }
+            },
+            {
+              url: "http://hl7.org/fhir/us/core/StructureDefinition/us-core-birthsex",
+              valueCode: gender === "male" ? "M" : gender === "female" ? "F" : "UNK"
+            }
+          ];
+          
+          // Add some medical conditions for demo
+          patientResource.conditions = [
+            {
+              code: {
+                coding: [
+                  {
+                    system: "http://snomed.info/sct",
+                    code: "254837009",
+                    display: "Malignant neoplasm of breast"
+                  }
+                ],
+                text: "Breast cancer"
+              },
+              onsetDateTime: "2023-06-15"
+            }
+          ];
+        }
+        
+        return patientResource;
+      }
+      
+      // Generate a random MRN for demo purposes
+      function generateMRN() {
+        return 'MRN' + Math.floor(Math.random() * 1000000).toString().padStart(7, '0');
+      }
+    </script>
+  </body>
+</html>
