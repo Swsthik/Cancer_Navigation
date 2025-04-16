@@ -5,165 +5,166 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Doctor Registration - MedConnect</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2a5c82',
+                        secondary: '#5c9baf',
+                        accent: '#4ecdc4',
+                        lightAccent: '#e8f8f7',
+                        darkAccent: '#3bbbad'
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        :root {
-            --primary-blue: #2a5c82;
-            --secondary-blue: #5c9baf;
-            --accent-teal: #4ecdc4;
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #4ecdc4;
+            box-shadow: 0 0 0 3px rgba(78, 205, 196, 0.2);
         }
-
-        body {
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            min-height: 100vh;
+        .step-transition {
+            transition: all 0.3s ease-in-out;
         }
-
-        .medical-header {
-            background: var(--primary-blue);
-            padding: 1rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        .form-control {
+            @apply mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-accent focus:ring focus:ring-accent focus:ring-opacity-50;
         }
-
-        .dashboard-container {
-            background: rgba(255, 255, 255, 0.95);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
+        .wave-bg {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%234ecdc4' fill-opacity='0.1' d='M0,64L48,80C96,96,192,128,288,128C384,128,480,96,576,90.7C672,85,768,107,864,122.7C960,139,1056,149,1152,138.7C1248,128,1344,96,1392,80L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E");
+            background-size: cover;
+            background-position: center bottom;
         }
-
-        .btn-medical {
-            background: var(--accent-teal);
-            color: white;
-            padding: 12px 30px;
-            transition: all 0.3s ease;
-        }
-
-        .btn-medical:hover {
-            background: var(--secondary-blue);
-            transform: translateY(-2px);
-        }
-
-        .decorative-wave {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 150px;
-            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg"><path fill="%232A5C82" fill-opacity="0.1" d="M0,160L48,170.7C96,181,192,203,288,186.7C384,171,480,117,576,101.3C672,85,768,107,864,138.7C960,171,1056,213,1152,208C1248,203,1344,149,1392,122.7L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
-        }
-
-        .step-indicator.active {
-            background-color: var(--accent-teal);
-            color: white;
-        }
-
-        .step-line.active {
-            background-color: var(--accent-teal);
+        .error-message {
+            @apply text-red-500 text-sm mt-1;
         }
     </style>
 </head>
-<body>
-    <nav class="medical-header">
-        <div class="container mx-auto px-4">
-            <a class="text-white text-xl font-semibold flex items-center" href="#">
-                <i class="fas fa-hospital mr-2"></i>MedConnect
-            </a>
+<body class="bg-gray-50 min-h-screen wave-bg">
+    <nav class="bg-primary shadow-md">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex justify-between items-center">
+                <a class="text-white text-xl font-semibold flex items-center" href="#">
+                    <i class="fas fa-hospital text-accent mr-2"></i>MedConnect
+                </a>
+                <div class="hidden md:flex items-center space-x-4">
+                    <a href="#" class="text-white hover:text-accent transition-colors text-sm">About</a>
+                    <a href="#" class="text-white hover:text-accent transition-colors text-sm">Contact</a>
+                    <a href="#" class="bg-accent hover:bg-darkAccent text-white rounded-full px-4 py-2 text-sm font-medium transition-colors">Login</a>
+                </div>
+                <button class="md:hidden text-white">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
         </div>
     </nav>
 
-    <div class="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+    <div class="container mx-auto px-4 py-12">
         <div class="max-w-4xl mx-auto">
-            <div class="dashboard-container rounded-lg overflow-hidden">
-                <div class="px-4 py-5 sm:p-6">
+            <div class="bg-white rounded-xl shadow-xl overflow-hidden">
+                <div class="p-6 md:p-8">
                     <div class="text-center mb-8">
-                        <h2 class="text-3xl font-bold text-gray-900">Doctor Registration</h2>
+                        <h2 class="text-3xl font-bold text-primary">Doctor Registration</h2>
                         <p class="mt-2 text-sm text-gray-600">
                             Join MedConnect's network of healthcare professionals
                         </p>
                     </div>
-
+                    
                     <!-- Progress Steps -->
-                    <div class="mb-8">
+                    <div class="mb-10 px-4">
                         <div class="flex justify-between items-center">
-                            <div class="flex items-center">
-                                <div class="w-10 h-10 bg-accent-teal text-white rounded-full flex items-center justify-center step-indicator active">
+                            <div class="flex flex-col items-center">
+                                <div class="w-10 h-10 bg-accent text-white rounded-full flex items-center justify-center">
                                     <i class="fas fa-user"></i>
                                 </div>
-                                <div class="h-1 w-full bg-gray-200 step-line"></div>
+                                <span class="text-xs font-medium mt-2">Personal</span>
                             </div>
-                            <div class="flex items-center">
-                                <div class="w-10 h-10 bg-gray-200 text-gray-600 rounded-full flex items-center justify-center step-indicator">
+                            <div class="h-1 w-full bg-gray-200 flex-1 mx-2"></div>
+                            <div class="flex flex-col items-center">
+                                <div class="w-10 h-10 bg-gray-200 text-gray-600 rounded-full flex items-center justify-center">
                                     <i class="fas fa-address-card"></i>
                                 </div>
-                                <div class="h-1 w-full bg-gray-200 step-line"></div>
+                                <span class="text-xs font-medium mt-2">Contact</span>
                             </div>
-                            <div class="flex items-center">
-                                <div class="w-10 h-10 bg-gray-200 text-gray-600 rounded-full flex items-center justify-center step-indicator">
+                            <div class="h-1 w-full bg-gray-200 flex-1 mx-2"></div>
+                            <div class="flex flex-col items-center">
+                                <div class="w-10 h-10 bg-gray-200 text-gray-600 rounded-full flex items-center justify-center">
                                     <i class="fas fa-certificate"></i>
                                 </div>
-                                <div class="h-1 w-full bg-gray-200 step-line"></div>
+                                <span class="text-xs font-medium mt-2">Credentials</span>
                             </div>
-                            <div class="flex items-center">
-                                <div class="w-10 h-10 bg-gray-200 text-gray-600 rounded-full flex items-center justify-center step-indicator">
+                            <div class="h-1 w-full bg-gray-200 flex-1 mx-2"></div>
+                            <div class="flex flex-col items-center">
+                                <div class="w-10 h-10 bg-gray-200 text-gray-600 rounded-full flex items-center justify-center">
                                     <i class="fas fa-check"></i>
                                 </div>
+                                <span class="text-xs font-medium mt-2">Complete</span>
                             </div>
                         </div>
-                        <div class="flex justify-between mt-2">
-                            <span class="text-sm font-medium">Personal Info</span>
-                            <span class="text-sm font-medium">Contact</span>
-                            <span class="text-sm font-medium">Credentials</span>
-                            <span class="text-sm font-medium">Agreements</span>
-                        </div>
                     </div>
-
+                    
                     <!-- Registration Form -->
                     <form id="registrationForm" class="space-y-6">
                         <!-- Step 1: Personal Information -->
                         <div class="step" id="step1">
                             <div class="text-center mb-8">
                                 <div class="relative w-32 h-32 mx-auto mb-4">
-                                    <div id="profilePreview" class="w-full h-full rounded-full bg-gray-100 flex items-center justify-center border-4 border-accent-teal">
+                                    <div id="profilePreview" class="w-full h-full rounded-full bg-gray-100 flex items-center justify-center border-4 border-accent shadow-md overflow-hidden">
                                         <i class="fas fa-user-md text-5xl text-gray-400"></i>
                                     </div>
-                                    <label class="absolute bottom-0 right-0 bg-accent-teal rounded-full p-2 cursor-pointer hover:bg-secondary-blue transition-colors">
+                                    <label class="absolute bottom-0 right-0 bg-accent rounded-full p-2 cursor-pointer hover:bg-darkAccent transition-colors shadow-md">
                                         <i class="fas fa-camera text-white"></i>
                                         <input type="file" class="hidden" id="profilePic" accept="image/*">
                                     </label>
                                 </div>
+                                <p class="text-xs text-gray-500">Upload your professional photo</p>
                             </div>
-
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700">First Name</label>
-                                    <input type="text" name="firstName" required
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-accent-teal focus:ring-accent-teal">
+                            
+                            <div class="bg-lightAccent rounded-lg p-6 mb-6">
+                                <h3 class="font-medium text-primary mb-4">Personal Information</h3>
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">First Name *</label>
+                                        <input type="text" name="firstName" required class="form-control">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Middle Name</label>
+                                        <input type="text" name="middleName" class="form-control">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Last Name *</label>
+                                        <input type="text" name="lastName" required class="form-control">
+                                    </div>
                                 </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700">Middle Name</label>
-                                    <input type="text" name="middleName"
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-accent-teal focus:ring-accent-teal">
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Date of Birth *</label>
+                                        <input type="date" name="dob" required class="form-control">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Gender</label>
+                                        <select name="gender" class="form-control">
+                                            <option value="">Select</option>
+                                            <option value="male">Male</option>
+                                            <option value="female">Female</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                    </div>
                                 </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700">Last Name</label>
-                                    <input type="text" name="lastName" required
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-accent-teal focus:ring-accent-teal">
-                                </div>
-                            </div>
-
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700">Date of Birth</label>
-                                    <input type="date" name="dob"
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-accent-teal focus:ring-accent-teal">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700">SSN</label>
+                                
+                                <div class="mt-6">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">SSN *</label>
                                     <div class="relative">
-                                        <input type="password" name="ssn" required pattern="\d{3}-?\d{2}-?\d{4}"
-                                            placeholder="XXX-XX-XXXX"
-                                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-accent-teal focus:ring-accent-teal">
+                                        <input type="password" name="ssn" required id="ssnInput" class="form-control pr-10">
                                         <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
-                                            <i class="fas fa-lock text-gray-400"></i>
+                                            <button type="button" id="toggleSSN" class="text-gray-400 hover:text-gray-600">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -172,126 +173,86 @@
 
                         <!-- Step 2: Contact Information -->
                         <div class="step hidden" id="step2">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700">Email</label>
-                                    <div class="relative">
-                                        <input type="email" name="email" required
-                                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-accent-teal focus:ring-accent-teal">
-                                        <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
-                                            <i class="fas fa-envelope text-gray-400"></i>
-                                        </div>
+                            <div class="bg-lightAccent rounded-lg p-6 mb-6">
+                                <h3 class="font-medium text-primary mb-4">Contact Information</h3>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Email *</label>
+                                        <input type="email" name="email" required class="form-control">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Phone *</label>
+                                        <input type="tel" name="phone" required class="form-control" placeholder="(555) 555-5555">
                                     </div>
                                 </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700">Phone Number</label>
-                                    <div class="relative">
-                                        <input type="tel" name="phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-                                            placeholder="XXX-XXX-XXXX"
-                                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-accent-teal focus:ring-accent-teal">
-                                        <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
-                                            <i class="fas fa-phone text-gray-400"></i>
+                                
+                                <div class="mt-6">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Address *</label>
+                                    <div class="space-y-3">
+                                        <input type="text" name="street" placeholder="Street Address" required class="form-control">
+                                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                                            <input type="text" name="city" placeholder="City" required class="form-control">
+                                            <select name="state" required class="form-control">
+                                                <option value="">State</option>
+                                                <!-- Add all states -->
+                                            </select>
+                                            <input type="text" name="zip" placeholder="ZIP Code" required class="form-control">
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="mt-6">
-                                <label class="block text-sm font-medium text-gray-700">Address</label>
-                                <div class="relative">
-                                    <textarea name="address" rows="3" required
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-accent-teal focus:ring-accent-teal"></textarea>
-                                    <div class="absolute top-3 right-3">
-                                        <i class="fas fa-map-marker-alt text-gray-400"></i>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Step 3: Professional Credentials -->
+                        <!-- Step 3: Professional Information -->
                         <div class="step hidden" id="step3">
-                            <div class="mb-6">
-                                <label class="block text-sm font-medium text-gray-700">NPI Number</label>
-                                <div class="mt-1 relative rounded-md shadow-sm">
-                                    <input type="text" name="npi" required pattern="\d{10}"
-                                        placeholder="Enter your 10-digit NPI number"
-                                        class="block w-full rounded-md border-gray-300 focus:border-accent-teal focus:ring-accent-teal">
-                                    <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
-                                        <i class="fas fa-id-card text-accent-teal"></i>
+                            <div class="bg-lightAccent rounded-lg p-6 mb-6">
+                                <h3 class="font-medium text-primary mb-4">Professional Information</h3>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Medical License Number *</label>
+                                        <input type="text" name="license" required class="form-control">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">NPI Number *</label>
+                                        <input type="text" name="npi" required class="form-control">
                                     </div>
                                 </div>
-                                <p class="mt-2 text-sm text-gray-500 flex items-center">
-                                    <i class="fas fa-info-circle mr-2"></i>
-                                    Your NPI number will be verified through the NPI Registry
-                                </p>
-                            </div>
-
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700">State of License</label>
-                                    <input type="text" name="stateLicense" required
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-accent-teal focus:ring-accent-teal">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700">License Number</label>
-                                    <input type="text" name="licenseNumber" required
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-accent-teal focus:ring-accent-teal">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700">License Expiry</label>
-                                    <input type="date" name="licenseExpiry"
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-accent-teal focus:ring-accent-teal">
+                                
+                                <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Specialization *</label>
+                                        <select name="specialty" required class="form-control">
+                                            <option value="">Select Specialty</option>
+                                            <option value="cardiology">Cardiology</option>
+                                            <option value="oncology">Oncology</option>
+                                            <!-- Add more specialties -->
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Years of Experience *</label>
+                                        <input type="number" name="experience" required class="form-control">
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Step 4: Agreements -->
                         <div class="step hidden" id="step4">
-                            <div class="rounded-md bg-blue-50 p-4 mb-6">
-                                <div class="flex">
-                                    <div class="flex-shrink-0">
-                                        <i class="fas fa-info-circle text-blue-400"></i>
+                            <div class="bg-lightAccent rounded-lg p-6 mb-6">
+                                <h3 class="font-medium text-primary mb-4">Terms & Agreements</h3>
+                                <div class="space-y-4">
+                                    <div class="flex items-start">
+                                        <input type="checkbox" name="terms" required class="mt-1 h-4 w-4 text-accent">
+                                        <label class="ml-3 text-sm text-gray-700">
+                                            I agree to the <a href="#" class="text-accent hover:underline">Terms of Service</a> 
+                                            and <a href="#" class="text-accent hover:underline">Privacy Policy</a>
+                                        </label>
                                     </div>
-                                    <div class="ml-3">
-                                        <h3 class="text-sm font-medium text-blue-800">Important Agreements</h3>
-                                        <div class="mt-2 text-sm text-blue-700">
-                                            <p>Please review and accept the following agreements to complete your registration.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="space-y-4">
-                                <div class="flex items-start p-4 bg-gray-50 rounded-lg">
-                                    <div class="flex items-center h-5">
-                                        <input type="checkbox" name="termsAccepted" required
-                                            class="h-4 w-4 text-accent-teal focus:ring-accent-teal border-gray-300 rounded">
-                                    </div>
-                                    <div class="ml-3 text-sm">
-                                        <label class="font-medium text-gray-700">Terms and Conditions</label>
-                                        <p class="text-gray-500">I agree to the terms and conditions of MedConnect.</p>
-                                    </div>
-                                </div>
-
-                                <div class="flex items-start p-4 bg-gray-50 rounded-lg">
-                                    <div class="flex items-center h-5">
-                                        <input type="checkbox" name="hipaaAccepted" required
-                                            class="h-4 w-4 text-accent-teal focus:ring-accent-teal border-gray-300 rounded">
-                                    </div>
-                                    <div class="ml-3 text-sm">
-                                        <label class="font-medium text-gray-700">HIPAA Compliance</label>
-                                        <p class="text-gray-500">I acknowledge and agree to comply with HIPAA regulations.</p>
-                                    </div>
-                                </div>
-
-                                <div class="flex items-start p-4 bg-gray-50 rounded-lg">
-                                    <div class="flex items-center h-5">
-                                        <input type="checkbox" name="privacyAccepted" required
-                                            class="h-4 w-4 text-accent-teal focus:ring-accent-teal border-gray-300 rounded">
-                                    </div>
-                                    <div class="ml-3 text-sm">
-                                        <label class="font-medium text-gray-700">Privacy Policy</label>
-                                        <p class="text-gray-500">I agree to the privacy policy of MedConnect.</p>
+                                    <div class="flex items-start">
+                                        <input type="checkbox" name="hipaa" required class="mt-1 h-4 w-4 text-accent">
+                                        <label class="ml-3 text-sm text-gray-700">
+                                            I agree to comply with HIPAA regulations
+                                        </label>
                                     </div>
                                 </div>
                             </div>
@@ -299,17 +260,14 @@
 
                         <!-- Navigation Buttons -->
                         <div class="mt-8 flex justify-between">
-                            <button type="button" id="prevBtn"
-                                class="hidden btn-medical bg-gray-500 hover:bg-gray-600">
-                                <i class="fas fa-arrow-left mr-2"></i>Previous
+                            <button type="button" id="prevBtn" class="hidden px-6 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">
+                                <i class="fas fa-arrow-left mr-2"></i>Back
                             </button>
-                            <button type="button" id="nextBtn"
-                                class="ml-auto btn-medical">
+                            <button type="button" id="nextBtn" class="ml-auto px-6 py-2 bg-accent text-white rounded hover:bg-darkAccent">
                                 Next<i class="fas fa-arrow-right ml-2"></i>
                             </button>
-                            <button type="submit" id="submitBtn"
-                                class="hidden ml-auto btn-medical">
-                                <i class="fas fa-check mr-2"></i>Complete Registration
+                            <button type="submit" id="submitBtn" class="hidden ml-auto px-6 py-2 bg-accent text-white rounded hover:bg-darkAccent">
+                                <i class="fas fa-check mr-2"></i>Submit
                             </button>
                         </div>
                     </form>
@@ -318,85 +276,64 @@
         </div>
     </div>
 
-    <div class="decorative-wave"></div>
-
     <script>
-        let currentStep = 1;
-        const totalSteps = 4;
+        document.addEventListener('DOMContentLoaded', function() {
+            let currentStep = 1;
+            const totalSteps = 4;
 
-        // Handle profile picture upload
-        document.getElementById('profilePic').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const preview = document.getElementById('profilePreview');
-                    preview.innerHTML = `<img src="${e.target.result}" class="w-full h-full rounded-full object-cover">`;
-                }
-                reader.readAsDataURL(file);
+            function showStep(step) {
+                document.querySelectorAll('.step').forEach(el => el.classList.add('hidden'));
+                document.getElementById(`step${step}`).classList.remove('hidden');
+                
+                document.getElementById('prevBtn').classList.toggle('hidden', step === 1);
+                document.getElementById('nextBtn').classList.toggle('hidden', step === totalSteps);
+                document.getElementById('submitBtn').classList.toggle('hidden', step !== totalSteps);
             }
-        });
 
-        // Navigation functions
-        function showStep(step) {
-            document.querySelectorAll('.step').forEach(s => s.classList.add('hidden'));
-            document.getElementById(`step${step}`).classList.remove('hidden');
+            function validateStep(step) {
+                const currentStepEl = document.getElementById(`step${step}`);
+                const inputs = currentStepEl.querySelectorAll('input, select');
+                let valid = true;
 
-            // Update progress indicators
-            const indicators = document.querySelectorAll('.step-indicator');
-            const lines = document.querySelectorAll('.step-line');
+                inputs.forEach(input => {
+                    if (input.required && !input.value.trim()) {
+                        input.classList.add('border-red-500');
+                        valid = false;
+                    } else {
+                        input.classList.remove('border-red-500');
+                    }
+                });
 
-            indicators.forEach((indicator, index) => {
-                if (index + 1 === step) {
-                    indicator.classList.add('active');
-                } else if (index + 1 < step) {
-                    indicator.classList.add('active');
-                } else {
-                    indicator.classList.remove('active');
+                return valid;
+            }
+
+            document.getElementById('nextBtn').addEventListener('click', () => {
+                if (validateStep(currentStep)) {
+                    currentStep++;
+                    showStep(currentStep);
                 }
             });
 
-            lines.forEach((line, index) => {
-                if (index < step - 1) {
-                    line.classList.add('active');
-                } else {
-                    line.classList.remove('active');
-                }
-            });
-
-            // Show/hide navigation buttons
-            document.getElementById('prevBtn').classList.toggle('hidden', step === 1);
-            document.getElementById('nextBtn').classList.toggle('hidden', step === totalSteps);
-            document.getElementById('submitBtn').classList.toggle('hidden', step !== totalSteps);
-        }
-
-        // Event listeners for navigation
-        document.getElementById('nextBtn').addEventListener('click', () => {
-            if (currentStep < totalSteps) {
-                currentStep++;
-                showStep(currentStep);
-            }
-        });
-
-        document.getElementById('prevBtn').addEventListener('click', () => {
-            if (currentStep > 1) {
+            document.getElementById('prevBtn').addEventListener('click', () => {
                 currentStep--;
                 showStep(currentStep);
-            }
-        });
+            });
 
-        // Form submission
-        document.getElementById('registrationForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const formData = new FormData(this);
-            const data = Object.fromEntries(formData);
-            console.log('Form submitted:', data);
-            // Here you would typically send the data to your server
-            alert('Registration submitted successfully!');
-        });
+            document.getElementById('registrationForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                if (validateStep(currentStep)) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Registration Complete!',
+                        text: 'Your account is pending verification',
+                        confirmButtonColor: '#2a5c82'
+                    });
+                }
+            });
 
-        // Initialize form
-        showStep(1);
+            // Initialize first step
+            showStep(1);
+        });
     </script>
 </body>
 </html>
