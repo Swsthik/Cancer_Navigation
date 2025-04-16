@@ -34,7 +34,6 @@
         background: rgba(255, 255, 255, 0.95);
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         transition: transform 0.3s ease;
-        
       }
 
       .btn-medical {
@@ -74,7 +73,6 @@
       .sidebar {
         background: var(--primary-blue);
         color: white;
-        
       }
 
       .nav-link {
@@ -85,7 +83,8 @@
         margin-bottom: 0.5rem;
       }
 
-      .nav-link:hover, .nav-link.active {
+      .nav-link:hover,
+      .nav-link.active {
         background: rgba(255, 255, 255, 0.1);
         color: white;
       }
@@ -116,65 +115,57 @@
           <i class="fas fa-hospital me-2"></i>MedConnect
         </a>
         <div class="dropdown">
-          <button class="btn text-white dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+          <button
+            class="btn text-white dropdown-toggle"
+            type="button"
+            id="userDropdown"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
             <i class="fas fa-user-circle me-2"></i>John Doe
           </button>
-          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-            <li><a class="dropdown-item" href="profile.html"><i class="fas fa-id-card me-2"></i>Profile</a></li>
-            <li><a class="dropdown-item" href="settings.html"><i class="fas fa-cog me-2"></i>Settings</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="/logout"><i class="fas fa-sign-out-alt me-2"></i>Log Out</a></li>
+          <ul
+            class="dropdown-menu dropdown-menu-end"
+            aria-labelledby="userDropdown"
+          >
+            <li>
+              <a class="dropdown-item" href="/patient/patient-profile"
+                ><i class="fas fa-id-card me-2"></i>Profile</a
+              >
+            </li>
+            <li>
+              <a class="dropdown-item" href="/patient/initial-registration"
+                ><i class="fas fa-cog me-2"></i>Initial Registration</a
+              >
+            </li>
+            <li><hr class="dropdown-divider" /></li>
+            <li>
+              <a class="dropdown-item" href="/logout"
+                ><i class="fas fa-sign-out-alt me-2"></i>Log Out</a
+              >
+            </li>
           </ul>
         </div>
       </div>
     </nav>
 
     <div class="w-full">
-      <div class="dashboard-container row g-0 w-full" >
-        <!-- Sidebar -->
-        <div class="col-md-3 sidebar p-4">
-          <div class="d-flex align-items-center mb-4">
-            <i class="fas fa-user-circle fs-1 me-3"></i>
-            <div>
-              <h5 class="mb-0">John Doe</h5>
-              <small class="text-light">Patient</small>
-            </div>
-          </div>
-          <div class="nav flex-column">
-            <a href="dashboard.html" class="nav-link active">
-              <i class="fas fa-home"></i>Dashboard
-            </a>
-            <a href="appointments.html" class="nav-link">
-              <i class="fas fa-calendar-check"></i>Appointments
-            </a>
-            <a href="reports.html" class="nav-link">
-              <i class="fas fa-file-medical"></i>Reports
-            </a>
-            <a href="care-plan.html" class="nav-link">
-              <i class="fas fa-clipboard-list"></i>Care Plan
-            </a>
-            <a href="resources.html" class="nav-link">
-              <i class="fas fa-book-medical"></i>Resources
-            </a>
-            <a href="profile.html" class="nav-link">
-              <i class="fas fa-user"></i>Profile
-            </a>
-            <a href="feedback.html" class="nav-link">
-              <i class="fas fa-comment-dots"></i>Feedback
-            </a>
-          </div>
-        </div>
-        
+      <div class="dashboard-container row g-0 w-full">
+        <%- include('../../partials/patientSidebar', {currentUser: currentUser,
+        activePage: activePage}) %>
+
         <!-- Main Content -->
         <div class="col-md-9 p-4 bg-white">
           <h2 class="mb-4">Welcome, John</h2>
-          
+
           <!-- Notifications -->
           <div class="alert alert-info d-flex align-items-center" role="alert">
             <i class="fas fa-bell fs-5 me-3"></i>
-            <div>You have a new appointment scheduled for tomorrow at 10:00 AM</div>
+            <div>
+              You have a new appointment scheduled for tomorrow at 10:00 AM
+            </div>
           </div>
-          
+
           <!-- Quick Stats -->
           <div class="row mb-4">
             <div class="col-md-4">
@@ -210,21 +201,34 @@
                     <i class="fas fa-chart-line text-info"></i>
                   </div>
                   <div class="progress mt-2 health-metric">
-                    <div class="progress-bar bg-info" role="progressbar" style="width: 65%" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
+                    <div
+                      class="progress-bar bg-info"
+                      role="progressbar"
+                      style="width: 65%"
+                      aria-valuenow="65"
+                      aria-valuemin="0"
+                      aria-valuemax="100"
+                    ></div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          
+
           <div class="row">
             <!-- Upcoming Appointments -->
             <div class="col-md-6 mb-4">
               <div class="card card-medical h-100">
                 <div class="card-header bg-white">
-                  <div class="d-flex justify-content-between align-items-center">
+                  <div
+                    class="d-flex justify-content-between align-items-center"
+                  >
                     <h5 class="mb-0">Upcoming Appointments</h5>
-                    <a href="appointments.html" class="text-decoration-none text-primary">View all</a>
+                    <a
+                      href="/patient/appointments"
+                      class="text-decoration-none text-primary"
+                      >View all</a
+                    >
                   </div>
                 </div>
                 <div class="card-body">
@@ -237,8 +241,13 @@
                     </div>
                     <div>
                       <h6>Consultation with Dr. Smith</h6>
-                      <div class="text-muted"><i class="far fa-clock me-2"></i>10:00 AM - 11:00 AM</div>
-                      <div class="text-muted"><i class="fas fa-map-marker-alt me-2"></i>Main Hospital, Room 302</div>
+                      <div class="text-muted">
+                        <i class="far fa-clock me-2"></i>10:00 AM - 11:00 AM
+                      </div>
+                      <div class="text-muted">
+                        <i class="fas fa-map-marker-alt me-2"></i>Main Hospital,
+                        Room 302
+                      </div>
                     </div>
                   </div>
                   <div class="d-flex p-3">
@@ -250,8 +259,13 @@
                     </div>
                     <div>
                       <h6>Follow-up with Dr. Johnson</h6>
-                      <div class="text-muted"><i class="far fa-clock me-2"></i>2:30 PM - 3:30 PM</div>
-                      <div class="text-muted"><i class="fas fa-map-marker-alt me-2"></i>Clinic B, Room 105</div>
+                      <div class="text-muted">
+                        <i class="far fa-clock me-2"></i>2:30 PM - 3:30 PM
+                      </div>
+                      <div class="text-muted">
+                        <i class="fas fa-map-marker-alt me-2"></i>Clinic B, Room
+                        105
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -262,7 +276,7 @@
                 </div>
               </div>
             </div>
-            
+
             <!-- Health Insights -->
             <div class="col-md-6 mb-4">
               <div class="card card-medical h-100">
@@ -276,62 +290,98 @@
                       <span class="text-primary">120/80 mmHg</span>
                     </div>
                     <div class="progress health-metric">
-                      <div class="progress-bar bg-success" role="progressbar" style="width: 85%" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
+                      <div
+                        class="progress-bar bg-success"
+                        role="progressbar"
+                        style="width: 85%"
+                        aria-valuenow="85"
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                      ></div>
                     </div>
                     <small class="text-muted">Normal range</small>
                   </div>
-                  
+
                   <div class="mb-4">
                     <div class="d-flex justify-content-between mb-1">
                       <span>Heart Rate</span>
                       <span class="text-primary">72 bpm</span>
                     </div>
                     <div class="progress health-metric">
-                      <div class="progress-bar bg-success" role="progressbar" style="width: 90%" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
+                      <div
+                        class="progress-bar bg-success"
+                        role="progressbar"
+                        style="width: 90%"
+                        aria-valuenow="90"
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                      ></div>
                     </div>
                     <small class="text-muted">Normal range</small>
                   </div>
-                  
+
                   <div class="mb-4">
                     <div class="d-flex justify-content-between mb-1">
                       <span>Blood Sugar</span>
                       <span class="text-warning">140 mg/dL</span>
                     </div>
                     <div class="progress health-metric">
-                      <div class="progress-bar bg-warning" role="progressbar" style="width: 60%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                      <div
+                        class="progress-bar bg-warning"
+                        role="progressbar"
+                        style="width: 60%"
+                        aria-valuenow="60"
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                      ></div>
                     </div>
                     <small class="text-muted">Slightly elevated</small>
                   </div>
-                  
+
                   <div class="d-flex align-items-center p-3 bg-light rounded">
                     <i class="fas fa-lightbulb text-warning me-3 fs-4"></i>
                     <div>
                       <h6 class="mb-1">AI Health Tip</h6>
-                      <p class="mb-0 small">Consider reducing sugar intake and increasing physical activity to improve blood sugar levels.</p>
+                      <p class="mb-0 small">
+                        Consider reducing sugar intake and increasing physical
+                        activity to improve blood sugar levels.
+                      </p>
                     </div>
                   </div>
                 </div>
                 <div class="card-footer bg-white">
-                  <a href="reports.html" class="btn btn-outline-medical w-100">
+                  <a
+                    href="/patient/reports"
+                    class="btn btn-outline-medical w-100"
+                  >
                     <i class="fas fa-chart-bar me-2"></i>View Full Health Report
                   </a>
                 </div>
               </div>
             </div>
-            
+
             <!-- Care Plan Progress -->
             <div class="col-12 mb-4">
               <div class="card card-medical">
                 <div class="card-header bg-white">
-                  <div class="d-flex justify-content-between align-items-center">
+                  <div
+                    class="d-flex justify-content-between align-items-center"
+                  >
                     <h5 class="mb-0">Care Plan Progress</h5>
-                    <a href="care-plan.html" class="text-decoration-none text-primary">View details</a>
+                    <a
+                      href="/patient/care-plan"
+                      class="text-decoration-none text-primary"
+                      >View details</a
+                    >
                   </div>
                 </div>
                 <div class="card-body">
                   <div class="d-flex align-items-center mb-4">
                     <div class="me-3">
-                      <div class="rounded-circle bg-success d-flex align-items-center justify-content-center text-white" style="width: 50px; height: 50px;">
+                      <div
+                        class="rounded-circle bg-success d-flex align-items-center justify-content-center text-white"
+                        style="width: 50px; height: 50px"
+                      >
                         <i class="fas fa-check"></i>
                       </div>
                     </div>
@@ -340,10 +390,13 @@
                       <div class="text-muted">Completed on March 10, 2025</div>
                     </div>
                   </div>
-                  
+
                   <div class="d-flex align-items-center mb-4">
                     <div class="me-3">
-                      <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center text-white" style="width: 50px; height: 50px;">
+                      <div
+                        class="rounded-circle bg-primary d-flex align-items-center justify-content-center text-white"
+                        style="width: 50px; height: 50px"
+                      >
                         <i class="fas fa-spinner fa-spin"></i>
                       </div>
                     </div>
@@ -351,20 +404,32 @@
                       <h6 class="mb-1">Treatment Phase 1</h6>
                       <div class="text-muted">In progress (65% complete)</div>
                       <div class="progress mt-2 health-metric">
-                        <div class="progress-bar bg-primary" role="progressbar" style="width: 65%" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
+                        <div
+                          class="progress-bar bg-primary"
+                          role="progressbar"
+                          style="width: 65%"
+                          aria-valuenow="65"
+                          aria-valuemin="0"
+                          aria-valuemax="100"
+                        ></div>
                       </div>
                     </div>
                   </div>
-                  
+
                   <div class="d-flex align-items-center">
                     <div class="me-3">
-                      <div class="rounded-circle bg-light d-flex align-items-center justify-content-center text-muted" style="width: 50px; height: 50px;">
+                      <div
+                        class="rounded-circle bg-light d-flex align-items-center justify-content-center text-muted"
+                        style="width: 50px; height: 50px"
+                      >
                         <i class="fas fa-hourglass"></i>
                       </div>
                     </div>
                     <div>
                       <h6 class="mb-1">Recovery & Follow-up</h6>
-                      <div class="text-muted">Pending completion of Treatment Phase 1</div>
+                      <div class="text-muted">
+                        Pending completion of Treatment Phase 1
+                      </div>
                     </div>
                   </div>
                 </div>

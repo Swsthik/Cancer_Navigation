@@ -1,0 +1,62 @@
+<!-- Sidebar -->
+<div class="col-md-3 sidebar p-4">
+  <div class="d-flex align-items-center mb-4">
+    <i class="fas fa-user-circle fs-1 me-3"></i>
+    <div>
+      <h5 class="mb-0">
+        <%= currentUser ? currentUser.fullName : 'John Doe' %>
+      </h5>
+      <small class="text-light">Patient</small>
+    </div>
+  </div>
+  <div class="nav flex-column">
+    <a
+      href="/patient/dashboard"
+      class="nav-link <%= activePage === 'dashboard' ? 'active' : '' %>"
+    >
+      <i class="fas fa-home"></i>Dashboard
+    </a>
+    <a
+      href="/patient/appointments"
+      class="nav-link <%= activePage === 'appointments' ? 'active' : '' %>"
+    >
+      <i class="fas fa-calendar-check"></i>Appointments
+    </a>
+    <a
+      href="/patient/reports"
+      class="nav-link <%= activePage === 'reports' ? 'active' : '' %>"
+    >
+      <i class="fas fa-file-medical"></i>Reports
+    </a>
+    <a
+      href="/patient/care-plan"
+      class="nav-link <%= activePage === 'care-plan' ? 'active' : '' %>"
+    >
+      <i class="fas fa-clipboard-list"></i>Care Plan
+    </a>
+    <a
+      href="/patient/resources"
+      class="nav-link <%= activePage === 'resources' ? 'active' : '' %>"
+    >
+      <i class="fas fa-book-medical"></i>Resources
+    </a>
+    <a
+      href="/patient/profile"
+      class="nav-link <%= activePage === 'profile' ? 'active' : '' %>"
+    >
+      <i class="fas fa-user"></i>Profile
+    </a>
+    <a
+      href="/patient/complete-registration"
+      class="nav-link <%= activePage === 'complete-registration' ? 'active' : '' %>"
+    >
+      <i class="fas fa-user-edit"></i>Complete Registration
+    </a>
+    <a
+      href="/patient/feedback"
+      class="nav-link <%= activePage === 'feedback' ? 'active' : '' %>"
+    >
+      <i class="fas fa-comment-dots"></i>Feedback
+    </a>
+  </div>
+</div>

@@ -24,7 +24,11 @@
       }
 
       body {
-        background: linear-gradient(135deg, var(--light-gray) 0%, var(--medium-gray) 100%);
+        background: linear-gradient(
+          135deg,
+          var(--light-gray) 0%,
+          var(--medium-gray) 100%
+        );
         min-height: 100vh;
         color: var(--text-dark);
       }
@@ -89,7 +93,8 @@
         margin-bottom: 0.5rem;
       }
 
-      .nav-link:hover, .nav-link.active {
+      .nav-link:hover,
+      .nav-link.active {
         background: rgba(255, 255, 255, 0.1);
         color: white;
       }
@@ -195,7 +200,7 @@
       }
 
       .timeline::before {
-        content: '';
+        content: "";
         position: absolute;
         left: 0;
         top: 0;
@@ -210,7 +215,7 @@
       }
 
       .timeline-item::before {
-        content: '';
+        content: "";
         position: absolute;
         left: -34px;
         top: 0;
@@ -340,70 +345,69 @@
           <i class="fas fa-hospital me-2"></i>MedConnect
         </a>
         <div class="dropdown">
-          <button class="btn text-white dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="fas fa-user-circle me-2"></i><span id="navbarUserName">John Doe</span>
+          <button
+            class="btn text-white dropdown-toggle"
+            type="button"
+            id="userDropdown"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <i class="fas fa-user-circle me-2"></i
+            ><span id="navbarUserName">John Doe</span>
           </button>
-          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-            <li><a class="dropdown-item" href="profile.html"><i class="fas fa-id-card me-2"></i>Profile</a></li>
-            <li><a class="dropdown-item" href="settings.html"><i class="fas fa-cog me-2"></i>Settings</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="/logout"><i class="fas fa-sign-out-alt me-2"></i>Log Out</a></li>
+          <ul
+            class="dropdown-menu dropdown-menu-end"
+            aria-labelledby="userDropdown"
+          >
+            <li>
+              <a class="dropdown-item" href="profile.html"
+                ><i class="fas fa-id-card me-2"></i>Profile</a
+              >
+            </li>
+            <li>
+              <a class="dropdown-item" href="settings.html"
+                ><i class="fas fa-cog me-2"></i>Settings</a
+              >
+            </li>
+            <li><hr class="dropdown-divider" /></li>
+            <li>
+              <a class="dropdown-item" href="/logout"
+                ><i class="fas fa-sign-out-alt me-2"></i>Log Out</a
+              >
+            </li>
           </ul>
         </div>
       </div>
     </nav>
 
     <div class="w-full">
-      <div class="dashboard-container row g-0 w-full" >
-        <!-- Sidebar -->
-        <div class="col-md-3 sidebar p-4">
-          <div class="d-flex align-items-center mb-4">
-            <i class="fas fa-user-circle fs-1 me-3"></i>
-            <div>
-              <h5 class="mb-0" id="sidebarUserName">John Doe</h5>
-              <small class="text-light">Patient</small>
-            </div>
-          </div>
-          <div class="nav flex-column">
-            <a href="index.html" class="nav-link active">
-              <i class="fas fa-home"></i>Dashboard
-            </a>
-            <a href="appointments.html" class="nav-link">
-              <i class="fas fa-calendar-check"></i>Appointments
-            </a>
-            <a href="reports.html" class="nav-link">
-              <i class="fas fa-file-medical"></i>Reports
-            </a>
-            <a href="care-plan.html" class="nav-link">
-              <i class="fas fa-clipboard-list"></i>Care Plan
-            </a>
-            <a href="resources.html" class="nav-link">
-              <i class="fas fa-book-medical"></i>Resources
-            </a>
-            <a href="patient-profile.html" class="nav-link">
-              <i class="fas fa-user"></i>Profile
-            </a>
-            <a href="feedback.html" class="nav-link">
-              <i class="fas fa-comment-dots"></i>Feedback
-            </a>
-          </div>
-        </div>
-        
+      <div class="dashboard-container row g-0 w-full">
+        <%- include('../../partials/patientSidebar', {currentUser: currentUser,
+        activePage: activePage}) %>
+
         <!-- Main Content -->
         <div class="col-md-9 p-4 bg-white">
           <!-- Profile Header -->
           <div class="profile-header mb-4">
             <div class="d-flex align-items-center">
-              <div class="profile-avatar" id="profileInitials">
-                JD
-              </div>
+              <div class="profile-avatar" id="profileInitials">JD</div>
               <div>
                 <h2 class="mb-1" id="profileName">John Doe</h2>
                 <div class="d-flex align-items-center mb-2">
-                  <span class="badge bg-white text-primary me-2" id="profileMRN">MRN: 1234567</span>
-                  <span class="badge bg-white text-primary me-2" id="profileGender">Male</span>
-                  <span class="badge bg-white text-primary me-2" id="profileAge">42 years</span>
-                  <span class="badge bg-white text-primary" id="profileStatus">Active</span>
+                  <span class="badge bg-white text-primary me-2" id="profileMRN"
+                    >MRN: 1234567</span
+                  >
+                  <span
+                    class="badge bg-white text-primary me-2"
+                    id="profileGender"
+                    >Male</span
+                  >
+                  <span class="badge bg-white text-primary me-2" id="profileAge"
+                    >42 years</span
+                  >
+                  <span class="badge bg-white text-primary" id="profileStatus"
+                    >Active</span
+                  >
                 </div>
                 <div id="identifiersList" class="d-flex flex-wrap">
                   <!-- Identifiers will be added here dynamically -->
@@ -411,7 +415,7 @@
               </div>
             </div>
           </div>
-          
+
           <!-- Quick Stats -->
           <div class="row mb-4">
             <div class="col-md-4">
@@ -422,7 +426,9 @@
                     <h3 class="me-2" id="appointmentCount">2</h3>
                     <i class="fas fa-calendar-check text-primary"></i>
                   </div>
-                  <small class="text-muted" id="nextAppointment">Next: Mar 23, 10:00 AM</small>
+                  <small class="text-muted" id="nextAppointment"
+                    >Next: Mar 23, 10:00 AM</small
+                  >
                 </div>
               </div>
             </div>
@@ -434,7 +440,9 @@
                     <h3 class="me-2" id="reportsCount">3</h3>
                     <i class="fas fa-file-medical text-success"></i>
                   </div>
-                  <small class="text-muted" id="lastReportDate">Last updated: Mar 15, 2025</small>
+                  <small class="text-muted" id="lastReportDate"
+                    >Last updated: Mar 15, 2025</small
+                  >
                 </div>
               </div>
             </div>
@@ -447,52 +455,119 @@
                     <i class="fas fa-chart-line text-info"></i>
                   </div>
                   <div class="progress mt-2 health-metric">
-                    <div class="progress-bar bg-info" role="progressbar" style="width: 65%" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
+                    <div
+                      class="progress-bar bg-info"
+                      role="progressbar"
+                      style="width: 65%"
+                      aria-valuenow="65"
+                      aria-valuemin="0"
+                      aria-valuemax="100"
+                    ></div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          
+
           <!-- Profile Navigation -->
-          <ul class="nav nav-tabs profile-tabs mb-4" id="profileTabs" role="tablist">
+          <ul
+            class="nav nav-tabs profile-tabs mb-4"
+            id="profileTabs"
+            role="tablist"
+          >
             <li class="nav-item" role="presentation">
-              <button class="nav-link active" id="overview-tab" data-bs-toggle="tab" data-bs-target="#overview" type="button" role="tab" aria-controls="overview" aria-selected="true">
+              <button
+                class="nav-link active"
+                id="overview-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#overview"
+                type="button"
+                role="tab"
+                aria-controls="overview"
+                aria-selected="true"
+              >
                 <i class="fas fa-user me-2"></i>Overview
               </button>
             </li>
             <li class="nav-item" role="presentation">
-              <button class="nav-link" id="personal-tab" data-bs-toggle="tab" data-bs-target="#personal" type="button" role="tab" aria-controls="personal" aria-selected="false">
+              <button
+                class="nav-link"
+                id="personal-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#personal"
+                type="button"
+                role="tab"
+                aria-controls="personal"
+                aria-selected="false"
+              >
                 <i class="fas fa-id-card me-2"></i>Personal Info
               </button>
             </li>
             <li class="nav-item" role="presentation">
-              <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">
+              <button
+                class="nav-link"
+                id="contact-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#contact"
+                type="button"
+                role="tab"
+                aria-controls="contact"
+                aria-selected="false"
+              >
                 <i class="fas fa-address-book me-2"></i>Contact Info
               </button>
             </li>
             <li class="nav-item" role="presentation">
-              <button class="nav-link" id="medical-tab" data-bs-toggle="tab" data-bs-target="#medical" type="button" role="tab" aria-controls="medical" aria-selected="false">
+              <button
+                class="nav-link"
+                id="medical-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#medical"
+                type="button"
+                role="tab"
+                aria-controls="medical"
+                aria-selected="false"
+              >
                 <i class="fas fa-notes-medical me-2"></i>Medical Info
               </button>
             </li>
             <li class="nav-item" role="presentation">
-              <button class="nav-link" id="fhir-tab" data-bs-toggle="tab" data-bs-target="#fhir" type="button" role="tab" aria-controls="fhir" aria-selected="false">
+              <button
+                class="nav-link"
+                id="fhir-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#fhir"
+                type="button"
+                role="tab"
+                aria-controls="fhir"
+                aria-selected="false"
+              >
                 <i class="fas fa-code me-2"></i>FHIR Data
               </button>
             </li>
           </ul>
-          
+
           <!-- Tab Content -->
           <div class="tab-content" id="profileTabsContent">
             <!-- Overview Tab -->
-            <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">
+            <div
+              class="tab-pane fade show active"
+              id="overview"
+              role="tabpanel"
+              aria-labelledby="overview-tab"
+            >
               <div class="row">
                 <div class="col-md-6">
                   <div class="card card-medical">
-                    <div class="card-header d-flex justify-content-between align-items-center">
+                    <div
+                      class="card-header d-flex justify-content-between align-items-center"
+                    >
                       <h5 class="mb-0">Personal Summary</h5>
-                      <button class="btn btn-sm btn-outline-medical" data-bs-toggle="tab" data-bs-target="#personal">
+                      <button
+                        class="btn btn-sm btn-outline-medical"
+                        data-bs-toggle="tab"
+                        data-bs-target="#personal"
+                      >
                         <i class="fas fa-pencil-alt me-1"></i>Edit
                       </button>
                     </div>
@@ -500,11 +575,15 @@
                       <ul class="data-list">
                         <li>
                           <div class="data-label">Full Name</div>
-                          <div class="data-value" id="overviewName">John Doe</div>
+                          <div class="data-value" id="overviewName">
+                            John Doe
+                          </div>
                         </li>
                         <li>
                           <div class="data-label">Date of Birth</div>
-                          <div class="data-value" id="overviewDOB">1980-05-15</div>
+                          <div class="data-value" id="overviewDOB">
+                            1980-05-15
+                          </div>
                         </li>
                         <li>
                           <div class="data-label">Gender</div>
@@ -512,7 +591,9 @@
                         </li>
                         <li>
                           <div class="data-label">Birth Sex</div>
-                          <div class="data-value" id="overviewBirthSex">Male</div>
+                          <div class="data-value" id="overviewBirthSex">
+                            Male
+                          </div>
                         </li>
                         <li>
                           <div class="data-label">Race</div>
@@ -520,18 +601,26 @@
                         </li>
                         <li>
                           <div class="data-label">Ethnicity</div>
-                          <div class="data-value" id="overviewEthnicity">Not Hispanic or Latino</div>
+                          <div class="data-value" id="overviewEthnicity">
+                            Not Hispanic or Latino
+                          </div>
                         </li>
                       </ul>
                     </div>
                   </div>
                 </div>
-                
+
                 <div class="col-md-6">
                   <div class="card card-medical">
-                    <div class="card-header d-flex justify-content-between align-items-center">
+                    <div
+                      class="card-header d-flex justify-content-between align-items-center"
+                    >
                       <h5 class="mb-0">Contact Summary</h5>
-                      <button class="btn btn-sm btn-outline-medical" data-bs-toggle="tab" data-bs-target="#contact">
+                      <button
+                        class="btn btn-sm btn-outline-medical"
+                        data-bs-toggle="tab"
+                        data-bs-target="#contact"
+                      >
                         <i class="fas fa-pencil-alt me-1"></i>Edit
                       </button>
                     </div>
@@ -547,15 +636,17 @@
                           <span>john.doe@example.com (Home)</span>
                         </div>
                       </div>
-                      
+
                       <div class="address-card">
                         <div class="address-type">Home Address</div>
-                        <div class="address-line" id="overviewAddress">123 Main St, Anytown, CA 12345, USA</div>
+                        <div class="address-line" id="overviewAddress">
+                          123 Main St, Anytown, CA 12345, USA
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                
+
                 <div class="col-12">
                   <div class="card card-medical">
                     <div class="card-header">
@@ -580,12 +671,20 @@
                               <td>Dr. Sarah Johnson</td>
                               <td>Oncology Consultation</td>
                               <td>Memorial Cancer Center</td>
-                              <td><span class="badge bg-success">Confirmed</span></td>
                               <td>
-                                <button class="btn btn-sm btn-outline-primary me-1" title="View Details">
+                                <span class="badge bg-success">Confirmed</span>
+                              </td>
+                              <td>
+                                <button
+                                  class="btn btn-sm btn-outline-primary me-1"
+                                  title="View Details"
+                                >
                                   <i class="fas fa-eye"></i>
                                 </button>
-                                <button class="btn btn-sm btn-outline-danger" title="Cancel">
+                                <button
+                                  class="btn btn-sm btn-outline-danger"
+                                  title="Cancel"
+                                >
                                   <i class="fas fa-times"></i>
                                 </button>
                               </td>
@@ -595,12 +694,22 @@
                               <td>Dr. Michael Chen</td>
                               <td>Imaging (CT Scan)</td>
                               <td>University Medical Center</td>
-                              <td><span class="badge bg-warning text-dark">Pending</span></td>
                               <td>
-                                <button class="btn btn-sm btn-outline-primary me-1" title="View Details">
+                                <span class="badge bg-warning text-dark"
+                                  >Pending</span
+                                >
+                              </td>
+                              <td>
+                                <button
+                                  class="btn btn-sm btn-outline-primary me-1"
+                                  title="View Details"
+                                >
                                   <i class="fas fa-eye"></i>
                                 </button>
-                                <button class="btn btn-sm btn-outline-danger" title="Cancel">
+                                <button
+                                  class="btn btn-sm btn-outline-danger"
+                                  title="Cancel"
+                                >
                                   <i class="fas fa-times"></i>
                                 </button>
                               </td>
@@ -610,7 +719,8 @@
                       </div>
                       <div class="text-center mt-3">
                         <button class="btn btn-medical">
-                          <i class="fas fa-plus me-2"></i>Schedule New Appointment
+                          <i class="fas fa-plus me-2"></i>Schedule New
+                          Appointment
                         </button>
                       </div>
                     </div>
@@ -618,9 +728,14 @@
                 </div>
               </div>
             </div>
-            
+
             <!-- Personal Info Tab -->
-            <div class="tab-pane fade" id="personal" role="tabpanel" aria-labelledby="personal-tab">
+            <div
+              class="tab-pane fade"
+              id="personal"
+              role="tabpanel"
+              aria-labelledby="personal-tab"
+            >
               <div class="row">
                 <div class="col-md-6">
                   <div class="card card-medical">
@@ -631,16 +746,30 @@
                       <div class="accordion" id="namesAccordion">
                         <div class="accordion-item">
                           <h2 class="accordion-header" id="headingNames">
-                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseNames" aria-expanded="true" aria-controls="collapseNames">
+                            <button
+                              class="accordion-button"
+                              type="button"
+                              data-bs-toggle="collapse"
+                              data-bs-target="#collapseNames"
+                              aria-expanded="true"
+                              aria-controls="collapseNames"
+                            >
                               Names
                             </button>
                           </h2>
-                          <div id="collapseNames" class="accordion-collapse collapse show" aria-labelledby="headingNames" data-bs-parent="#namesAccordion">
+                          <div
+                            id="collapseNames"
+                            class="accordion-collapse collapse show"
+                            aria-labelledby="headingNames"
+                            data-bs-parent="#namesAccordion"
+                          >
                             <div class="accordion-body">
                               <div id="namesList">
                                 <!-- Names will be added here dynamically -->
                               </div>
-                              <button class="btn btn-sm btn-outline-medical mt-3">
+                              <button
+                                class="btn btn-sm btn-outline-medical mt-3"
+                              >
                                 <i class="fas fa-plus me-1"></i>Add Another Name
                               </button>
                             </div>
@@ -648,17 +777,32 @@
                         </div>
                         <div class="accordion-item">
                           <h2 class="accordion-header" id="headingIdentifiers">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseIdentifiers" aria-expanded="false" aria-controls="collapseIdentifiers">
+                            <button
+                              class="accordion-button collapsed"
+                              type="button"
+                              data-bs-toggle="collapse"
+                              data-bs-target="#collapseIdentifiers"
+                              aria-expanded="false"
+                              aria-controls="collapseIdentifiers"
+                            >
                               Identifiers
                             </button>
                           </h2>
-                          <div id="collapseIdentifiers" class="accordion-collapse collapse" aria-labelledby="headingIdentifiers" data-bs-parent="#namesAccordion">
+                          <div
+                            id="collapseIdentifiers"
+                            class="accordion-collapse collapse"
+                            aria-labelledby="headingIdentifiers"
+                            data-bs-parent="#namesAccordion"
+                          >
                             <div class="accordion-body">
                               <div id="identifiersDetailList">
                                 <!-- Identifiers will be added here dynamically -->
                               </div>
-                              <button class="btn btn-sm btn-outline-medical mt-3">
-                                <i class="fas fa-plus me-1"></i>Add Another Identifier
+                              <button
+                                class="btn btn-sm btn-outline-medical mt-3"
+                              >
+                                <i class="fas fa-plus me-1"></i>Add Another
+                                Identifier
                               </button>
                             </div>
                           </div>
@@ -667,7 +811,7 @@
                     </div>
                   </div>
                 </div>
-                
+
                 <div class="col-md-6">
                   <div class="card card-medical">
                     <div class="card-header">
@@ -676,12 +820,21 @@
                     <div class="card-body">
                       <form id="demographicsForm">
                         <div class="mb-3">
-                          <label for="birthDate" class="form-label">Date of Birth</label>
-                          <input type="date" class="form-control" id="birthDate" name="birthDate">
+                          <label for="birthDate" class="form-label"
+                            >Date of Birth</label
+                          >
+                          <input
+                            type="date"
+                            class="form-control"
+                            id="birthDate"
+                            name="birthDate"
+                          />
                         </div>
-                        
+
                         <div class="mb-3">
-                          <label for="gender" class="form-label">Administrative Gender</label>
+                          <label for="gender" class="form-label"
+                            >Administrative Gender</label
+                          >
                           <select class="form-select" id="gender" name="gender">
                             <option value="male">Male</option>
                             <option value="female">Female</option>
@@ -689,80 +842,136 @@
                             <option value="unknown">Unknown</option>
                           </select>
                         </div>
-                        
+
                         <div class="mb-3">
-                          <label for="birthSex" class="form-label">Birth Sex</label>
-                          <select class="form-select" id="birthSex" name="birthSex">
+                          <label for="birthSex" class="form-label"
+                            >Birth Sex</label
+                          >
+                          <select
+                            class="form-select"
+                            id="birthSex"
+                            name="birthSex"
+                          >
                             <option value="M">Male</option>
                             <option value="F">Female</option>
                             <option value="UNK">Unknown</option>
                           </select>
                         </div>
-                        
+
                         <div class="mb-3">
-                          <label for="genderIdentity" class="form-label">Gender Identity</label>
-                          <select class="form-select" id="genderIdentity" name="genderIdentity">
+                          <label for="genderIdentity" class="form-label"
+                            >Gender Identity</label
+                          >
+                          <select
+                            class="form-select"
+                            id="genderIdentity"
+                            name="genderIdentity"
+                          >
                             <option value="male">Male</option>
                             <option value="female">Female</option>
-                            <option value="transgender-male">Transgender Male</option>
-                            <option value="transgender-female">Transgender Female</option>
+                            <option value="transgender-male">
+                              Transgender Male
+                            </option>
+                            <option value="transgender-female">
+                              Transgender Female
+                            </option>
                             <option value="non-binary">Non-binary</option>
                             <option value="other">Other</option>
-                            <option value="asked-but-unknown">Asked but unknown</option>
+                            <option value="asked-but-unknown">
+                              Asked but unknown
+                            </option>
                           </select>
                         </div>
-                        
+
                         <div class="mb-3">
                           <label for="race" class="form-label">Race</label>
                           <select class="form-select" id="race" name="race">
-                            <option value="1002-5">American Indian or Alaska Native</option>
+                            <option value="1002-5">
+                              American Indian or Alaska Native
+                            </option>
                             <option value="2028-9">Asian</option>
-                            <option value="2054-5">Black or African American</option>
-                            <option value="2076-8">Native Hawaiian or Other Pacific Islander</option>
+                            <option value="2054-5">
+                              Black or African American
+                            </option>
+                            <option value="2076-8">
+                              Native Hawaiian or Other Pacific Islander
+                            </option>
                             <option value="2106-3">White</option>
                             <option value="UNK">Unknown</option>
                             <option value="ASKU">Asked but unknown</option>
                           </select>
                         </div>
-                        
+
                         <div class="mb-3">
-                          <label for="ethnicity" class="form-label">Ethnicity</label>
-                          <select class="form-select" id="ethnicity" name="ethnicity">
+                          <label for="ethnicity" class="form-label"
+                            >Ethnicity</label
+                          >
+                          <select
+                            class="form-select"
+                            id="ethnicity"
+                            name="ethnicity"
+                          >
                             <option value="2135-2">Hispanic or Latino</option>
-                            <option value="2186-5">Not Hispanic or Latino</option>
+                            <option value="2186-5">
+                              Not Hispanic or Latino
+                            </option>
                             <option value="UNK">Unknown</option>
                             <option value="ASKU">Asked but unknown</option>
                           </select>
                         </div>
-                        
+
                         <div class="form-check mb-3">
-                          <input class="form-check-input" type="checkbox" id="deceasedBoolean" name="deceasedBoolean">
+                          <input
+                            class="form-check-input"
+                            type="checkbox"
+                            id="deceasedBoolean"
+                            name="deceasedBoolean"
+                          />
                           <label class="form-check-label" for="deceasedBoolean">
                             Deceased
                           </label>
                         </div>
-                        
+
                         <div class="mb-3 deceased-date-container d-none">
-                          <label for="deceasedDateTime" class="form-label">Date of Death</label>
-                          <input type="date" class="form-control" id="deceasedDateTime" name="deceasedDateTime">
+                          <label for="deceasedDateTime" class="form-label"
+                            >Date of Death</label
+                          >
+                          <input
+                            type="date"
+                            class="form-control"
+                            id="deceasedDateTime"
+                            name="deceasedDateTime"
+                          />
                         </div>
-                        
-                        <button type="submit" class="btn btn-medical">Save Changes</button>
+
+                        <button type="submit" class="btn btn-medical">
+                          Save Changes
+                        </button>
                       </form>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            
+
             <!-- Contact Info Tab -->
-            <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+            <div
+              class="tab-pane fade"
+              id="contact"
+              role="tabpanel"
+              aria-labelledby="contact-tab"
+            >
               <div class="row">
                 <div class="col-md-6">
                   <div class="card card-medical">
-                    <div class="card-header d-flex justify-content-between align-items-center">
+                    <div
+                      class="card-header d-flex justify-content-between align-items-center"
+                    >
                       <h5 class="mb-0">Contact Points</h5>
-                      <button class="btn btn-sm btn-outline-medical" id="addContactBtn">
+                      <button
+                        class="btn btn-sm btn-outline-medical"
+                        id="addContactBtn"
+                      >
                         <i class="fas fa-plus me-1"></i>Add Contact
                       </button>
                     </div>
@@ -773,12 +982,17 @@
                     </div>
                   </div>
                 </div>
-                
+
                 <div class="col-md-6">
                   <div class="card card-medical">
-                    <div class="card-header d-flex justify-content-between align-items-center">
+                    <div
+                      class="card-header d-flex justify-content-between align-items-center"
+                    >
                       <h5 class="mb-0">Addresses</h5>
-                      <button class="btn btn-sm btn-outline-medical" id="addAddressBtn">
+                      <button
+                        class="btn btn-sm btn-outline-medical"
+                        id="addAddressBtn"
+                      >
                         <i class="fas fa-plus me-1"></i>Add Address
                       </button>
                     </div>
@@ -789,7 +1003,7 @@
                     </div>
                   </div>
                 </div>
-                
+
                 <div class="col-12 mt-4">
                   <div class="card card-medical">
                     <div class="card-header">
@@ -799,10 +1013,15 @@
                       <div id="emergencyContactsList">
                         <!-- Emergency contacts will be added here dynamically -->
                         <div class="info-card">
-                          <p class="mb-0 text-center">No emergency contacts added yet.</p>
+                          <p class="mb-0 text-center">
+                            No emergency contacts added yet.
+                          </p>
                         </div>
                       </div>
-                      <button class="btn btn-medical mt-3" id="addEmergencyContactBtn">
+                      <button
+                        class="btn btn-medical mt-3"
+                        id="addEmergencyContactBtn"
+                      >
                         <i class="fas fa-plus me-2"></i>Add Emergency Contact
                       </button>
                     </div>
@@ -810,9 +1029,14 @@
                 </div>
               </div>
             </div>
-            
+
             <!-- Medical Info Tab -->
-            <div class="tab-pane fade" id="medical" role="tabpanel" aria-labelledby="medical-tab">
+            <div
+              class="tab-pane fade"
+              id="medical"
+              role="tabpanel"
+              aria-labelledby="medical-tab"
+            >
               <div class="row">
                 <div class="col-md-6">
                   <div class="card card-medical">
@@ -821,13 +1045,19 @@
                     </div>
                     <div class="card-body">
                       <ul class="list-group mb-3" id="allergiesList">
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <li
+                          class="list-group-item d-flex justify-content-between align-items-center"
+                        >
                           Penicillin
                           <span class="badge bg-danger">Severe</span>
                         </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <li
+                          class="list-group-item d-flex justify-content-between align-items-center"
+                        >
                           Shellfish
-                          <span class="badge bg-warning text-dark">Moderate</span>
+                          <span class="badge bg-warning text-dark"
+                            >Moderate</span
+                          >
                         </li>
                       </ul>
                       <button class="btn btn-sm btn-outline-medical">
@@ -835,22 +1065,28 @@
                       </button>
                     </div>
                   </div>
-                  
+
                   <div class="card card-medical">
                     <div class="card-header">
                       <h5 class="mb-0">Current Medications</h5>
                     </div>
                     <div class="card-body">
                       <ul class="list-group mb-3" id="medicationsList">
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <li
+                          class="list-group-item d-flex justify-content-between align-items-center"
+                        >
                           Lisinopril 10mg
                           <span class="text-muted">Once daily</span>
                         </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <li
+                          class="list-group-item d-flex justify-content-between align-items-center"
+                        >
                           Metformin 500mg
                           <span class="text-muted">Twice daily</span>
                         </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <li
+                          class="list-group-item d-flex justify-content-between align-items-center"
+                        >
                           Atorvastatin 20mg
                           <span class="text-muted">Once daily at bedtime</span>
                         </li>
@@ -861,7 +1097,7 @@
                     </div>
                   </div>
                 </div>
-                
+
                 <div class="col-md-6">
                   <div class="card card-medical">
                     <div class="card-header">
@@ -870,30 +1106,44 @@
                     <div class="card-body">
                       <ul class="list-group mb-3" id="conditionsList">
                         <li class="list-group-item">
-                          <div class="d-flex justify-content-between align-items-center">
+                          <div
+                            class="d-flex justify-content-between align-items-center"
+                          >
                             <div>
                               <h6 class="mb-0">Hypertension</h6>
-                              <small class="text-muted">Diagnosed: 2018-03-15</small>
+                              <small class="text-muted"
+                                >Diagnosed: 2018-03-15</small
+                              >
                             </div>
                             <span class="badge bg-primary">Active</span>
                           </div>
                         </li>
                         <li class="list-group-item">
-                          <div class="d-flex justify-content-between align-items-center">
+                          <div
+                            class="d-flex justify-content-between align-items-center"
+                          >
                             <div>
                               <h6 class="mb-0">Type 2 Diabetes</h6>
-                              <small class="text-muted">Diagnosed: 2019-07-22</small>
+                              <small class="text-muted"
+                                >Diagnosed: 2019-07-22</small
+                              >
                             </div>
                             <span class="badge bg-primary">Active</span>
                           </div>
                         </li>
                         <li class="list-group-item">
-                          <div class="d-flex justify-content-between align-items-center">
+                          <div
+                            class="d-flex justify-content-between align-items-center"
+                          >
                             <div>
                               <h6 class="mb-0">Breast Cancer</h6>
-                              <small class="text-muted">Diagnosed: 2023-11-05</small>
+                              <small class="text-muted"
+                                >Diagnosed: 2023-11-05</small
+                              >
                             </div>
-                            <span class="badge bg-danger">Active - Treatment</span>
+                            <span class="badge bg-danger"
+                              >Active - Treatment</span
+                            >
                           </div>
                         </li>
                       </ul>
@@ -902,7 +1152,7 @@
                       </button>
                     </div>
                   </div>
-                  
+
                   <div class="card card-medical">
                     <div class="card-header">
                       <h5 class="mb-0">Family History</h5>
@@ -948,17 +1198,30 @@
                 </div>
               </div>
             </div>
-            
+
             <!-- FHIR Data Tab -->
-            <div class="tab-pane fade" id="fhir" role="tabpanel" aria-labelledby="fhir-tab">
+            <div
+              class="tab-pane fade"
+              id="fhir"
+              role="tabpanel"
+              aria-labelledby="fhir-tab"
+            >
               <div class="card card-medical">
-                <div class="card-header d-flex justify-content-between align-items-center">
+                <div
+                  class="card-header d-flex justify-content-between align-items-center"
+                >
                   <h5 class="mb-0">FHIR Patient Resource</h5>
                   <div>
-                    <button class="btn btn-sm btn-outline-medical me-2" id="downloadFhirBtn">
+                    <button
+                      class="btn btn-sm btn-outline-medical me-2"
+                      id="downloadFhirBtn"
+                    >
                       <i class="fas fa-download me-1"></i>Download FHIR Data
                     </button>
-                    <button class="btn btn-sm btn-outline-medical" id="copyFhirBtn">
+                    <button
+                      class="btn btn-sm btn-outline-medical"
+                      id="copyFhirBtn"
+                    >
                       <i class="fas fa-copy me-1"></i>Copy
                     </button>
                   </div>
@@ -984,299 +1247,351 @@
       // Sample patient data based on the Mongoose schema
       const samplePatient = {
         meta: {
-          profile: ['http://hl7.org/fhir/us/mcode/StructureDefinition/mcode-cancer-patient']
+          profile: [
+            "http://hl7.org/fhir/us/mcode/StructureDefinition/mcode-cancer-patient",
+          ],
         },
         identifier: [
           {
-            system: 'http://hospital.sample/system/id',
-            value: 'MRN1234567'
+            system: "http://hospital.sample/system/id",
+            value: "MRN1234567",
           },
           {
-            system: 'http://hospital.sample/system/ssn',
-            value: '123-45-6789'
-          }
+            system: "http://hospital.sample/system/ssn",
+            value: "123-45-6789",
+          },
         ],
         name: [
           {
-            use: 'official',
-            family: 'Doe',
-            given: ['Jane', 'Maria'],
-            prefix: ['Ms.'],
-            suffix: []
+            use: "official",
+            family: "Doe",
+            given: ["Jane", "Maria"],
+            prefix: ["Ms."],
+            suffix: [],
           },
           {
-            use: 'maiden',
-            family: 'Smith',
-            given: ['Jane'],
+            use: "maiden",
+            family: "Smith",
+            given: ["Jane"],
             prefix: [],
-            suffix: []
-          }
+            suffix: [],
+          },
         ],
-        gender: 'female',
-        birthDate: '1980-05-15',
+        gender: "female",
+        birthDate: "1980-05-15",
         deceasedBoolean: false,
         address: [
           {
-            use: 'home',
-            type: 'physical',
-            line: ['123 Main St', 'Apt 4B'],
-            city: 'Anytown',
-            state: 'CA',
-            postalCode: '12345',
-            country: 'USA',
+            use: "home",
+            type: "physical",
+            line: ["123 Main St", "Apt 4B"],
+            city: "Anytown",
+            state: "CA",
+            postalCode: "12345",
+            country: "USA",
             period: {
-              start: '2018-01-01'
-            }
+              start: "2018-01-01",
+            },
           },
           {
-            use: 'work',
-            type: 'physical',
-            line: ['456 Business Ave'],
-            city: 'Worktown',
-            state: 'CA',
-            postalCode: '54321',
-            country: 'USA'
-          }
+            use: "work",
+            type: "physical",
+            line: ["456 Business Ave"],
+            city: "Worktown",
+            state: "CA",
+            postalCode: "54321",
+            country: "USA",
+          },
         ],
         telecom: [
           {
-            system: 'phone',
-            value: '+1-555-123-4567',
-            use: 'mobile',
-            rank: 1
+            system: "phone",
+            value: "+1-555-123-4567",
+            use: "mobile",
+            rank: 1,
           },
           {
-            system: 'email',
-            value: 'jane.doe@example.com',
-            use: 'home',
-            rank: 2
+            system: "email",
+            value: "jane.doe@example.com",
+            use: "home",
+            rank: 2,
           },
           {
-            system: 'phone',
-            value: '+1-555-987-6543',
-            use: 'work',
-            rank: 3
-          }
+            system: "phone",
+            value: "+1-555-987-6543",
+            use: "work",
+            rank: 3,
+          },
         ],
         extension: [
           {
-            url: 'http://hl7.org/fhir/us/core/StructureDefinition/us-core-race',
+            url: "http://hl7.org/fhir/us/core/StructureDefinition/us-core-race",
             valueCodeableConcept: {
               coding: [
                 {
-                  system: 'urn:oid:2.16.840.1.113883.6.238',
-                  code: '2106-3',
-                  display: 'White'
-                }
-              ]
-            }
+                  system: "urn:oid:2.16.840.1.113883.6.238",
+                  code: "2106-3",
+                  display: "White",
+                },
+              ],
+            },
           },
           {
-            url: 'http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity',
+            url: "http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity",
             valueCodeableConcept: {
               coding: [
                 {
-                  system: 'urn:oid:2.16.840.1.113883.6.238',
-                  code: '2186-5',
-                  display: 'Not Hispanic or Latino'
-                }
-              ]
-            }
+                  system: "urn:oid:2.16.840.1.113883.6.238",
+                  code: "2186-5",
+                  display: "Not Hispanic or Latino",
+                },
+              ],
+            },
           },
           {
-            url: 'http://hl7.org/fhir/us/core/StructureDefinition/us-core-birthsex',
-            valueCode: 'F'
+            url: "http://hl7.org/fhir/us/core/StructureDefinition/us-core-birthsex",
+            valueCode: "F",
           },
           {
-            url: 'http://hl7.org/fhir/us/core/StructureDefinition/us-core-genderIdentity',
+            url: "http://hl7.org/fhir/us/core/StructureDefinition/us-core-genderIdentity",
             valueCodeableConcept: {
               coding: [
                 {
-                  system: 'http://hl7.org/fhir/us/core/ValueSet/gender-identity',
-                  code: 'female',
-                  display: 'Female'
-                }
-              ]
-            }
-          }
-        ]
+                  system:
+                    "http://hl7.org/fhir/us/core/ValueSet/gender-identity",
+                  code: "female",
+                  display: "Female",
+                },
+              ],
+            },
+          },
+        ],
       };
-      
+
       // Initialize the page with patient data
-      document.addEventListener('DOMContentLoaded', function() {
+      document.addEventListener("DOMContentLoaded", function () {
         // Try to get patient data from localStorage or use sample data
-        let patientData = localStorage.getItem('patientResource');
+        let patientData = localStorage.getItem("patientResource");
         let patient = patientData ? JSON.parse(patientData) : samplePatient;
-        
+
         // Initialize all sections of the dashboard
         initializePatientDashboard(patient);
-        
+
         // Set up event listeners
         setupEventListeners(patient);
       });
-      
+
       // Initialize the entire dashboard with patient data
       function initializePatientDashboard(patient) {
         // Update header and sidebar
         updateHeaderAndSidebar(patient);
-        
+
         // Update overview tab
         updateOverviewTab(patient);
-        
+
         // Update personal info tab
         updatePersonalInfoTab(patient);
-        
+
         // Update contact info tab
         updateContactInfoTab(patient);
-        
+
         // Update medical info tab (placeholder data for now)
         // updateMedicalInfoTab(patient);
-        
+
         // Update FHIR data tab
         updateFHIRDataTab(patient);
       }
-      
+
       // Update header and sidebar with basic patient info
       function updateHeaderAndSidebar(patient) {
         // Get primary name
-        const primaryName = patient.name.find(n => n.use === 'official') || patient.name[0];
-        const givenName = primaryName.given[0] || '';
-        const familyName = primaryName.family || '';
+        const primaryName =
+          patient.name.find((n) => n.use === "official") || patient.name[0];
+        const givenName = primaryName.given[0] || "";
+        const familyName = primaryName.family || "";
         const fullName = `${givenName} ${familyName}`;
-        
+
         // Calculate age
         const birthDate = new Date(patient.birthDate);
         const today = new Date();
         let age = today.getFullYear() - birthDate.getFullYear();
         const monthDiff = today.getMonth() - birthDate.getMonth();
-        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+        if (
+          monthDiff < 0 ||
+          (monthDiff === 0 && today.getDate() < birthDate.getDate())
+        ) {
           age--;
         }
-        
+
         // Update navbar and sidebar
-        document.getElementById('navbarUserName').textContent = fullName;
-        document.getElementById('sidebarUserName').textContent = fullName;
-        
+        document.getElementById("navbarUserName").textContent = fullName;
+        document.getElementById("sidebarUserName").textContent = fullName;
+
         // Update profile header
-        document.getElementById('profileName').textContent = fullName;
-        document.getElementById('profileGender').textContent = capitalizeFirstLetter(patient.gender);
-        document.getElementById('profileAge').textContent = `${age} years`;
-        document.getElementById('profileInitials').textContent = `${givenName.charAt(0)}${familyName.charAt(0)}`;
-        
+        document.getElementById("profileName").textContent = fullName;
+        document.getElementById("profileGender").textContent =
+          capitalizeFirstLetter(patient.gender);
+        document.getElementById("profileAge").textContent = `${age} years`;
+        document.getElementById(
+          "profileInitials"
+        ).textContent = `${givenName.charAt(0)}${familyName.charAt(0)}`;
+
         // Update MRN in profile header
-        const mrn = patient.identifier.find(id => id.system.includes('mrn') || id.system.includes('id'));
+        const mrn = patient.identifier.find(
+          (id) => id.system.includes("mrn") || id.system.includes("id")
+        );
         if (mrn) {
-          document.getElementById('profileMRN').textContent = `MRN: ${mrn.value}`;
+          document.getElementById(
+            "profileMRN"
+          ).textContent = `MRN: ${mrn.value}`;
         }
-        
+
         // Add all identifiers to the header
-        const identifiersList = document.getElementById('identifiersList');
-        identifiersList.innerHTML = '';
-        
-        patient.identifier.forEach(id => {
+        const identifiersList = document.getElementById("identifiersList");
+        identifiersList.innerHTML = "";
+
+        patient.identifier.forEach((id) => {
           if (id !== mrn) {
-            const badge = document.createElement('span');
-            badge.className = 'badge badge-medical me-2 mt-1';
+            const badge = document.createElement("span");
+            badge.className = "badge badge-medical me-2 mt-1";
             badge.textContent = `${getIdentifierType(id.system)}: ${id.value}`;
             identifiersList.appendChild(badge);
           }
         });
       }
-      
+
       // Update overview tab with patient summary
       function updateOverviewTab(patient) {
         // Get primary name
-        const primaryName = patient.name.find(n => n.use === 'official') || patient.name[0];
-        const fullName = `${primaryName.given.join(' ')} ${primaryName.family}`;
-        
+        const primaryName =
+          patient.name.find((n) => n.use === "official") || patient.name[0];
+        const fullName = `${primaryName.given.join(" ")} ${primaryName.family}`;
+
         // Update personal summary
-        document.getElementById('overviewName').textContent = fullName;
-        document.getElementById('overviewDOB').textContent = formatDate(patient.birthDate);
-        document.getElementById('overviewGender').textContent = capitalizeFirstLetter(patient.gender);
-        
+        document.getElementById("overviewName").textContent = fullName;
+        document.getElementById("overviewDOB").textContent = formatDate(
+          patient.birthDate
+        );
+        document.getElementById("overviewGender").textContent =
+          capitalizeFirstLetter(patient.gender);
+
         // Get extensions
-        const birthSexExt = patient.extension.find(ext => ext.url.includes('birthsex'));
-        const raceExt = patient.extension.find(ext => ext.url.includes('race'));
-        const ethnicityExt = patient.extension.find(ext => ext.url.includes('ethnicity'));
-        
+        const birthSexExt = patient.extension.find((ext) =>
+          ext.url.includes("birthsex")
+        );
+        const raceExt = patient.extension.find((ext) =>
+          ext.url.includes("race")
+        );
+        const ethnicityExt = patient.extension.find((ext) =>
+          ext.url.includes("ethnicity")
+        );
+
         // Update extension data
         if (birthSexExt) {
-          const birthSex = birthSexExt.valueCode === 'M' ? 'Male' : birthSexExt.valueCode === 'F' ? 'Female' : 'Unknown';
-          document.getElementById('overviewBirthSex').textContent = birthSex;
+          const birthSex =
+            birthSexExt.valueCode === "M"
+              ? "Male"
+              : birthSexExt.valueCode === "F"
+              ? "Female"
+              : "Unknown";
+          document.getElementById("overviewBirthSex").textContent = birthSex;
         }
-        
-        if (raceExt && raceExt.valueCodeableConcept && raceExt.valueCodeableConcept.coding.length > 0) {
-          document.getElementById('overviewRace').textContent = raceExt.valueCodeableConcept.coding[0].display;
+
+        if (
+          raceExt &&
+          raceExt.valueCodeableConcept &&
+          raceExt.valueCodeableConcept.coding.length > 0
+        ) {
+          document.getElementById("overviewRace").textContent =
+            raceExt.valueCodeableConcept.coding[0].display;
         }
-        
-        if (ethnicityExt && ethnicityExt.valueCodeableConcept && ethnicityExt.valueCodeableConcept.coding.length > 0) {
-          document.getElementById('overviewEthnicity').textContent = ethnicityExt.valueCodeableConcept.coding[0].display;
+
+        if (
+          ethnicityExt &&
+          ethnicityExt.valueCodeableConcept &&
+          ethnicityExt.valueCodeableConcept.coding.length > 0
+        ) {
+          document.getElementById("overviewEthnicity").textContent =
+            ethnicityExt.valueCodeableConcept.coding[0].display;
         }
-        
+
         // Update contact summary
-        const overviewContactPoints = document.getElementById('overviewContactPoints');
-        overviewContactPoints.innerHTML = '';
-        
+        const overviewContactPoints = document.getElementById(
+          "overviewContactPoints"
+        );
+        overviewContactPoints.innerHTML = "";
+
         // Add telecom points
-        patient.telecom.forEach(telecom => {
-          const contactBadge = document.createElement('div');
-          contactBadge.className = 'contact-badge';
-          
-          const icon = document.createElement('i');
+        patient.telecom.forEach((telecom) => {
+          const contactBadge = document.createElement("div");
+          contactBadge.className = "contact-badge";
+
+          const icon = document.createElement("i");
           icon.className = getContactIcon(telecom.system);
-          
-          const span = document.createElement('span');
-          span.textContent = `${telecom.value} (${capitalizeFirstLetter(telecom.use || 'unknown')})`;
-          
+
+          const span = document.createElement("span");
+          span.textContent = `${telecom.value} (${capitalizeFirstLetter(
+            telecom.use || "unknown"
+          )})`;
+
           contactBadge.appendChild(icon);
           contactBadge.appendChild(span);
           overviewContactPoints.appendChild(contactBadge);
         });
-        
+
         // Update primary address
-        const primaryAddress = patient.address.find(addr => addr.use === 'home') || patient.address[0];
+        const primaryAddress =
+          patient.address.find((addr) => addr.use === "home") ||
+          patient.address[0];
         if (primaryAddress) {
           const addressStr = formatAddress(primaryAddress);
-          document.getElementById('overviewAddress').textContent = addressStr;
+          document.getElementById("overviewAddress").textContent = addressStr;
         }
       }
-      
+
       // Update personal info tab with detailed patient data
       function updatePersonalInfoTab(patient) {
         // Populate names list
-        const namesList = document.getElementById('namesList');
-        namesList.innerHTML = '';
-        
+        const namesList = document.getElementById("namesList");
+        namesList.innerHTML = "";
+
         patient.name.forEach((name, index) => {
-          const nameCard = document.createElement('div');
-          nameCard.className = 'card mb-3';
-          
-          const nameHeader = document.createElement('div');
-          nameHeader.className = 'card-header d-flex justify-content-between align-items-center';
-          
-          const nameTitle = document.createElement('h6');
-          nameTitle.className = 'mb-0';
-          nameTitle.textContent = `${capitalizeFirstLetter(name.use || 'unknown')} Name`;
-          
-          const actionButtons = document.createElement('div');
+          const nameCard = document.createElement("div");
+          nameCard.className = "card mb-3";
+
+          const nameHeader = document.createElement("div");
+          nameHeader.className =
+            "card-header d-flex justify-content-between align-items-center";
+
+          const nameTitle = document.createElement("h6");
+          nameTitle.className = "mb-0";
+          nameTitle.textContent = `${capitalizeFirstLetter(
+            name.use || "unknown"
+          )} Name`;
+
+          const actionButtons = document.createElement("div");
           actionButtons.innerHTML = `
             <button class="btn btn-sm btn-outline-primary me-1" title="Edit">
               <i class="fas fa-pencil-alt"></i>
             </button>
-            ${index > 0 ? `
+            ${
+              index > 0
+                ? `
             <button class="btn btn-sm btn-outline-danger" title="Remove">
               <i class="fas fa-trash-alt"></i>
             </button>
-            ` : ''}
+            `
+                : ""
+            }
           `;
-          
+
           nameHeader.appendChild(nameTitle);
           nameHeader.appendChild(actionButtons);
-          
-          const nameBody = document.createElement('div');
-          nameBody.className = 'card-body';
-          
-          const nameContent = document.createElement('div');
+
+          const nameBody = document.createElement("div");
+          nameBody.className = "card-body";
+
+          const nameContent = document.createElement("div");
           nameContent.innerHTML = `
             <div class="row mb-2">
               <div class="col-md-4">
@@ -1285,45 +1600,54 @@
               </div>
               <div class="col-md-8">
                 <div class="data-label">Given Name(s)</div>
-                <div class="data-value">${name.given.join(' ')}</div>
+                <div class="data-value">${name.given.join(" ")}</div>
               </div>
             </div>
-            ${name.prefix.length > 0 ? `
+            ${
+              name.prefix.length > 0
+                ? `
             <div class="row mb-2">
               <div class="col-md-4">
                 <div class="data-label">Prefix</div>
-                <div class="data-value">${name.prefix.join(' ')}</div>
+                <div class="data-value">${name.prefix.join(" ")}</div>
               </div>
               <div class="col-md-8">
                 <div class="data-label">Suffix</div>
-                <div class="data-value">${name.suffix.length > 0 ? name.suffix.join(' ') : 'None'}</div>
+                <div class="data-value">${
+                  name.suffix.length > 0 ? name.suffix.join(" ") : "None"
+                }</div>
               </div>
             </div>
-            ` : ''}
+            `
+                : ""
+            }
           `;
-          
+
           nameBody.appendChild(nameContent);
           nameCard.appendChild(nameHeader);
           nameCard.appendChild(nameBody);
           namesList.appendChild(nameCard);
         });
-        
+
         // Populate identifiers list
-        const identifiersDetailList = document.getElementById('identifiersDetailList');
-        identifiersDetailList.innerHTML = '';
-        
+        const identifiersDetailList = document.getElementById(
+          "identifiersDetailList"
+        );
+        identifiersDetailList.innerHTML = "";
+
         patient.identifier.forEach((identifier, index) => {
-          const idCard = document.createElement('div');
-          idCard.className = 'card mb-3';
-          
-          const idHeader = document.createElement('div');
-          idHeader.className = 'card-header d-flex justify-content-between align-items-center';
-          
-          const idTitle = document.createElement('h6');
-          idTitle.className = 'mb-0';
+          const idCard = document.createElement("div");
+          idCard.className = "card mb-3";
+
+          const idHeader = document.createElement("div");
+          idHeader.className =
+            "card-header d-flex justify-content-between align-items-center";
+
+          const idTitle = document.createElement("h6");
+          idTitle.className = "mb-0";
           idTitle.textContent = getIdentifierType(identifier.system);
-          
-          const actionButtons = document.createElement('div');
+
+          const actionButtons = document.createElement("div");
           actionButtons.innerHTML = `
             <button class="btn btn-sm btn-outline-primary me-1" title="Edit">
               <i class="fas fa-pencil-alt"></i>
@@ -1332,14 +1656,14 @@
               <i class="fas fa-trash-alt"></i>
             </button>
           `;
-          
+
           idHeader.appendChild(idTitle);
           idHeader.appendChild(actionButtons);
-          
-          const idBody = document.createElement('div');
-          idBody.className = 'card-body';
-          
-          const idContent = document.createElement('div');
+
+          const idBody = document.createElement("div");
+          idBody.className = "card-body";
+
+          const idContent = document.createElement("div");
           idContent.innerHTML = `
             <div class="row">
               <div class="col-md-4">
@@ -1352,52 +1676,79 @@
               </div>
             </div>
           `;
-          
+
           idBody.appendChild(idContent);
           idCard.appendChild(idHeader);
           idCard.appendChild(idBody);
           identifiersDetailList.appendChild(idCard);
         });
-        
+
         // Populate demographics form
-        document.getElementById('birthDate').value = patient.birthDate;
-        document.getElementById('gender').value = patient.gender;
-        
+        document.getElementById("birthDate").value = patient.birthDate;
+        document.getElementById("gender").value = patient.gender;
+
         // Set extension values
-        const birthSexExt = patient.extension.find(ext => ext.url.includes('birthsex'));
+        const birthSexExt = patient.extension.find((ext) =>
+          ext.url.includes("birthsex")
+        );
         if (birthSexExt) {
-          document.getElementById('birthSex').value = birthSexExt.valueCode;
+          document.getElementById("birthSex").value = birthSexExt.valueCode;
         }
-        
-        const genderIdentityExt = patient.extension.find(ext => ext.url.includes('genderIdentity'));
-        if (genderIdentityExt && genderIdentityExt.valueCodeableConcept && genderIdentityExt.valueCodeableConcept.coding.length > 0) {
-          document.getElementById('genderIdentity').value = genderIdentityExt.valueCodeableConcept.coding[0].code;
+
+        const genderIdentityExt = patient.extension.find((ext) =>
+          ext.url.includes("genderIdentity")
+        );
+        if (
+          genderIdentityExt &&
+          genderIdentityExt.valueCodeableConcept &&
+          genderIdentityExt.valueCodeableConcept.coding.length > 0
+        ) {
+          document.getElementById("genderIdentity").value =
+            genderIdentityExt.valueCodeableConcept.coding[0].code;
         }
-        
-        const raceExt = patient.extension.find(ext => ext.url.includes('race'));
-        if (raceExt && raceExt.valueCodeableConcept && raceExt.valueCodeableConcept.coding.length > 0) {
-          document.getElementById('race').value = raceExt.valueCodeableConcept.coding[0].code;
+
+        const raceExt = patient.extension.find((ext) =>
+          ext.url.includes("race")
+        );
+        if (
+          raceExt &&
+          raceExt.valueCodeableConcept &&
+          raceExt.valueCodeableConcept.coding.length > 0
+        ) {
+          document.getElementById("race").value =
+            raceExt.valueCodeableConcept.coding[0].code;
         }
-        
-        const ethnicityExt = patient.extension.find(ext => ext.url.includes('ethnicity'));
-        if (ethnicityExt && ethnicityExt.valueCodeableConcept && ethnicityExt.valueCodeableConcept.coding.length > 0) {
-          document.getElementById('ethnicity').value = ethnicityExt.valueCodeableConcept.coding[0].code;
+
+        const ethnicityExt = patient.extension.find((ext) =>
+          ext.url.includes("ethnicity")
+        );
+        if (
+          ethnicityExt &&
+          ethnicityExt.valueCodeableConcept &&
+          ethnicityExt.valueCodeableConcept.coding.length > 0
+        ) {
+          document.getElementById("ethnicity").value =
+            ethnicityExt.valueCodeableConcept.coding[0].code;
         }
-        
+
         // Set deceased status
-        document.getElementById('deceasedBoolean').checked = patient.deceasedBoolean || false;
+        document.getElementById("deceasedBoolean").checked =
+          patient.deceasedBoolean || false;
         if (patient.deceasedBoolean && patient.deceasedDateTime) {
-          document.querySelector('.deceased-date-container').classList.remove('d-none');
-          document.getElementById('deceasedDateTime').value = patient.deceasedDateTime.split('T')[0];
+          document
+            .querySelector(".deceased-date-container")
+            .classList.remove("d-none");
+          document.getElementById("deceasedDateTime").value =
+            patient.deceasedDateTime.split("T")[0];
         }
       }
-      
+
       // Update contact info tab with telecom and address data
       function updateContactInfoTab(patient) {
         // Populate contact points list
-        const contactPointsList = document.getElementById('contactPointsList');
-        contactPointsList.innerHTML = '';
-        
+        const contactPointsList = document.getElementById("contactPointsList");
+        contactPointsList.innerHTML = "";
+
         if (patient.telecom.length === 0) {
           contactPointsList.innerHTML = `
             <div class="info-card">
@@ -1406,17 +1757,20 @@
           `;
         } else {
           patient.telecom.forEach((telecom, index) => {
-            const contactCard = document.createElement('div');
-            contactCard.className = 'card mb-3';
-            
-            const contactHeader = document.createElement('div');
-            contactHeader.className = 'card-header d-flex justify-content-between align-items-center';
-            
-            const contactTitle = document.createElement('h6');
-            contactTitle.className = 'mb-0';
-            contactTitle.innerHTML = `<i class="${getContactIcon(telecom.system)}"></i> ${capitalizeFirstLetter(telecom.system)}`;
-            
-            const actionButtons = document.createElement('div');
+            const contactCard = document.createElement("div");
+            contactCard.className = "card mb-3";
+
+            const contactHeader = document.createElement("div");
+            contactHeader.className =
+              "card-header d-flex justify-content-between align-items-center";
+
+            const contactTitle = document.createElement("h6");
+            contactTitle.className = "mb-0";
+            contactTitle.innerHTML = `<i class="${getContactIcon(
+              telecom.system
+            )}"></i> ${capitalizeFirstLetter(telecom.system)}`;
+
+            const actionButtons = document.createElement("div");
             actionButtons.innerHTML = `
               <button class="btn btn-sm btn-outline-primary me-1" title="Edit">
                 <i class="fas fa-pencil-alt"></i>
@@ -1425,14 +1779,14 @@
                 <i class="fas fa-trash-alt"></i>
               </button>
             `;
-            
+
             contactHeader.appendChild(contactTitle);
             contactHeader.appendChild(actionButtons);
-            
-            const contactBody = document.createElement('div');
-            contactBody.className = 'card-body';
-            
-            const contactContent = document.createElement('div');
+
+            const contactBody = document.createElement("div");
+            contactBody.className = "card-body";
+
+            const contactContent = document.createElement("div");
             contactContent.innerHTML = `
               <div class="row mb-2">
                 <div class="col-md-8">
@@ -1441,30 +1795,36 @@
                 </div>
                 <div class="col-md-4">
                   <div class="data-label">Use</div>
-                  <div class="data-value">${capitalizeFirstLetter(telecom.use || 'unknown')}</div>
+                  <div class="data-value">${capitalizeFirstLetter(
+                    telecom.use || "unknown"
+                  )}</div>
                 </div>
               </div>
-              ${telecom.rank ? `
+              ${
+                telecom.rank
+                  ? `
               <div class="row">
                 <div class="col-12">
                   <div class="data-label">Rank</div>
                   <div class="data-value">${telecom.rank}</div>
                 </div>
               </div>
-              ` : ''}
+              `
+                  : ""
+              }
             `;
-            
+
             contactBody.appendChild(contactContent);
             contactCard.appendChild(contactHeader);
             contactCard.appendChild(contactBody);
             contactPointsList.appendChild(contactCard);
           });
         }
-        
+
         // Populate addresses list
-        const addressesList = document.getElementById('addressesList');
-        addressesList.innerHTML = '';
-        
+        const addressesList = document.getElementById("addressesList");
+        addressesList.innerHTML = "";
+
         if (patient.address.length === 0) {
           addressesList.innerHTML = `
             <div class="info-card">
@@ -1473,17 +1833,20 @@
           `;
         } else {
           patient.address.forEach((address, index) => {
-            const addressCard = document.createElement('div');
-            addressCard.className = 'card mb-3';
-            
-            const addressHeader = document.createElement('div');
-            addressHeader.className = 'card-header d-flex justify-content-between align-items-center';
-            
-            const addressTitle = document.createElement('h6');
-            addressTitle.className = 'mb-0';
-            addressTitle.textContent = `${capitalizeFirstLetter(address.use || 'unknown')} Address`;
-            
-            const actionButtons = document.createElement('div');
+            const addressCard = document.createElement("div");
+            addressCard.className = "card mb-3";
+
+            const addressHeader = document.createElement("div");
+            addressHeader.className =
+              "card-header d-flex justify-content-between align-items-center";
+
+            const addressTitle = document.createElement("h6");
+            addressTitle.className = "mb-0";
+            addressTitle.textContent = `${capitalizeFirstLetter(
+              address.use || "unknown"
+            )} Address`;
+
+            const actionButtons = document.createElement("div");
             actionButtons.innerHTML = `
               <button class="btn btn-sm btn-outline-primary me-1" title="Edit">
                 <i class="fas fa-pencil-alt"></i>
@@ -1492,51 +1855,65 @@
                 <i class="fas fa-trash-alt"></i>
               </button>
             `;
-            
+
             addressHeader.appendChild(addressTitle);
             addressHeader.appendChild(actionButtons);
-            
-            const addressBody = document.createElement('div');
-            addressBody.className = 'card-body';
-            
-            const addressContent = document.createElement('div');
+
+            const addressBody = document.createElement("div");
+            addressBody.className = "card-body";
+
+            const addressContent = document.createElement("div");
             addressContent.innerHTML = `
               <div class="mb-3">
                 <div class="data-label">Street Address</div>
-                ${address.line.map(line => `<div class="data-value">${line}</div>`).join('')}
+                ${address.line
+                  .map((line) => `<div class="data-value">${line}</div>`)
+                  .join("")}
               </div>
               <div class="row mb-3">
                 <div class="col-md-4">
                   <div class="data-label">City</div>
-                  <div class="data-value">${address.city || 'N/A'}</div>
+                  <div class="data-value">${address.city || "N/A"}</div>
                 </div>
                 <div class="col-md-4">
                   <div class="data-label">State</div>
-                  <div class="data-value">${address.state || 'N/A'}</div>
+                  <div class="data-value">${address.state || "N/A"}</div>
                 </div>
                 <div class="col-md-4">
                   <div class="data-label">Postal Code</div>
-                  <div class="data-value">${address.postalCode || 'N/A'}</div>
+                  <div class="data-value">${address.postalCode || "N/A"}</div>
                 </div>
               </div>
               <div class="row">
                 <div class="col-md-6">
                   <div class="data-label">Country</div>
-                  <div class="data-value">${address.country || 'N/A'}</div>
+                  <div class="data-value">${address.country || "N/A"}</div>
                 </div>
                 <div class="col-md-6">
                   <div class="data-label">Type</div>
-                  <div class="data-value">${capitalizeFirstLetter(address.type || 'physical')}</div>
+                  <div class="data-value">${capitalizeFirstLetter(
+                    address.type || "physical"
+                  )}</div>
                 </div>
               </div>
-              ${address.period && address.period.start ? `
+              ${
+                address.period && address.period.start
+                  ? `
               <div class="mt-3">
                 <div class="data-label">Period</div>
-                <div class="data-value">From: ${formatDate(address.period.start)}${address.period.end ? ` To: ${formatDate(address.period.end)}` : ' (Current)'}</div>
+                <div class="data-value">From: ${formatDate(
+                  address.period.start
+                )}${
+                      address.period.end
+                        ? ` To: ${formatDate(address.period.end)}`
+                        : " (Current)"
+                    }</div>
               </div>
-              ` : ''}
+              `
+                  : ""
+              }
             `;
-            
+
             addressBody.appendChild(addressContent);
             addressCard.appendChild(addressHeader);
             addressCard.appendChild(addressBody);
@@ -1544,288 +1921,350 @@
           });
         }
       }
-      
+
       // Update FHIR data tab with formatted FHIR resource
       function updateFHIRDataTab(patient) {
-        const container = document.getElementById('fhirDataContainer');
-        container.innerHTML = '';
-        
+        const container = document.getElementById("fhirDataContainer");
+        container.innerHTML = "";
+
         // Create sections for different parts of the FHIR resource
-        
+
         // Identifiers section
-        const identifiersSection = createFHIRSection('Identifiers');
+        const identifiersSection = createFHIRSection("Identifiers");
         patient.identifier.forEach((id, index) => {
-          addFHIRProperty(identifiersSection, `Identifier ${index + 1}`, `${id.value} (${getIdentifierType(id.system)})`);
-          addFHIRProperty(identifiersSection, `System ${index + 1}`, id.system, 'ml-3');
+          addFHIRProperty(
+            identifiersSection,
+            `Identifier ${index + 1}`,
+            `${id.value} (${getIdentifierType(id.system)})`
+          );
+          addFHIRProperty(
+            identifiersSection,
+            `System ${index + 1}`,
+            id.system,
+            "ml-3"
+          );
         });
         container.appendChild(identifiersSection);
-        
+
         // Names section
-        const namesSection = createFHIRSection('Names');
+        const namesSection = createFHIRSection("Names");
         patient.name.forEach((name, index) => {
-          const nameStr = `${name.prefix.join(' ')} ${name.given.join(' ')} ${name.family} ${name.suffix.join(' ')}`.trim();
-          addFHIRProperty(namesSection, `Name ${index + 1}`, `${nameStr} (${capitalizeFirstLetter(name.use || 'unknown')})`);
+          const nameStr = `${name.prefix.join(" ")} ${name.given.join(" ")} ${
+            name.family
+          } ${name.suffix.join(" ")}`.trim();
+          addFHIRProperty(
+            namesSection,
+            `Name ${index + 1}`,
+            `${nameStr} (${capitalizeFirstLetter(name.use || "unknown")})`
+          );
         });
         container.appendChild(namesSection);
-        
+
         // Demographics section
-        const demographicsSection = createFHIRSection('Demographics');
-        addFHIRProperty(demographicsSection, 'Gender', capitalizeFirstLetter(patient.gender));
-        addFHIRProperty(demographicsSection, 'Birth Date', formatDate(patient.birthDate));
-        
+        const demographicsSection = createFHIRSection("Demographics");
+        addFHIRProperty(
+          demographicsSection,
+          "Gender",
+          capitalizeFirstLetter(patient.gender)
+        );
+        addFHIRProperty(
+          demographicsSection,
+          "Birth Date",
+          formatDate(patient.birthDate)
+        );
+
         if (patient.deceasedBoolean) {
-          addFHIRProperty(demographicsSection, 'Deceased', 'Yes');
+          addFHIRProperty(demographicsSection, "Deceased", "Yes");
           if (patient.deceasedDateTime) {
-            addFHIRProperty(demographicsSection, 'Date of Death', formatDate(patient.deceasedDateTime));
+            addFHIRProperty(
+              demographicsSection,
+              "Date of Death",
+              formatDate(patient.deceasedDateTime)
+            );
           }
         } else {
-          addFHIRProperty(demographicsSection, 'Deceased', 'No');
+          addFHIRProperty(demographicsSection, "Deceased", "No");
         }
-        
+
         container.appendChild(demographicsSection);
-        
+
         // Extensions section
-        const extensionsSection = createFHIRSection('US Core Extensions');
-        
-        patient.extension.forEach(ext => {
-          if (ext.url.includes('race')) {
+        const extensionsSection = createFHIRSection("US Core Extensions");
+
+        patient.extension.forEach((ext) => {
+          if (ext.url.includes("race")) {
             const race = ext.valueCodeableConcept.coding[0].display;
-            addFHIRProperty(extensionsSection, 'Race', race);
-          } else if (ext.url.includes('ethnicity')) {
+            addFHIRProperty(extensionsSection, "Race", race);
+          } else if (ext.url.includes("ethnicity")) {
             const ethnicity = ext.valueCodeableConcept.coding[0].display;
-            addFHIRProperty(extensionsSection, 'Ethnicity', ethnicity);
-          } else if (ext.url.includes('birthsex')) {
-            const birthSex = ext.valueCode === 'M' ? 'Male' : ext.valueCode === 'F' ? 'Female' : 'Unknown';
-            addFHIRProperty(extensionsSection, 'Birth Sex', birthSex);
-          } else if (ext.url.includes('genderIdentity')) {
+            addFHIRProperty(extensionsSection, "Ethnicity", ethnicity);
+          } else if (ext.url.includes("birthsex")) {
+            const birthSex =
+              ext.valueCode === "M"
+                ? "Male"
+                : ext.valueCode === "F"
+                ? "Female"
+                : "Unknown";
+            addFHIRProperty(extensionsSection, "Birth Sex", birthSex);
+          } else if (ext.url.includes("genderIdentity")) {
             const genderIdentity = ext.valueCodeableConcept.coding[0].display;
-            addFHIRProperty(extensionsSection, 'Gender Identity', genderIdentity);
+            addFHIRProperty(
+              extensionsSection,
+              "Gender Identity",
+              genderIdentity
+            );
           }
         });
-        
+
         container.appendChild(extensionsSection);
-        
+
         // Contact points section
-        const telecomSection = createFHIRSection('Contact Points');
+        const telecomSection = createFHIRSection("Contact Points");
         patient.telecom.forEach((telecom, index) => {
-          addFHIRProperty(telecomSection, `${capitalizeFirstLetter(telecom.system)} (${capitalizeFirstLetter(telecom.use || 'unknown')})`, telecom.value);
+          addFHIRProperty(
+            telecomSection,
+            `${capitalizeFirstLetter(telecom.system)} (${capitalizeFirstLetter(
+              telecom.use || "unknown"
+            )})`,
+            telecom.value
+          );
         });
         container.appendChild(telecomSection);
-        
+
         // Addresses section
-        const addressesSection = createFHIRSection('Addresses');
+        const addressesSection = createFHIRSection("Addresses");
         patient.address.forEach((address, index) => {
           const addressStr = formatAddress(address);
-          addFHIRProperty(addressesSection, `${capitalizeFirstLetter(address.use || 'unknown')} Address`, addressStr);
+          addFHIRProperty(
+            addressesSection,
+            `${capitalizeFirstLetter(address.use || "unknown")} Address`,
+            addressStr
+          );
         });
         container.appendChild(addressesSection);
-        
+
         // Meta section
-        const metaSection = createFHIRSection('FHIR Profile');
-        patient.meta.profile.forEach(profile => {
-          addFHIRProperty(metaSection, 'Profile', profile);
+        const metaSection = createFHIRSection("FHIR Profile");
+        patient.meta.profile.forEach((profile) => {
+          addFHIRProperty(metaSection, "Profile", profile);
         });
         container.appendChild(metaSection);
       }
-      
+
       // Set up event listeners for interactive elements
       function setupEventListeners(patient) {
         // Download FHIR data button
-        document.getElementById('downloadFhirBtn').addEventListener('click', function() {
-          downloadFHIRData(patient);
-        });
-        
+        document
+          .getElementById("downloadFhirBtn")
+          .addEventListener("click", function () {
+            downloadFHIRData(patient);
+          });
+
         // Copy FHIR data button
-        document.getElementById('copyFhirBtn').addEventListener('click', function() {
-          const jsonText = JSON.stringify(patient, null, 2);
-          navigator.clipboard.writeText(jsonText).then(function() {
-            Swal.fire({
-              icon: 'success',
-              title: 'Copied!',
-              text: 'FHIR data copied to clipboard',
-              confirmButtonColor: '#4ecdc4',
-              timer: 1500
+        document
+          .getElementById("copyFhirBtn")
+          .addEventListener("click", function () {
+            const jsonText = JSON.stringify(patient, null, 2);
+            navigator.clipboard.writeText(jsonText).then(function () {
+              Swal.fire({
+                icon: "success",
+                title: "Copied!",
+                text: "FHIR data copied to clipboard",
+                confirmButtonColor: "#4ecdc4",
+                timer: 1500,
+              });
             });
           });
-        });
-        
+
         // Deceased checkbox toggle
-        document.getElementById('deceasedBoolean').addEventListener('change', function() {
-          const deceasedDateContainer = document.querySelector('.deceased-date-container');
-          if (this.checked) {
-            deceasedDateContainer.classList.remove('d-none');
-          } else {
-            deceasedDateContainer.classList.add('d-none');
-          }
-        });
-        
-        // Demographics form submission
-        document.getElementById('demographicsForm').addEventListener('submit', function(e) {
-          e.preventDefault();
-          
-          Swal.fire({
-            icon: 'success',
-            title: 'Saved!',
-            text: 'Demographics information has been updated',
-            confirmButtonColor: '#4ecdc4',
-            timer: 1500
+        document
+          .getElementById("deceasedBoolean")
+          .addEventListener("change", function () {
+            const deceasedDateContainer = document.querySelector(
+              ".deceased-date-container"
+            );
+            if (this.checked) {
+              deceasedDateContainer.classList.remove("d-none");
+            } else {
+              deceasedDateContainer.classList.add("d-none");
+            }
           });
-        });
-        
+
+        // Demographics form submission
+        document
+          .getElementById("demographicsForm")
+          .addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            Swal.fire({
+              icon: "success",
+              title: "Saved!",
+              text: "Demographics information has been updated",
+              confirmButtonColor: "#4ecdc4",
+              timer: 1500,
+            });
+          });
+
         // Add contact button
-        document.getElementById('addContactBtn').addEventListener('click', function() {
-          showAddContactModal();
-        });
-        
+        document
+          .getElementById("addContactBtn")
+          .addEventListener("click", function () {
+            showAddContactModal();
+          });
+
         // Add address button
-        document.getElementById('addAddressBtn').addEventListener('click', function() {
-          showAddAddressModal();
-        });
-        
+        document
+          .getElementById("addAddressBtn")
+          .addEventListener("click", function () {
+            showAddAddressModal();
+          });
+
         // Add emergency contact button
-        document.getElementById('addEmergencyContactBtn').addEventListener('click', function() {
-          showAddEmergencyContactModal();
-        });
+        document
+          .getElementById("addEmergencyContactBtn")
+          .addEventListener("click", function () {
+            showAddEmergencyContactModal();
+          });
       }
-      
+
       // Helper function to create a FHIR section
       function createFHIRSection(title) {
-        const section = document.createElement('div');
-        section.className = 'fhir-section';
-        
-        const sectionTitle = document.createElement('h5');
-        sectionTitle.className = 'fhir-section-title';
+        const section = document.createElement("div");
+        section.className = "fhir-section";
+
+        const sectionTitle = document.createElement("h5");
+        sectionTitle.className = "fhir-section-title";
         sectionTitle.textContent = title;
-        
+
         section.appendChild(sectionTitle);
         return section;
       }
-      
+
       // Helper function to add a property to the FHIR display
-      function addFHIRProperty(container, name, value, extraClass = '') {
-        const propertyDiv = document.createElement('div');
+      function addFHIRProperty(container, name, value, extraClass = "") {
+        const propertyDiv = document.createElement("div");
         propertyDiv.className = `fhir-property ${extraClass}`;
-        
-        const nameSpan = document.createElement('span');
-        nameSpan.className = 'fhir-property-name';
-        nameSpan.textContent = name + ': ';
-        
-        const valueSpan = document.createElement('span');
-        valueSpan.className = 'fhir-property-value';
-        valueSpan.textContent = value || 'Not provided';
-        
+
+        const nameSpan = document.createElement("span");
+        nameSpan.className = "fhir-property-name";
+        nameSpan.textContent = name + ": ";
+
+        const valueSpan = document.createElement("span");
+        valueSpan.className = "fhir-property-value";
+        valueSpan.textContent = value || "Not provided";
+
         propertyDiv.appendChild(nameSpan);
         propertyDiv.appendChild(valueSpan);
-        
+
         container.appendChild(propertyDiv);
       }
-      
+
       // Helper function to format a date
       function formatDate(dateString) {
-        if (!dateString) return 'Not provided';
-        
+        if (!dateString) return "Not provided";
+
         const date = new Date(dateString);
-        return date.toLocaleDateString('en-US', {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric'
+        return date.toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
         });
       }
-      
+
       // Helper function to format an address
       function formatAddress(address) {
-        if (!address) return 'Not provided';
-        
+        if (!address) return "Not provided";
+
         const parts = [];
-        
+
         if (address.line && address.line.length > 0) {
-          parts.push(address.line.join(', '));
+          parts.push(address.line.join(", "));
         }
-        
+
         const cityStateZip = [];
         if (address.city) cityStateZip.push(address.city);
         if (address.state) cityStateZip.push(address.state);
         if (address.postalCode) cityStateZip.push(address.postalCode);
-        
+
         if (cityStateZip.length > 0) {
-          parts.push(cityStateZip.join(', '));
+          parts.push(cityStateZip.join(", "));
         }
-        
+
         if (address.country) {
           parts.push(address.country);
         }
-        
-        return parts.join(', ');
+
+        return parts.join(", ");
       }
-      
+
       // Helper function to get an icon for a contact system
       function getContactIcon(system) {
         switch (system) {
-          case 'phone':
-            return 'fas fa-phone';
-          case 'email':
-            return 'fas fa-envelope';
-          case 'fax':
-            return 'fas fa-fax';
-          case 'pager':
-            return 'fas fa-pager';
-          case 'url':
-            return 'fas fa-globe';
-          case 'sms':
-            return 'fas fa-sms';
+          case "phone":
+            return "fas fa-phone";
+          case "email":
+            return "fas fa-envelope";
+          case "fax":
+            return "fas fa-fax";
+          case "pager":
+            return "fas fa-pager";
+          case "url":
+            return "fas fa-globe";
+          case "sms":
+            return "fas fa-sms";
           default:
-            return 'fas fa-comment';
+            return "fas fa-comment";
         }
       }
-      
+
       // Helper function to get a readable identifier type
       function getIdentifierType(system) {
-        if (system.includes('mrn') || system.includes('id')) {
-          return 'MRN';
-        } else if (system.includes('ssn')) {
-          return 'SSN';
-        } else if (system.includes('passport')) {
-          return 'Passport';
-        } else if (system.includes('driver')) {
-          return 'Driver\'s License';
+        if (system.includes("mrn") || system.includes("id")) {
+          return "MRN";
+        } else if (system.includes("ssn")) {
+          return "SSN";
+        } else if (system.includes("passport")) {
+          return "Passport";
+        } else if (system.includes("driver")) {
+          return "Driver's License";
         } else {
-          return 'Identifier';
+          return "Identifier";
         }
       }
-      
+
       // Helper function to capitalize first letter
       function capitalizeFirstLetter(string) {
-        if (!string) return '';
+        if (!string) return "";
         return string.charAt(0).toUpperCase() + string.slice(1);
       }
-      
+
       // Download FHIR data as JSON file
       function downloadFHIRData(patient) {
         const jsonString = JSON.stringify(patient, null, 2);
-        const blob = new Blob([jsonString], { type: 'application/json' });
+        const blob = new Blob([jsonString], { type: "application/json" });
         const url = URL.createObjectURL(blob);
-        
-        const a = document.createElement('a');
+
+        const a = document.createElement("a");
         a.href = url;
         a.download = `patient_${patient.identifier[0].value}_fhir.json`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
-        
+
         Swal.fire({
-          icon: 'success',
-          title: 'Downloaded!',
-          text: 'FHIR data has been downloaded',
-          confirmButtonColor: '#4ecdc4',
-          timer: 1500
+          icon: "success",
+          title: "Downloaded!",
+          text: "FHIR data has been downloaded",
+          confirmButtonColor: "#4ecdc4",
+          timer: 1500,
         });
       }
-      
+
       // Show modal to add a new contact point
       function showAddContactModal() {
         Swal.fire({
-          title: 'Add Contact Point',
+          title: "Add Contact Point",
           html: `
             <form id="addContactForm" class="text-start">
               <div class="mb-3">
@@ -1861,39 +2300,39 @@
             </form>
           `,
           showCancelButton: true,
-          confirmButtonText: 'Add',
-          confirmButtonColor: '#4ecdc4',
+          confirmButtonText: "Add",
+          confirmButtonColor: "#4ecdc4",
           focusConfirm: false,
           preConfirm: () => {
-            const form = document.getElementById('addContactForm');
+            const form = document.getElementById("addContactForm");
             if (!form.checkValidity()) {
               form.reportValidity();
               return false;
             }
             return {
-              system: document.getElementById('contactSystem').value,
-              value: document.getElementById('contactValue').value,
-              use: document.getElementById('contactUse').value,
-              rank: document.getElementById('contactRank').value || null
+              system: document.getElementById("contactSystem").value,
+              value: document.getElementById("contactValue").value,
+              use: document.getElementById("contactUse").value,
+              rank: document.getElementById("contactRank").value || null,
             };
-          }
+          },
         }).then((result) => {
           if (result.isConfirmed) {
             Swal.fire({
-              icon: 'success',
-              title: 'Contact Added!',
-              text: 'The contact point has been added successfully',
-              confirmButtonColor: '#4ecdc4',
-              timer: 1500
+              icon: "success",
+              title: "Contact Added!",
+              text: "The contact point has been added successfully",
+              confirmButtonColor: "#4ecdc4",
+              timer: 1500,
             });
           }
         });
       }
-      
+
       // Show modal to add a new address
       function showAddAddressModal() {
         Swal.fire({
-          title: 'Add Address',
+          title: "Add Address",
           html: `
             <form id="addAddressForm" class="text-start">
               <div class="mb-3">
@@ -1944,45 +2383,45 @@
             </form>
           `,
           showCancelButton: true,
-          confirmButtonText: 'Add',
-          confirmButtonColor: '#4ecdc4',
+          confirmButtonText: "Add",
+          confirmButtonColor: "#4ecdc4",
           focusConfirm: false,
           preConfirm: () => {
-            const form = document.getElementById('addAddressForm');
+            const form = document.getElementById("addAddressForm");
             if (!form.checkValidity()) {
               form.reportValidity();
               return false;
             }
             return {
-              use: document.getElementById('addressUse').value,
-              type: document.getElementById('addressType').value,
+              use: document.getElementById("addressUse").value,
+              type: document.getElementById("addressType").value,
               line: [
-                document.getElementById('addressLine1').value,
-                document.getElementById('addressLine2').value
+                document.getElementById("addressLine1").value,
+                document.getElementById("addressLine2").value,
               ].filter(Boolean),
-              city: document.getElementById('addressCity').value,
-              state: document.getElementById('addressState').value,
-              postalCode: document.getElementById('addressPostalCode').value,
-              country: document.getElementById('addressCountry').value
+              city: document.getElementById("addressCity").value,
+              state: document.getElementById("addressState").value,
+              postalCode: document.getElementById("addressPostalCode").value,
+              country: document.getElementById("addressCountry").value,
             };
-          }
+          },
         }).then((result) => {
           if (result.isConfirmed) {
             Swal.fire({
-              icon: 'success',
-              title: 'Address Added!',
-              text: 'The address has been added successfully',
-              confirmButtonColor: '#4ecdc4',
-              timer: 1500
+              icon: "success",
+              title: "Address Added!",
+              text: "The address has been added successfully",
+              confirmButtonColor: "#4ecdc4",
+              timer: 1500,
             });
           }
         });
       }
-      
+
       // Show modal to add a new emergency contact
       function showAddEmergencyContactModal() {
         Swal.fire({
-          title: 'Add Emergency Contact',
+          title: "Add Emergency Contact",
           html: `
             <form id="addEmergencyContactForm" class="text-start">
               <div class="mb-3">
@@ -2004,39 +2443,43 @@
             </form>
           `,
           showCancelButton: true,
-          confirmButtonText: 'Add',
-          confirmButtonColor: '#4ecdc4',
+          confirmButtonText: "Add",
+          confirmButtonColor: "#4ecdc4",
           focusConfirm: false,
           preConfirm: () => {
-            const form = document.getElementById('addEmergencyContactForm');
+            const form = document.getElementById("addEmergencyContactForm");
             if (!form.checkValidity()) {
               form.reportValidity();
               return false;
             }
             return {
-              name: document.getElementById('contactName').value,
-              relationship: document.getElementById('contactRelationship').value,
-              phone: document.getElementById('contactPhone').value,
-              email: document.getElementById('contactEmail').value || null
+              name: document.getElementById("contactName").value,
+              relationship: document.getElementById("contactRelationship")
+                .value,
+              phone: document.getElementById("contactPhone").value,
+              email: document.getElementById("contactEmail").value || null,
             };
-          }
+          },
         }).then((result) => {
           if (result.isConfirmed) {
             // Update emergency contacts list
-            const emergencyContactsList = document.getElementById('emergencyContactsList');
-            emergencyContactsList.innerHTML = '';
-            
-            const contactCard = document.createElement('div');
-            contactCard.className = 'card mb-3';
-            
-            const contactHeader = document.createElement('div');
-            contactHeader.className = 'card-header d-flex justify-content-between align-items-center';
-            
-            const contactTitle = document.createElement('h6');
-            contactTitle.className = 'mb-0';
+            const emergencyContactsList = document.getElementById(
+              "emergencyContactsList"
+            );
+            emergencyContactsList.innerHTML = "";
+
+            const contactCard = document.createElement("div");
+            contactCard.className = "card mb-3";
+
+            const contactHeader = document.createElement("div");
+            contactHeader.className =
+              "card-header d-flex justify-content-between align-items-center";
+
+            const contactTitle = document.createElement("h6");
+            contactTitle.className = "mb-0";
             contactTitle.textContent = result.value.name;
-            
-            const actionButtons = document.createElement('div');
+
+            const actionButtons = document.createElement("div");
             actionButtons.innerHTML = `
               <button class="btn btn-sm btn-outline-primary me-1" title="Edit">
                 <i class="fas fa-pencil-alt"></i>
@@ -2045,14 +2488,14 @@
                 <i class="fas fa-trash-alt"></i>
               </button>
             `;
-            
+
             contactHeader.appendChild(contactTitle);
             contactHeader.appendChild(actionButtons);
-            
-            const contactBody = document.createElement('div');
-            contactBody.className = 'card-body';
-            
-            const contactContent = document.createElement('div');
+
+            const contactBody = document.createElement("div");
+            contactBody.className = "card-body";
+
+            const contactContent = document.createElement("div");
             contactContent.innerHTML = `
               <div class="row mb-2">
                 <div class="col-md-6">
@@ -2064,27 +2507,31 @@
                   <div class="data-value">${result.value.phone}</div>
                 </div>
               </div>
-              ${result.value.email ? `
+              ${
+                result.value.email
+                  ? `
               <div class="row">
                 <div class="col-12">
                   <div class="data-label">Email</div>
                   <div class="data-value">${result.value.email}</div>
                 </div>
               </div>
-              ` : ''}
+              `
+                  : ""
+              }
             `;
-            
+
             contactBody.appendChild(contactContent);
             contactCard.appendChild(contactHeader);
             contactCard.appendChild(contactBody);
             emergencyContactsList.appendChild(contactCard);
-            
+
             Swal.fire({
-              icon: 'success',
-              title: 'Contact Added!',
-              text: 'The emergency contact has been added successfully',
-              confirmButtonColor: '#4ecdc4',
-              timer: 1500
+              icon: "success",
+              title: "Contact Added!",
+              text: "The emergency contact has been added successfully",
+              confirmButtonColor: "#4ecdc4",
+              timer: 1500,
             });
           }
         });
@@ -2092,4 +2539,3 @@
     </script>
   </body>
 </html>
-

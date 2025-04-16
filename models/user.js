@@ -30,7 +30,7 @@ const UserSchema = new mongoose.Schema({
   },
   userType: {
     type: String,
-    enum: ["Patient", "Patient-Navigator", "Caregiver"],
+    enum: ["Patient", "Patient-Navigator", "Caregiver", "Doctor"],
     required: true,
   },
 });
