@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MedConnect - Progress Tracking</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" rel="stylesheet" />
+    <style>
+      :root {
+        --primary-blue: #2a5c82;
+        --secondary-blue: #5c9baf;
+        --accent-teal: #4ecdc4;
+      }
+
+      body {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        min-height: 100vh;
+      }
+
+      .medical-header {
+        background: var(--primary-blue);
+        padding: 1rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .content-container {
+        background: rgba(255, 255, 255, 0.95);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        border-radius: 15px;
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+      }
+
+      .btn-medical {
+        background: var(--accent-teal);
+        color: white;
+        padding: 12px 30px;
+        transition: all 0.3s ease;
+      }
+
+      .btn-medical:hover {
+        background: var(--secondary-blue);
+        transform: translateY(-2px);
+      }
+
+      .progress-card {
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+        border: 1px solid #e2e8f0;
+        margin-bottom: 1.5rem;
+      }
+
+      .progress-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .status-badge {
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-weight: 500;
+      }
+
+      .status-completed { background-color: #d1fae5; color: #065f46; }
+      .status-pending { background-color: #fef3c7; color: #92400e; }
+      .status-overdue { background-color: #fee2e2; color: #991b1b; }
+      .status-critical { background-color: #fecdd3; color: #be123c; }
+
+      .timeline-item {
+        position: relative;
+        padding-left: 30px;
+        margin-bottom: 1.5rem;
+      }
+
+      .timeline-item::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 2px;
+        background-color: var(--accent-teal);
+      }
+
+      .timeline-item::after {
+        content: '';
+        position: absolute;
+        left: -4px;
+        top: 0;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: var(--accent-teal);
+      }
+
+      .filter-section {
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .chart-container {
+        height: 300px;
+        margin-bottom: 2rem;
+      }
+
+      .notification-badge {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background: #ef4444;
+        color: white;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        font-size: 0.75rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .quick-actions {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        z-index: 1000;
+      }
+
+      .quick-action-btn {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: var(--accent-teal);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 1rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+      }
+
+      .quick-action-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar medical-header">
+      <div class="container">
+        <a class="navbar-brand text-white" href="#">
+          <i class="fas fa-hospital me-2"></i>MedConnect - Navigator Dashboard
+        </a>
+        <div class="d-flex align-items-center">
+          <div class="position-relative me-4">
+            <button class="btn btn-outline-light" onclick="showNotifications()">
+              <i class="fas fa-bell"></i>
+              <span class="notification-badge">3</span>
+            </button>
+          </div>
+          <a href="care-plan.html" class="btn btn-outline-light me-2">
+            <i class="fas fa-clipboard-list me-2"></i>Care Plan
+          </a>
+          <a href="learning.html" class="btn btn-outline-light">
+            <i class="fas fa-graduation-cap me-2"></i>Learning
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+      <div class="content-container p-4 p-md-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h2 style="color: var(--primary-blue);">Patient Progress Tracking</h2>
+          <button class="btn btn-medical" onclick="addNewPatient()">
+            <i class="fas fa-plus me-2"></i>Add New Patient
+          </button>
+        </div>
+
+        <div class="row mb-4">
+          <div class="col-md-3">
+            <div class="progress-card p-4">
+              <h5 class="mb-3">Active Patients</h5>
+              <h2 class="mb-0" style="color: var(--primary-blue);">24</h2>
+              <p class="text-muted mb-0"><small>↑ 12% from last month</small></p>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="progress-card p-4">
+              <h5 class="mb-3">Pending Tasks</h5>
+              <h2 class="mb-0" style="color: var(--secondary-blue);">12</h2>
+              <p class="text-muted mb-0"><small>3 high priority</small></p>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="progress-card p-4">
+              <h5 class="mb-3">Completed Tasks</h5>
+              <h2 class="mb-0" style="color: var(--accent-teal);">45</h2>
+              <p class="text-muted mb-0"><small>This week</small></p>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="progress-card p-4">
+              <h5 class="mb-3">Critical Cases</h5>
+              <h2 class="mb-0" style="color: #ef4444;">3</h2>
+              <p class="text-muted mb-0"><small>Needs immediate attention</small></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="filter-section mb-4">
+          <div class="row g-3">
+            <div class="col-md-4">
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="fas fa-search"></i>
+                </span>
+                <input type="text" class="form-control" placeholder="Search patients..." id="searchPatients">
+              </div>
+            </div>
+            <div class="col-md-3">
+              <select class="form-select" id="statusFilter">
+                <option value="">All Statuses</option>
+                <option value="active">Active</option>
+                <option value="pending">Pending</option>
+                <option value="completed">Completed</option>
+                <option value="critical">Critical</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <input type="text" class="form-control" id="dateRange" placeholder="Date Range">
+            </div>
+            <div class="col-md-2">
+              <button class="btn btn-medical w-100" onclick="applyFilters()">
+                <i class="fas fa-filter me-2"></i>Apply
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="chart-container mb-4">
+          <canvas id="progressChart"></canvas>
+        </div>
+
+        <div id="patientsList">
+          <!-- Patient Progress Cards -->
+          <div class="progress-card p-4">
+            <div class="d-flex justify-content-between align-items-start mb-3">
+              <div>
+                <h5>Sarah Johnson</h5>
+                <p class="text-muted mb-0">MRN: 1234567 • Breast Cancer Stage II</p>
+              </div>
+              <span class="status-badge status-pending">2 Tasks Pending</span>
+            </div>
+            <div class="timeline-item ps-4">
+              <p class="mb-1"><strong>Next Appointment:</strong> March 15, 2024</p>
+              <p class="mb-1"><strong>Last Contact:</strong> 2 days ago</p>
+              <p class="mb-0"><strong>Care Plan Progress:</strong> 75%</p>
+            </div>
+            <div class="progress mb-3">
+              <div class="progress-bar bg-success" role="progressbar" style="width: 75%"></div>
+            </div>
+            <div class="d-flex justify-content-end">
+              <button class="btn btn-outline-secondary me-2" onclick="viewDetails('1234567')">
+                <i class="fas fa-eye me-2"></i>View Details
+              </button>
+              <button class="btn btn-outline-secondary me-2" onclick="scheduleAppointment('1234567')">
+                <i class="fas fa-calendar me-2"></i>Schedule
+              </button>
+              <button class="btn btn-medical" onclick="updateProgress('1234567')">
+                <i class="fas fa-edit me-2"></i>Update Progress
+              </button>
+            </div>
+          </div>
+
+          <div class="progress-card p-4">
+            <div class="d-flex justify-content-between align-items-start mb-3">
+              <div>
+                <h5>Michael Chen</h5>
+                <p class="text-muted mb-0">MRN: 1234568 • Lung Cancer Stage III</p>
+              </div>
+              <span class="status-badge status-critical">Critical</span>
+            </div>
+            <div class="timeline-item ps-4">
+              <p class="mb-1"><strong>Next Appointment:</strong> March 12, 2024</p>
+              <p class="mb-1"><strong>Last Contact:</strong> 5 days ago</p>
+              <p class="mb-0"><strong>Care Plan Progress:</strong> 45%</p>
+            </div>
+            <div class="progress mb-3">
+              <div class="progress-bar bg-warning" role="progressbar" style="width: 45%"></div>
+            </div>
+            <div class="d-flex justify-content-end">
+              <button class="btn btn-outline-secondary me-2" onclick="viewDetails('1234568')">
+                <i class="fas fa-eye me-2"></i>View Details
+              </button>
+              <button class="btn btn-outline-secondary me-2" onclick="scheduleAppointment('1234568')">
+                <i class="fas fa-calendar me-2"></i>Schedule
+              </button>
+              <button class="btn btn-medical" onclick="updateProgress('1234568')">
+                <i class="fas fa-edit me-2"></i>Update Progress
+              </button>
+            </div>
+          </div>
+
+          <div class="progress-card p-4">
+            <div class="d-flex justify-content-between align-items-start mb-3">
+              <div>
+                <h5>Emily Rodriguez</h5>
+                <p class="text-muted mb-0">MRN: 1234569 • Colorectal Cancer Stage I</p>
+              </div>
+              <span class="status-badge status-completed">On Track</span>
+            </div>
+            <div class="timeline-item ps-4">
+              <p class="mb-1"><strong>Next Appointment:</strong> March 20, 2024</p>
+              <p class="mb-1"><strong>Last Contact:</strong> Today</p>
+              <p class="mb-0"><strong>Care Plan Progress:</strong> 90%</p>
+            </div>
+            <div class="progress mb-3">
+              <div class="progress-bar bg-success" role="progressbar" style="width: 90%"></div>
+            </div>
+            <div class="d-flex justify-content-end">
+              <button class="btn btn-outline-secondary me-2" onclick="viewDetails('1234569')">
+                <i class="fas fa-eye me-2"></i>View Details
+              </button>
+              <button class="btn btn-outline-secondary me-2" onclick="scheduleAppointment('1234569')">
+                <i class="fas fa-calendar me-2"></i>Schedule
+              </button>
+              <button class="btn btn-medical" onclick="updateProgress('1234569')">
+                <i class="fas fa-edit me-2"></i>Update Progress
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="quick-actions">
+          <button class="quick-action-btn" onclick="showEmergencyContacts()" title="Emergency Contacts">
+            <i class="fas fa-phone"></i>
+          </button>
+          <button class="quick-action-btn" onclick="showQuickNotes()" title="Quick Notes">
+            <i class="fas fa-sticky-note"></i>
+          </button>
+          <button class="quick-action-btn" onclick="exportData()" title="Export Data">
+            <i class="fas fa-download"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/moment/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <script>
+      // Initialize date range picker
+      $('#dateRange').daterangepicker({
+        opens: 'left',
+        autoUpdateInput: false,
+        locale: {
+          cancelLabel: 'Clear'
+        }
+      });
+
+      // Initialize progress chart
+      const ctx = document.getElementById('progressChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+          datasets: [{
+            label: 'Patient Progress',
+            data: [65, 70, 75, 72, 80, 85],
+            borderColor: '#4ecdc4',
+            tension: 0.4
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            title: {
+              display: true,
+              text: 'Overall Patient Progress Trend'
+            }
+          }
+        }
+      });
+
+      function addNewPatient() {
+        Swal.fire({
+          title: 'Add New Patient',
+          html: `
+            <input type="text" id="patientName" class="swal2-input" placeholder="Patient Name">
+            <input type="text" id="mrn" class="swal2-input" placeholder="MRN">
+            <select id="diagnosis" class="swal2-input">
+              <option value="">Select Diagnosis</option>
+              <option value="breast">Breast Cancer</option>
+              <option value="lung">Lung Cancer</option>
+              <option value="colon">Colon Cancer</option>
+              <option value="prostate">Prostate Cancer</option>
+              <option value="melanoma">Melanoma</option>
+            </select>
+            <select id="stage" class="swal2-input mt-3">
+              <option value="">Select Stage</option>
+              <option value="1">Stage I</option>
+              <option value="2">Stage II</option>
+              <option value="3">Stage III</option>
+              <option value="4">Stage IV</option>
+            </select>
+            <input type="text" id="primaryPhysician" class="swal2-input" placeholder="Primary Physician">
+          `,
+          showCancelButton: true,
+          confirmButtonText: 'Add Patient',
+          confirmButtonColor: '#4ecdc4',
+          preConfirm: () => {
+            return {
+              name: document.getElementById('patientName').value,
+              mrn: document.getElementById('mrn').value,
+              diagnosis: document.getElementById('diagnosis').value,
+              stage: document.getElementById('stage').value,
+              physician: document.getElementById('primaryPhysician').value
+            }
+          }
+        }).then((result) => {
+          if (result.isConfirmed) {
+            Swal.fire('Success', 'Patient added successfully', 'success');
+          }
+        });
+      }
+
+      function viewDetails(mrn) {
+        window.location.href = `patient-details.html?mrn=${mrn}`;
+      }
+
+      function scheduleAppointment(mrn) {
+        Swal.fire({
+          title: 'Schedule Appointment',
+          html: `
+            <input type="datetime-local" id="appointmentDate" class="swal2-input">
+            <select id="appointmentType" class="swal2-input">
+              <option value="followup">Follow-up</option>
+              <option value="treatment">Treatment</option>
+              <option value="consultation">Consultation</option>
+              <option value="testing">Testing</option>
+            </select>
+            <textarea id="appointmentNotes" class="swal2-textarea" placeholder="Additional Notes"></textarea>
+          `,
+          showCancelButton: true,
+          confirmButtonText: 'Schedule',
+          confirmButtonColor: '#4ecdc4'
+        });
+      }
+
+      function updateProgress(mrn) {
+        Swal.fire({
+          title: 'Update Progress',
+          html: `
+            <div class="mb-3">
+              <label class="form-label">Progress Status</label>
+              <select id="progressStatus" class="swal2-input">
+                <option value="completed">Completed</option>
+                <option value="in-progress">In Progress</option>
+                <option value="pending">Pending</option>
+                <option value="critical">Critical</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Current Phase</label>
+              <select id="treatmentPhase" class="swal2-input">
+                <option value="diagnosis">Diagnosis</option>
+                <option value="treatment">Treatment</option>
+                <option value="recovery">Recovery</option>
+                <option value="followup">Follow-up</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Notes</label>
+              <textarea id="progressNotes" class="swal2-textarea"></textarea>
+            </div>
+          `,
+          showCancelButton: true,
+          confirmButtonText: 'Update',
+          confirmButtonColor: '#4ecdc4',
+          preConfirm: () => {
+            return {
+              status: document.getElementById('progressStatus').value,
+              phase: document.getElementById('treatmentPhase').value,
+              notes: document.getElementById('progressNotes').value
+            }
+          }
+        }).then((result) => {
+          if (result.isConfirmed) {
+            Swal.fire('Success', 'Progress updated successfully', 'success');
+          }
+        });
+      }
+
+      function showNotifications() {
+        Swal.fire({
+          title: 'Notifications',
+          html: `
+            <div class="list-group">
+              <div class="list-group-item">
+                <div class="d-flex w-100 justify-content-between">
+                  <h6 class="mb-1">Urgent: Follow-up Required</h6>
+                  <small>3 hours ago</small>
+                </div>
+                <p class="mb-1">Michael Chen missed scheduled appointment</p>
+              </div>
+              <div class="list-group-item">
+                <div class="d-flex w-100 justify-content-between">
+                  <h6 class="mb-1">Care Plan Update</h6>
+                  <small>1 day ago</small>
+                </div>
+                <p class="mb-1">New treatment protocol for Sarah Johnson</p>
+              </div>
+              <div class="list-group-item">
+                <div class="d-flex w-100 justify-content-between">
+                  <h6 class="mb-1">Task Reminder</h6>
+                  <small>2 days ago</small>
+                </div>
+                <p class="mb-1">Schedule follow-up appointments for 3 patients</p>
+              </div>
+            </div>
+          `,
+          showConfirmButton: false,
+          width: '32rem'
+        });
+      }
+
+      function showEmergencyContacts() {
+        Swal.fire({
+          title: 'Emergency Contacts',
+          html: `
+            <div class="list-group">
+              <a href="tel:911" class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-between">
+                  <h6 class="mb-1">Emergency Services</h6>
+                  <span class="badge bg-danger">911</span>
+                </div>
+              </a>
+              <a href="tel:+1234567890" class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-between">
+                  <h6 class="mb-1">On-call Physician</h6>
+                  <span>Dr. Smith</span>
+                </div>
+              </a>
+              <a href="tel:+1234567891" class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-between">
+                  <h6 class="mb-1">Hospital Main Desk</h6>
+                  <span>24/7 Available</span>
+                </div>
+              </a>
+            </div>
+          `,
+          showConfirmButton: false
+        });
+      }
+
+      function showQuickNotes() {
+        Swal.fire({
+          title: 'Quick Notes',
+          html: `
+            <div class="mb-3">
+              <textarea class="form-control" rows="4" placeholder="Add a quick note..."></textarea>
+            </div>
+            <div class="list-group">
+              <div class="list-group-item">
+                <small class="text-muted">Today, 2:30 PM</small>
+                <p class="mb-0">Called Sarah Johnson to confirm next appointment</p>
+              </div>
+              <div class="list-group-item">
+                <small class="text-muted">Today, 11:15 AM</small>
+                <p class="mb-0">Reviewed lab results for Michael Chen</p>
+              </div>
+            </div>
+          `,
+          showCancelButton: true,
+          confirmButtonText: 'Save Note',
+          confirmButtonColor: '#4ecdc4'
+        });
+      }
+
+      function exportData() {
+        Swal.fire({
+          title: 'Export Data',
+          html: `
+            <div class="mb-3">
+              <select class="form-select">
+                <option value="all">All Patient Data</option>
+                <option value="progress">Progress Reports</option>
+                <option value="appointments">Appointment Schedule</option>
+                <option value="tasks">Task List</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <select class="form-select">
+                <option value="pdf">PDF Format</option>
+                <option value="excel">Excel Format</option>
+                <option value="csv">CSV Format</option>
+              </select>
+            </div>
+          `,
+          showCancelButton: true,
+          confirmButtonText: 'Export',
+          confirmButtonColor: '#4ecdc4'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            Swal.fire('Success', 'Data exported successfully', 'success');
+          }
+        });
+      }
+
+      function applyFilters() {
+        // Implement filter functionality
+        Swal.fire({
+          icon: 'success',
+          title: 'Filters Applied',
+          text: 'The patient list has been updated based on your filters.',
+          timer: 1500,
+          showConfirmButton: false
+        });
+      }
+
+      // Search functionality
+      document.getElementById('searchPatients').addEventListener('input', function(e) {
+        const searchTerm = e.target.value.toLowerCase();
+        // Implement search functionality
+      });
+    </script>
+  </body>
+</html>
