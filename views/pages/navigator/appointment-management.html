@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MedConnect - Appointment Management</title>
+  
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Custom styles -->
+  <style>
+    .dropdown-menu {
+      display: none;
+    }
+    .dropdown.show .dropdown-menu {
+      display: block;
+    }
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .table th, .table td {
+      padding: 0.75rem;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .badge {
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.25rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+    .bg-success {
+      background-color: #10b981;
+    }
+    .bg-primary {
+      background-color: #3b82f6;
+    }
+    .bg-secondary {
+      background-color: #6b7280;
+    }
+    .bg-danger {
+      background-color: #ef4444;
+    }
+    .bg-warning {
+      background-color: #f59e0b;
+    }
+    .bg-info {
+      background-color: #06b6d4;
+    }
+    .text-white {
+      color: white;
+    }
+    .btn-group {
+      display: inline-flex;
+    }
+    .btn-sm {
+      padding: 0.25rem 0.5rem;
+      font-size: 0.875rem;
+    }
+    .btn-outline-secondary {
+      border: 1px solid #6b7280;
+      color: #6b7280;
+      margin-right: 2px;
+    }
+    .btn-outline-secondary:hover {
+      background-color: #6b7280;
+      color: white;
+    }
+    .pagination {
+      display: flex;
+      list-style: none;
+    }
+    .page-item {
+      margin: 0 0.25rem;
+    }
+    .page-link {
+      display: block;
+      padding: 0.5rem 0.75rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 0.25rem;
+      color: #3b82f6;
+    }
+    .page-item.active .page-link {
+      background-color: #3b82f6;
+      color: white;
+      border-color: #3b82f6;
+    }
+    .page-item.disabled .page-link {
+      color: #9ca3af;
+      pointer-events: none;
+    }
+    .progress {
+      height: 6px;
+      border-radius: 3px;
+      background-color: #e5e7eb;
+    }
+    .progress-bar {
+      height: 100%;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body class="bg-gray-100">
+  <div class="min-h-screen" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
+    <nav class="py-3" style="background: #2a5c82;">
+      <div class="container mx-auto px-4 flex justify-between items-center">
+        <a class="text-white flex items-center" href="#">
+          <i class="fas fa-hospital mr-2"></i>MedConnect
+        </a>
+        <div class="dropdown relative">
+          <button
+            class="text-white flex items-center"
+            type="button"
+            id="userDropdown"
+            onclick="toggleDropdown()"
+          >
+            <i class="fas fa-user-circle mr-2"></i>Sarah Johnson
+          </button>
+          <ul class="dropdown-menu absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10" id="dropdownMenu">
+            <li>
+              <a class="block px-4 py-2 text-sm hover:bg-gray-100" href="profile.html">
+                <i class="fas fa-id-card mr-2"></i>Profile
+              </a>
+            </li>
+            <li>
+              <a class="block px-4 py-2 text-sm hover:bg-gray-100" href="settings.html">
+                <i class="fas fa-cog mr-2"></i>Settings
+              </a>
+            </li>
+            <li>
+              <hr class="my-1">
+            </li>
+            <li>
+              <a class="block px-4 py-2 text-sm hover:bg-gray-100" href="/logout">
+                <i class="fas fa-sign-out-alt mr-2"></i>Log Out
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="w-full">
+      <div class="flex flex-wrap w-full">
+        <!-- Sidebar -->
+        <div
+          class="w-full md:w-1/4 p-4"
+          style="background: #2a5c82; color: white; min-height: calc(100vh - 62px);"
+        >
+          <div class="flex items-center mb-4">
+            <i class="fas fa-user-nurse text-3xl mr-3"></i>
+            <div>
+              <h5 class="mb-0">Sarah Johnson</h5>
+              <small class="text-gray-200">Patient Navigator</small>
+            </div>
+          </div>
+          <div class="flex flex-col">
+            <a href="dashboard.html" class="py-2 text-white opacity-75 hover:opacity-100">
+              <i class="fas fa-home mr-2"></i>Dashboard
+            </a>
+            <a
+              href="appointment-management.html"
+              class="py-2 text-white opacity-100"
+              style="background: rgba(255, 255, 255, 0.1); border-radius: 10px; padding-left: 10px;"
+            >
+              <i class="fas fa-calendar-check mr-2"></i>Appointments
+            </a>
+            <a href="patient-management.html" class="py-2 text-white opacity-75 hover:opacity-100">
+              <i class="fas fa-users mr-2"></i>Patient Management
+            </a>
+            <a href="care-plan.html" class="py-2 text-white opacity-75 hover:opacity-100">
+              <i class="fas fa-clipboard-list mr-2"></i>Care Plans
+            </a>
+            <a href="progress-tracking.html" class="py-2 text-white opacity-75 hover:opacity-100">
+              <i class="fas fa-chart-line mr-2"></i>Progress Tracking
+            </a>
+            <a href="learning.html" class="py-2 text-white opacity-75 hover:opacity-100">
+              <i class="fas fa-book-medical mr-2"></i>Learning Resources
+            </a>
+            <a href="profile.html" class="py-2 text-white opacity-75 hover:opacity-100">
+              <i class="fas fa-user mr-2"></i>Profile
+            </a>
+            <a href="settings.html" class="py-2 text-white opacity-75 hover:opacity-100">
+              <i class="fas fa-cog mr-2"></i>Settings
+            </a>
+          </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="w-full md:w-3/4 p-4 bg-white">
+          <div class="flex justify-between items-center mb-4">
+            <h2 class="mb-0 text-2xl font-bold">Appointment Management</h2>
+            <button class="px-4 py-2 rounded-md" style="background: #4ecdc4; color: white;">
+              <i class="fas fa-plus mr-2"></i>Schedule New Appointment
+            </button>
+          </div>
+
+          <!-- Filter and Search -->
+          <div class="p-4 mb-4 bg-white rounded-md shadow-sm border border-gray-200">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label for="dateFilter" class="block mb-1 text-sm">
+                  Filter by Date
+                </label>
+                <input type="date" class="w-full px-3 py-2 border border-gray-300 rounded-md" id="dateFilter">
+              </div>
+              <div>
+                <label for="patientFilter" class="block mb-1 text-sm">
+                  Filter by Patient
+                </label>
+                <select class="w-full px-3 py-2 border border-gray-300 rounded-md" id="patientFilter">
+                  <option value="">All Patients</option>
+                  <option value="1">John Doe</option>
+                  <option value="2">Jane Smith</option>
+                  <option value="3">Robert Johnson</option>
+                  <option value="4">Emily Wilson</option>
+                </select>
+              </div>
+              <div>
+                <label for="statusFilter" class="block mb-1 text-sm">
+                  Filter by Status
+                </label>
+                <select class="w-full px-3 py-2 border border-gray-300 rounded-md" id="statusFilter">
+                  <option value="">All Status</option>
+                  <option value="scheduled">Scheduled</option>
+                  <option value="completed">Completed</option>
+                  <option value="cancelled">Cancelled</option>
+                  <option value="rescheduled">Rescheduled</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Today's Appointments -->
+          <div class="mb-4 bg-white rounded-md shadow-sm border border-gray-200">
+            <div class="px-4 py-3 border-b">
+              <h5 class="mb-0 font-semibold">Today's Appointments</h5>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="table">
+                <thead class="bg-gray-100">
+                  <tr>
+                    <th>Time</th>
+                    <th>Patient</th>
+                    <th>Type</th>
+                    <th>Provider</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>09:00 AM</td>
+                    <td>
+                      <div class="flex items-center">
+                        <div
+                          class="rounded-full bg-blue-500 flex items-center justify-center text-white mr-3"
+                          style="width: 40px; height: 40px"
+                        >
+                          JD
+                        </div>
+                        <div>John Doe</div>
+                      </div>
+                    </td>
+                    <td>Chemotherapy</td>
+                    <td>Dr. Smith</td>
+                    <td>
+                      <span class="badge bg-success text-white">Completed</span>
+                    </td>
+                    <td>
+                      <div class="btn-group">
+                        <button class="btn-sm btn-outline-secondary">
+                          <i class="fas fa-eye"></i>
+                        </button>
+                        <button class="btn-sm btn-outline-secondary">
+                          <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn-sm btn-outline-secondary">
+                          <i class="fas fa-notes-medical"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>11:30 AM</td>
+                    <td>
+                      <div class="flex items-center">
+                        <div
+                          class="rounded-full bg-cyan-500 flex items-center justify-center text-white mr-3"
+                          style="width: 40px; height: 40px"
+                        >
+                          JS
+                        </div>
+                        <div>Jane Smith</div>
+                      </div>
+                    </td>
+                    <td>Consultation</td>
+                    <td>Dr. Johnson</td>
+                    <td>
+                      <span class="badge bg-primary text-white">In Progress</span>
+                    </td>
+                    <td>
+                      <div class="btn-group">
+                        <button class="btn-sm btn-outline-secondary">
+                          <i class="fas fa-eye"></i>
+                        </button>
+                        <button class="btn-sm btn-outline-secondary">
+                          <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn-sm btn-outline-secondary">
+                          <i class="fas fa-notes-medical"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>02:00 PM</td>
+                    <td>
+                      <div class="flex items-center">
+                        <div
+                          class="rounded-full bg-yellow-500 flex items-center justify-center text-white mr-3"
+                          style="width: 40px; height: 40px"
+                        >
+                          RJ
+                        </div>
+                        <div>Robert Johnson</div>
+                      </div>
+                    </td>
+                    <td>Radiation Therapy</td>
+                    <td>Dr. Williams</td>
+                    <td>
+                      <span class="badge bg-secondary text-white">Scheduled</span>
+                    </td>
+                    <td>
+                      <div class="btn-group">
+                        <button class="btn-sm btn-outline-secondary">
+                          <i class="fas fa-eye"></i>
+                        </button>
+                        <button class="btn-sm btn-outline-secondary">
+                          <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn-sm btn-outline-secondary">
+                          <i class="fas fa-notes-medical"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Upcoming Appointments -->
+          <div class="mb-4 bg-white rounded-md shadow-sm border border-gray-200">
+            <div class="px-4 py-3 border-b">
+              <h5 class="mb-0 font-semibold">Upcoming Appointments</h5>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="table">
+                <thead class="bg-gray-100">
+                  <tr>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Patient</th>
+                    <th>Type</th>
+                    <th>Provider</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Apr 17, 2025</td>
+                    <td>10:00 AM</td>
+                    <td>
+                      <div class="flex items-center">
+                        <div
+                          class="rounded-full bg-green-500 flex items-center justify-center text-white mr-3"
+                          style="width: 40px; height: 40px"
+                        >
+                          EW
+                        </div>
+                        <div>Emily Wilson</div>
+                      </div>
+                    </td>
+                    <td>Follow-up</td>
+                    <td>Dr. Brown</td>
+                    <td>
+                      <div class="btn-group">
+                        <button class="btn-sm btn-outline-secondary">
+                          <i class="fas fa-eye"></i>
+                        </button>
+                        <button class="btn-sm btn-outline-secondary">
+                          <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn-sm btn-outline-secondary">
+                          <i class="fas fa-bell"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Apr 18, 2025</td>
+                    <td>09:30 AM</td>
+                    <td>
+                      <div class="flex items-center">
+                        <div
+                          class="rounded-full bg-red-500 flex items-center justify-center text-white mr-3"
+                          style="width: 40px; height: 40px"
+                        >
+                          MJ
+                        </div>
+                        <div>Michael Johnson</div>
+                      </div>
+                    </td>
+                    <td>Chemotherapy</td>
+                    <td>Dr. Davis</td>
+                    <td>
+                      <div class="btn-group">
+                        <button class="btn-sm btn-outline-secondary">
+                          <i class="fas fa-eye"></i>
+                        </button>
+                        <button class="btn-sm btn-outline-secondary">
+                          <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn-sm btn-outline-secondary">
+                          <i class="fas fa-bell"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Apr 20, 2025</td>
+                    <td>01:00 PM</td>
+                    <td>
+                      <div class="flex items-center">
+                        <div
+                          class="rounded-full bg-blue-500 flex items-center justify-center text-white mr-3"
+                          style="width: 40px; height: 40px"
+                        >
+                          JD
+                        </div>
+                        <div>John Doe</div>
+                      </div>
+                    </td>
+                    <td>Lab Work</td>
+                    <td>Dr. Smith</td>
+                    <td>
+                      <div class="btn-group">
+                        <button class="btn-sm btn-outline-secondary">
+                          <i class="fas fa-eye"></i>
+                        </button>
+                        <button class="btn-sm btn-outline-secondary">
+                          <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn-sm btn-outline-secondary">
+                          <i class="fas fa-bell"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Apr 21, 2025</td>
+                    <td>11:15 AM</td>
+                    <td>
+                      <div class="flex items-center">
+                        <div
+                          class="rounded-full bg-cyan-500 flex items-center justify-center text-white mr-3"
+                          style="width: 40px; height: 40px"
+                        >
+                          JS
+                        </div>
+                        <div>Jane Smith</div>
+                      </div>
+                    </td>
+                    <td>Radiation Therapy</td>
+                    <td>Dr. Johnson</td>
+                    <td>
+                      <div class="btn-group">
+                        <button class="btn-sm btn-outline-secondary">
+                          <i class="fas fa-eye"></i>
+                        </button>
+                        <button class="btn-sm btn-outline-secondary">
+                          <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn-sm btn-outline-secondary">
+                          <i class="fas fa-bell"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="px-4 py-3 border-t">
+              <nav>
+                <ul class="pagination justify-center">
+                  <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+                      Previous
+                    </a>
+                  </li>
+                  <li class="page-item active">
+                    <a class="page-link" href="#">
+                      1
+                    </a>
+                  </li>
+                  <li class="page-item">
+                    <a class="page-link" href="#">
+                      2
+                    </a>
+                  </li>
+                  <li class="page-item">
+                    <a class="page-link" href="#">
+                      3
+                    </a>
+                  </li>
+                  <li class="page-item">
+                    <a class="page-link" href="#">
+                      Next
+                    </a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+
+          <!-- Appointment Statistics -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="mb-4">
+              <div class="bg-white rounded-md shadow-sm h-full border border-gray-200">
+                <div class="p-4">
+                  <h6 class="text-gray-500 mb-2 text-sm font-medium">Total Appointments</h6>
+                  <div class="flex items-center">
+                    <h3 class="text-2xl font-bold mr-2">28</h3>
+                    <i class="fas fa-calendar-check text-blue-500"></i>
+                  </div>
+                  <div class="mt-3">
+                    <div class="flex justify-between mb-1">
+                      <span class="text-gray-500 text-sm">This Week</span>
+                      <span>12</span>
+                    </div>
+                    <div class="progress">
+                      <div class="progress-bar bg-blue-500" style="width: 42%"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="mb-4">
+              <div class="bg-white rounded-md shadow-sm h-full border border-gray-200">
+                <div class="p-4">
+                  <h6 class="text-gray-500 mb-2 text-sm font-medium">Completed Appointments</h6>
+                  <div class="flex items-center">
+                    <h3 class="text-2xl font-bold mr-2">15</h3>
+                    <i class="fas fa-check-circle text-green-500"></i>
+                  </div>
+                  <div class="mt-3">
+                    <div class="flex justify-between mb-1">
+                      <span class="text-gray-500 text-sm">Completion Rate</span>
+                      <span>53%</span>
+                    </div>
+                    <div class="progress">
+                      <div class="progress-bar bg-green-500" style="width: 53%"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="mb-4">
+              <div class="bg-white rounded-md shadow-sm h-full border border-gray-200">
+                <div class="p-4">
+                  <h6 class="text-gray-500 mb-2 text-sm font-medium">Rescheduled/Cancelled</h6>
+                  <div class="flex items-center">
+                    <h3 class="text-2xl font-bold mr-2">5</h3>
+                    <i class="fas fa-calendar-times text-red-500"></i>
+                  </div>
+                  <div class="mt-3">
+                    <div class="flex justify-between mb-1">
+                      <span class="text-gray-500 text-sm">Cancellation Rate</span>
+                      <span>18%</span>
+                    </div>
+                    <div class="progress">
+                      <div class="progress-bar bg-red-500" style="width: 18%"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Wave background - Fixed SVG data URL -->
+    <div
+      class="absolute bottom-0 left-0 w-full"
+      style="
+        height: 150px;
+        background: url('data:image/svg+xml;utf8,%3Csvg viewBox=%220 0 1440 320%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cpath fill=%22%232A5C82%22 fill-opacity=%220.1%22 d=%22M0,160L48,170.7C96,181,192,203,288,186.7C384,171,480,117,576,101.3C672,85,768,107,864,138.7C960,171,1056,213,1152,208C1248,203,1344,149,1392,122.7L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z%22%3E%3C/path%3E%3C/svg%3E');
+        z-index: -1;
+      "
+    ></div>
+  </div>
+
+  <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
+  <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
+  
+  <!-- JavaScript for dropdown functionality -->
+  <script>
+    function toggleDropdown() {
+      document.getElementById("dropdownMenu").parentElement.classList.toggle("show");
+    }
+
+    // Close the dropdown menu if the user clicks outside of it
+    window.onclick = function(event) {
+      if (!event.target.matches('#userDropdown')) {
+        var dropdowns = document.getElementsByClassName("dropdown");
+        for (var i = 0; i < dropdowns.length; i++) {
+          var openDropdown = dropdowns[i];
+          if (openDropdown.classList.contains('show')) {
+            openDropdown.classList.remove('show');
+          }
+        }
+      }
+    }
+
+    // Make table rows hoverable
+    document.querySelectorAll('tbody tr').forEach(row => {
+      row.addEventListener('mouseover', () => {
+        row.style.backgroundColor = '#f9fafb';
+      });
+      row.addEventListener('mouseout', () => {
+        row.style.backgroundColor = '';
+      });
+    });
+  </script>
+</body>
+</html>
