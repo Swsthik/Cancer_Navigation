@@ -1,0 +1,663 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MedConnect - Caregiver Signup</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              'primary-blue': '#2a5c82',
+              'secondary-blue': '#5c9baf',
+              'accent-teal': '#4ecdc4',
+              'high-risk': '#dc3545',
+              'medium-risk': '#ffc107',
+              'low-risk': '#28a745',
+            }
+          }
+        }
+      }
+    </script>
+    <style type="text/tailwindcss">
+      @layer utilities {
+        .bg-gradient-med {
+          background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+      }
+    </style>
+  </head>
+  <body class="bg-gradient-med min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-primary-blue py-3 px-4 shadow-md">
+      <div class="container mx-auto flex justify-between items-center">
+        <a class="text-white flex items-center font-bold text-xl" href="#">
+          MedConnect
+        </a>
+        <div>
+          <a href="/login" class="text-white no-underline flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+            </svg>
+            Login
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mx-auto py-8 px-4">
+      <div class="flex justify-center">
+        <div class="w-full max-w-4xl">
+          <div class="bg-white shadow-xl rounded-lg overflow-hidden">
+            <div class="flex flex-col md:flex-row">
+              <!-- Sidebar Info Section -->
+              <div class="hidden md:block md:w-1/3 bg-primary-blue p-6 text-white">
+                <div class="flex flex-col h-full justify-center">
+                  <h2 class="text-2xl font-bold mb-4">Join Our Caregiver Network</h2>
+                  <p class="mb-6">
+                    Create your caregiver account to provide essential support to patients and connect with healthcare
+                    providers.
+                  </p>
+                  <div class="mb-4 space-y-3">
+                    <div class="flex items-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 text-accent-teal" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      <span>Access patient care plans</span>
+                    </div>
+                    <div class="flex items-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 text-accent-teal" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      <span>Communicate with providers</span>
+                    </div>
+                    <div class="flex items-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 text-accent-teal" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      <span>Track medications</span>
+                    </div>
+                    <div class="flex items-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 text-accent-teal" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      <span>Manage appointments</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Form Section -->
+              <div class="md:w-2/3 p-6 md:p-8">
+                <h2 class="text-2xl font-bold mb-6 text-center">Caregiver Registration</h2>
+                <form id="caregiverForm">
+                  <!-- Basic Personal Information -->
+                  <div class="mb-6">
+                    <h3 class="text-lg font-medium mb-3 text-primary-blue">Basic Personal Information</h3>
+                    
+                    <!-- Profile Picture Upload -->
+                    <div class="mb-4 text-center">
+                      <label for="profilePic" class="block mb-2">
+                        Profile Picture
+                      </label>
+                      <div class="inline-block relative">
+                        <div
+                          class="rounded-full bg-gray-100 flex items-center justify-center mb-2"
+                          style="width: 100px; height: 100px; overflow: hidden"
+                        >
+                          <div class="text-gray-400 text-4xl">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                            </svg>
+                          </div>
+                        </div>
+                        <input
+                          type="file"
+                          class="hidden"
+                          id="profilePic"
+                          accept="image/*"
+                        />
+                        <label
+                          for="profilePic"
+                          class="absolute bottom-0 right-0 bg-accent-teal text-white p-1 rounded-full cursor-pointer"
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                          </svg>
+                        </label>
+                      </div>
+                    </div>
+
+                    <!-- Name Fields -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                      <div>
+                        <label for="firstName" class="block mb-1 text-sm font-medium">
+                          First Name*
+                        </label>
+                        <input
+                          type="text"
+                          class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-teal"
+                          id="firstName"
+                          name="firstName"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label for="middleName" class="block mb-1 text-sm font-medium">
+                          Middle Name
+                        </label>
+                        <input
+                          type="text"
+                          class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-teal"
+                          id="middleName"
+                          name="middleName"
+                        />
+                      </div>
+                      <div>
+                        <label for="lastName" class="block mb-1 text-sm font-medium">
+                          Last Name*
+                        </label>
+                        <input
+                          type="text"
+                          class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-teal"
+                          id="lastName"
+                          name="lastName"
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    <!-- Relationship to Patient -->
+                    <div class="mb-4">
+                      <label for="relationship" class="block mb-1 text-sm font-medium">
+                        Relationship to Patient*
+                      </label>
+                      <select
+                        class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-teal"
+                        id="relationship"
+                        name="relationship"
+                        required
+                      >
+                        <option value="">Select Relationship</option>
+                        <option value="Spouse">Spouse</option>
+                        <option value="Child">Child</option>
+                        <option value="Sibling">Sibling</option>
+                        <option value="Parent">Parent</option>
+                        <option value="Other Family Member">Other Family Member</option>
+                        <option value="Friend">Friend</option>
+                        <option value="Professional Caregiver">Professional Caregiver</option>
+                        <option value="Other">Other</option>
+                      </select>
+                    </div>
+
+                    <!-- Residential Address -->
+                    <div class="mb-4">
+                      <label for="residentialAddress" class="block mb-1 text-sm font-medium">
+                        Residential Address*
+                      </label>
+                      <textarea
+                        class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-teal"
+                        id="residentialAddress"
+                        name="residentialAddress"
+                        rows="2"
+                        required
+                      ></textarea>
+                    </div>
+
+                    <!-- Contact Information -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                      <div>
+                        <label for="email" class="block mb-1 text-sm font-medium">
+                          Email Address*
+                        </label>
+                        <input
+                          type="email"
+                          class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-teal"
+                          id="email"
+                          name="email"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label for="primaryPhone" class="block mb-1 text-sm font-medium">
+                          Primary Phone*
+                        </label>
+                        <input
+                          type="tel"
+                          class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-teal"
+                          id="primaryPhone"
+                          name="primaryPhone"
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    <!-- Secondary Phone -->
+                    <div class="mb-4">
+                      <label for="secondaryPhone" class="block mb-1 text-sm font-medium">
+                        Secondary Phone
+                      </label>
+                      <input
+                        type="tel"
+                        class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-teal"
+                        id="secondaryPhone"
+                        name="secondaryPhone"
+                      />
+                    </div>
+                  </div>
+
+                  <!-- Languages -->
+                  <div class="mb-6">
+                    <h3 class="text-lg font-medium mb-3 text-primary-blue">Languages</h3>
+                    <div class="mb-4">
+                      <label class="block mb-2 text-sm font-medium">Languages Known*</label>
+                      <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
+                        <div class="flex items-center">
+                          <input
+                            class="mr-2 h-4 w-4 text-accent-teal focus:ring-accent-teal border-gray-300 rounded"
+                            type="checkbox"
+                            id="language-english"
+                            value="English"
+                            name="languages[]"
+                          />
+                          <label class="text-sm" for="language-english">
+                            English
+                          </label>
+                        </div>
+                        <div class="flex items-center">
+                          <input
+                            class="mr-2 h-4 w-4 text-accent-teal focus:ring-accent-teal border-gray-300 rounded"
+                            type="checkbox"
+                            id="language-spanish"
+                            value="Spanish"
+                            name="languages[]"
+                          />
+                          <label class="text-sm" for="language-spanish">
+                            Spanish
+                          </label>
+                        </div>
+                        <div class="flex items-center">
+                          <input
+                            class="mr-2 h-4 w-4 text-accent-teal focus:ring-accent-teal border-gray-300 rounded"
+                            type="checkbox"
+                            id="language-french"
+                            value="French"
+                            name="languages[]"
+                          />
+                          <label class="text-sm" for="language-french">
+                            French
+                          </label>
+                        </div>
+                        <div class="flex items-center">
+                          <input
+                            class="mr-2 h-4 w-4 text-accent-teal focus:ring-accent-teal border-gray-300 rounded"
+                            type="checkbox"
+                            id="language-mandarin"
+                            value="Mandarin"
+                            name="languages[]"
+                          />
+                          <label class="text-sm" for="language-mandarin">
+                            Mandarin
+                          </label>
+                        </div>
+                        <div class="flex items-center">
+                          <input
+                            class="mr-2 h-4 w-4 text-accent-teal focus:ring-accent-teal border-gray-300 rounded"
+                            type="checkbox"
+                            id="language-arabic"
+                            value="Arabic"
+                            name="languages[]"
+                          />
+                          <label class="text-sm" for="language-arabic">
+                            Arabic
+                          </label>
+                        </div>
+                        <div class="flex items-center">
+                          <input
+                            class="mr-2 h-4 w-4 text-accent-teal focus:ring-accent-teal border-gray-300 rounded"
+                            type="checkbox"
+                            id="language-hindi"
+                            value="Hindi"
+                            name="languages[]"
+                          />
+                          <label class="text-sm" for="language-hindi">
+                            Hindi
+                          </label>
+                        </div>
+                        <div class="flex items-center">
+                          <input
+                            class="mr-2 h-4 w-4 text-accent-teal focus:ring-accent-teal border-gray-300 rounded"
+                            type="checkbox"
+                            id="language-russian"
+                            value="Russian"
+                            name="languages[]"
+                          />
+                          <label class="text-sm" for="language-russian">
+                            Russian
+                          </label>
+                        </div>
+                        <div class="flex items-center">
+                          <input
+                            class="mr-2 h-4 w-4 text-accent-teal focus:ring-accent-teal border-gray-300 rounded"
+                            type="checkbox"
+                            id="language-portuguese"
+                            value="Portuguese"
+                            name="languages[]"
+                          />
+                          <label class="text-sm" for="language-portuguese">
+                            Portuguese
+                          </label>
+                        </div>
+                        <div class="flex items-center">
+                          <input
+                            class="mr-2 h-4 w-4 text-accent-teal focus:ring-accent-teal border-gray-300 rounded"
+                            type="checkbox"
+                            id="language-other"
+                            value="Other"
+                            name="languages[]"
+                          />
+                          <label class="text-sm" for="language-other">
+                            Other
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Emergency Contact -->
+                  <div class="mb-6">
+                    <h3 class="text-lg font-medium mb-3 text-primary-blue">Emergency Contact</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label for="emergencyContactName" class="block mb-1 text-sm font-medium">
+                          Emergency Contact Name*
+                        </label>
+                        <input
+                          type="text"
+                          class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-teal"
+                          id="emergencyContactName"
+                          name="emergencyContactName"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label for="emergencyContactPhone" class="block mb-1 text-sm font-medium">
+                          Emergency Contact Phone*
+                        </label>
+                        <input
+                          type="tel"
+                          class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-teal"
+                          id="emergencyContactPhone"
+                          name="emergencyContactPhone"
+                          required
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Professional Information -->
+                  <div class="mb-6">
+                    <h3 class="text-lg font-medium mb-3 text-primary-blue">
+                      Professional Information (For Professional Caregivers)
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                      <div>
+                        <label for="certType" class="block mb-1 text-sm font-medium">
+                          Certification Type
+                        </label>
+                        <select
+                          class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-teal"
+                          id="certType"
+                          name="certType"
+                        >
+                          <option value="">Select Certification Type</option>
+                          <option value="NFCA">NFCA</option>
+                          <option value="ACS (American Cancer Society)">ACS (American Cancer Society)</option>
+                          <option value="CSCA">CSCA</option>
+                          <option value="CSC">CSC</option>
+                          <option value="CNA (Certified Nursing Assistant)">CNA (Certified Nursing Assistant)</option>
+                          <option value="Home Care Aide (NAHC)">Home Care Aide (NAHC)</option>
+                          <option value="CCG by NCCA">CCG by NCCA</option>
+                          <option value="None">None</option>
+                          <option value="Other">Other</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label for="certification" class="block mb-1 text-sm font-medium">
+                          Certification Details
+                        </label>
+                        <input
+                          type="text"
+                          class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-teal"
+                          id="certification"
+                          name="certification"
+                          placeholder="e.g., Certificate Number, Date"
+                        />
+                      </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label for="licenseInfo" class="block mb-1 text-sm font-medium">
+                          License Information
+                        </label>
+                        <input
+                          type="text"
+                          class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-teal"
+                          id="licenseInfo"
+                          name="licenseInfo"
+                          placeholder="For licensed professionals"
+                        />
+                      </div>
+                      <div>
+                        <label for="experience" class="block mb-1 text-sm font-medium">
+                          Years of Experience
+                        </label>
+                        <input
+                          type="number"
+                          class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-teal"
+                          id="experience"
+                          name="experience"
+                          min="0"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- References -->
+                  <div class="mb-6">
+                    <h3 class="text-lg font-medium mb-3 text-primary-blue">
+                      References (For Professional Caregivers)
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                      <div>
+                        <label for="reference1Name" class="block mb-1 text-sm font-medium">
+                          Reference 1 Name
+                        </label>
+                        <input
+                          type="text"
+                          class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-teal"
+                          id="reference1Name"
+                          name="reference1Name"
+                        />
+                      </div>
+                      <div>
+                        <label for="reference1Contact" class="block mb-1 text-sm font-medium">
+                          Reference 1 Contact
+                        </label>
+                        <input
+                          type="text"
+                          class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-teal"
+                          id="reference1Contact"
+                          name="reference1Contact"
+                        />
+                      </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label for="reference2Name" class="block mb-1 text-sm font-medium">
+                          Reference 2 Name
+                        </label>
+                        <input
+                          type="text"
+                          class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-teal"
+                          id="reference2Name"
+                          name="reference2Name"
+                        />
+                      </div>
+                      <div>
+                        <label for="reference2Contact" class="block mb-1 text-sm font-medium">
+                          Reference 2 Contact
+                        </label>
+                        <input
+                          type="text"
+                          class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-teal"
+                          id="reference2Contact"
+                          name="reference2Contact"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Agreements -->
+                  <div class="mb-6">
+                    <h3 class="text-lg font-medium mb-3 text-primary-blue">Agreements</h3>
+                    <div class="mb-3">
+                      <div class="flex items-center">
+                        <input
+                          class="mr-2 h-4 w-4 text-accent-teal focus:ring-accent-teal border-gray-300 rounded"
+                          type="checkbox"
+                          id="termsAccepted"
+                          name="termsAccepted"
+                          required
+                        />
+                        <label class="text-sm" for="termsAccepted">
+                          I agree to the
+                          <a href="#" class="text-accent-teal no-underline hover:underline">
+                            Terms and Conditions
+                          </a>*
+                        </label>
+                      </div>
+                    </div>
+                    <div class="mb-3">
+                      <div class="flex items-center">
+                        <input
+                          class="mr-2 h-4 w-4 text-accent-teal focus:ring-accent-teal border-gray-300 rounded"
+                          type="checkbox"
+                          id="privacyAccepted"
+                          name="privacyAccepted"
+                          required
+                        />
+                        <label class="text-sm" for="privacyAccepted">
+                          I agree to the
+                          <a href="#" class="text-accent-teal no-underline hover:underline">
+                            Privacy Policy
+                          </a>*
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Submit Button -->
+                  <div>
+                    <button
+                      type="submit"
+                      class="w-full py-3 bg-accent-teal text-white rounded-md font-medium transition-all hover:bg-secondary-blue focus:outline-none focus:ring-2 focus:ring-accent-teal focus:ring-opacity-50"
+                    >
+                      Create Account
+                    </button>
+                    <p class="text-center mt-4">
+                      Already have an account?
+                      <a href="/login" class="text-accent-teal no-underline hover:underline">
+                        Sign In
+                      </a>
+                    </p>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Wave Decoration at Bottom -->
+    <div
+      class="fixed bottom-0 left-0 w-full pointer-events-none"
+      style="
+        height: 150px;
+        background-image: url('data:image/svg+xml,%3Csvg viewBox=%270 0 1440 320%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath fill=%27%232A5C82%27 fill-opacity=%270.1%27 d=%27M0,160L48,170.7C96,181,192,203,288,186.7C384,171,480,117,576,101.3C672,85,768,107,864,138.7C960,171,1056,213,1152,208C1248,203,1344,149,1392,122.7L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z%27%3E%3C/path%3E%3C/svg%3E');
+        background-repeat: no-repeat;
+        background-size: cover;
+      "
+    ></div>
+
+    <script>
+      // Simple form handling
+      document.getElementById('caregiverForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Create FormData object to collect form data
+        const formData = new FormData(this);
+        
+        // Convert FormData to object
+        const formDataObj = {};
+        formData.forEach((value, key) => {
+          // Handle checkboxes with same name (languages[])
+          if (key.endsWith('[]')) {
+            const cleanKey = key.slice(0, -2);
+            if (!formDataObj[cleanKey]) {
+              formDataObj[cleanKey] = [];
+            }
+            formDataObj[cleanKey].push(value);
+          } else {
+            formDataObj[key] = value;
+          }
+        });
+        
+        console.log('Form submitted:', formDataObj);
+        alert('Form submitted successfully!');
+        
+        // Here you would typically send the data to your server
+        // fetch('/api/caregiver-signup', {
+        //   method: 'POST',
+        //   headers: { 'Content-Type': 'application/json' },
+        //   body: JSON.stringify(formDataObj)
+        // })
+        // .then(response => response.json())
+        // .then(data => {
+        //   console.log('Success:', data);
+        //   window.location.href = '/login';
+        // })
+        // .catch(error => {
+        //   console.error('Error:', error);
+        // });
+      });
+
+      // Profile picture preview
+      document.getElementById('profilePic').addEventListener('change', function(e) {
+        if (e.target.files && e.target.files[0]) {
+          const reader = new FileReader();
+          
+          reader.onload = function(e) {
+            const container = document.querySelector('.rounded-full');
+            container.innerHTML = '';
+            
+            const img = document.createElement('img');
+            img.src = e.target.result;
+            img.className = 'w-full h-full object-cover';
+            img.alt = 'Profile Preview';
+            
+            container.appendChild(img);
+          };
+          
+          reader.readAsDataURL(e.target.files[0]);
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Registration - MedConnect</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <style>
+        :root {
+            --primary-blue: #2a5c82;
+            --secondary-blue: #5c9baf;
+            --accent-teal: #4ecdc4;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            min-height: 100vh;
+        }
+
+        .medical-header {
+            background: var(--primary-blue);
+            padding: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .dashboard-container {
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .btn-medical {
+            background: var(--accent-teal);
+            color: white;
+            padding: 12px 30px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-medical:hover {
+            background: var(--secondary-blue);
+            transform: translateY(-2px);
+        }
+
+        .decorative-wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 150px;
+            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg"><path fill="%232A5C82" fill-opacity="0.1" d="M0,160L48,170.7C96,181,192,203,288,186.7C384,171,480,117,576,101.3C672,85,768,107,864,138.7C960,171,1056,213,1152,208C1248,203,1344,149,1392,122.7L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
+        }
+
+        .step-indicator.active {
+            background-color: var(--accent-teal);
+            color: white;
+        }
+
+        .step-line.active {
+            background-color: var(--accent-teal);
+        }
+    </style>
+</head>
+<body>
+    <nav class="medical-header">
+        <div class="container mx-auto px-4">
+            <a class="text-white text-xl font-semibold flex items-center" href="#">
+                <i class="fas fa-hospital mr-2"></i>MedConnect
+            </a>
+        </div>
+    </nav>
+
+    <div class="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-4xl mx-auto">
+            <div class="dashboard-container rounded-lg overflow-hidden">
+                <div class="px-4 py-5 sm:p-6">
+                    <div class="text-center mb-8">
+                        <h2 class="text-3xl font-bold text-gray-900">Doctor Registration</h2>
+                        <p class="mt-2 text-sm text-gray-600">
+                            Join MedConnect's network of healthcare professionals
+                        </p>
+                    </div>
+
+                    <!-- Progress Steps -->
+                    <div class="mb-8">
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 bg-accent-teal text-white rounded-full flex items-center justify-center step-indicator active">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="h-1 w-full bg-gray-200 step-line"></div>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 bg-gray-200 text-gray-600 rounded-full flex items-center justify-center step-indicator">
+                                    <i class="fas fa-address-card"></i>
+                                </div>
+                                <div class="h-1 w-full bg-gray-200 step-line"></div>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 bg-gray-200 text-gray-600 rounded-full flex items-center justify-center step-indicator">
+                                    <i class="fas fa-certificate"></i>
+                                </div>
+                                <div class="h-1 w-full bg-gray-200 step-line"></div>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 bg-gray-200 text-gray-600 rounded-full flex items-center justify-center step-indicator">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex justify-between mt-2">
+                            <span class="text-sm font-medium">Personal Info</span>
+                            <span class="text-sm font-medium">Contact</span>
+                            <span class="text-sm font-medium">Credentials</span>
+                            <span class="text-sm font-medium">Agreements</span>
+                        </div>
+                    </div>
+
+                    <!-- Registration Form -->
+                    <form id="registrationForm" class="space-y-6">
+                        <!-- Step 1: Personal Information -->
+                        <div class="step" id="step1">
+                            <div class="text-center mb-8">
+                                <div class="relative w-32 h-32 mx-auto mb-4">
+                                    <div id="profilePreview" class="w-full h-full rounded-full bg-gray-100 flex items-center justify-center border-4 border-accent-teal">
+                                        <i class="fas fa-user-md text-5xl text-gray-400"></i>
+                                    </div>
+                                    <label class="absolute bottom-0 right-0 bg-accent-teal rounded-full p-2 cursor-pointer hover:bg-secondary-blue transition-colors">
+                                        <i class="fas fa-camera text-white"></i>
+                                        <input type="file" class="hidden" id="profilePic" accept="image/*">
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">First Name</label>
+                                    <input type="text" name="firstName" required
+                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-accent-teal focus:ring-accent-teal">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Middle Name</label>
+                                    <input type="text" name="middleName"
+                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-accent-teal focus:ring-accent-teal">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Last Name</label>
+                                    <input type="text" name="lastName" required
+                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-accent-teal focus:ring-accent-teal">
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Date of Birth</label>
+                                    <input type="date" name="dob"
+                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-accent-teal focus:ring-accent-teal">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">SSN</label>
+                                    <div class="relative">
+                                        <input type="password" name="ssn" required pattern="\d{3}-?\d{2}-?\d{4}"
+                                            placeholder="XXX-XX-XXXX"
+                                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-accent-teal focus:ring-accent-teal">
+                                        <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                                            <i class="fas fa-lock text-gray-400"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 2: Contact Information -->
+                        <div class="step hidden" id="step2">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Email</label>
+                                    <div class="relative">
+                                        <input type="email" name="email" required
+                                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-accent-teal focus:ring-accent-teal">
+                                        <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                                            <i class="fas fa-envelope text-gray-400"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Phone Number</label>
+                                    <div class="relative">
+                                        <input type="tel" name="phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+                                            placeholder="XXX-XXX-XXXX"
+                                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-accent-teal focus:ring-accent-teal">
+                                        <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                                            <i class="fas fa-phone text-gray-400"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-6">
+                                <label class="block text-sm font-medium text-gray-700">Address</label>
+                                <div class="relative">
+                                    <textarea name="address" rows="3" required
+                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-accent-teal focus:ring-accent-teal"></textarea>
+                                    <div class="absolute top-3 right-3">
+                                        <i class="fas fa-map-marker-alt text-gray-400"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 3: Professional Credentials -->
+                        <div class="step hidden" id="step3">
+                            <div class="mb-6">
+                                <label class="block text-sm font-medium text-gray-700">NPI Number</label>
+                                <div class="mt-1 relative rounded-md shadow-sm">
+                                    <input type="text" name="npi" required pattern="\d{10}"
+                                        placeholder="Enter your 10-digit NPI number"
+                                        class="block w-full rounded-md border-gray-300 focus:border-accent-teal focus:ring-accent-teal">
+                                    <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                                        <i class="fas fa-id-card text-accent-teal"></i>
+                                    </div>
+                                </div>
+                                <p class="mt-2 text-sm text-gray-500 flex items-center">
+                                    <i class="fas fa-info-circle mr-2"></i>
+                                    Your NPI number will be verified through the NPI Registry
+                                </p>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">State of License</label>
+                                    <input type="text" name="stateLicense" required
+                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-accent-teal focus:ring-accent-teal">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">License Number</label>
+                                    <input type="text" name="licenseNumber" required
+                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-accent-teal focus:ring-accent-teal">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">License Expiry</label>
+                                    <input type="date" name="licenseExpiry"
+                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-accent-teal focus:ring-accent-teal">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 4: Agreements -->
+                        <div class="step hidden" id="step4">
+                            <div class="rounded-md bg-blue-50 p-4 mb-6">
+                                <div class="flex">
+                                    <div class="flex-shrink-0">
+                                        <i class="fas fa-info-circle text-blue-400"></i>
+                                    </div>
+                                    <div class="ml-3">
+                                        <h3 class="text-sm font-medium text-blue-800">Important Agreements</h3>
+                                        <div class="mt-2 text-sm text-blue-700">
+                                            <p>Please review and accept the following agreements to complete your registration.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="space-y-4">
+                                <div class="flex items-start p-4 bg-gray-50 rounded-lg">
+                                    <div class="flex items-center h-5">
+                                        <input type="checkbox" name="termsAccepted" required
+                                            class="h-4 w-4 text-accent-teal focus:ring-accent-teal border-gray-300 rounded">
+                                    </div>
+                                    <div class="ml-3 text-sm">
+                                        <label class="font-medium text-gray-700">Terms and Conditions</label>
+                                        <p class="text-gray-500">I agree to the terms and conditions of MedConnect.</p>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-start p-4 bg-gray-50 rounded-lg">
+                                    <div class="flex items-center h-5">
+                                        <input type="checkbox" name="hipaaAccepted" required
+                                            class="h-4 w-4 text-accent-teal focus:ring-accent-teal border-gray-300 rounded">
+                                    </div>
+                                    <div class="ml-3 text-sm">
+                                        <label class="font-medium text-gray-700">HIPAA Compliance</label>
+                                        <p class="text-gray-500">I acknowledge and agree to comply with HIPAA regulations.</p>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-start p-4 bg-gray-50 rounded-lg">
+                                    <div class="flex items-center h-5">
+                                        <input type="checkbox" name="privacyAccepted" required
+                                            class="h-4 w-4 text-accent-teal focus:ring-accent-teal border-gray-300 rounded">
+                                    </div>
+                                    <div class="ml-3 text-sm">
+                                        <label class="font-medium text-gray-700">Privacy Policy</label>
+                                        <p class="text-gray-500">I agree to the privacy policy of MedConnect.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Navigation Buttons -->
+                        <div class="mt-8 flex justify-between">
+                            <button type="button" id="prevBtn"
+                                class="hidden btn-medical bg-gray-500 hover:bg-gray-600">
+                                <i class="fas fa-arrow-left mr-2"></i>Previous
+                            </button>
+                            <button type="button" id="nextBtn"
+                                class="ml-auto btn-medical">
+                                Next<i class="fas fa-arrow-right ml-2"></i>
+                            </button>
+                            <button type="submit" id="submitBtn"
+                                class="hidden ml-auto btn-medical">
+                                <i class="fas fa-check mr-2"></i>Complete Registration
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="decorative-wave"></div>
+
+    <script>
+        let currentStep = 1;
+        const totalSteps = 4;
+
+        // Handle profile picture upload
+        document.getElementById('profilePic').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('profilePreview');
+                    preview.innerHTML = `<img src="${e.target.result}" class="w-full h-full rounded-full object-cover">`;
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Navigation functions
+        function showStep(step) {
+            document.querySelectorAll('.step').forEach(s => s.classList.add('hidden'));
+            document.getElementById(`step${step}`).classList.remove('hidden');
+
+            // Update progress indicators
+            const indicators = document.querySelectorAll('.step-indicator');
+            const lines = document.querySelectorAll('.step-line');
+
+            indicators.forEach((indicator, index) => {
+                if (index + 1 === step) {
+                    indicator.classList.add('active');
+                } else if (index + 1 < step) {
+                    indicator.classList.add('active');
+                } else {
+                    indicator.classList.remove('active');
+                }
+            });
+
+            lines.forEach((line, index) => {
+                if (index < step - 1) {
+                    line.classList.add('active');
+                } else {
+                    line.classList.remove('active');
+                }
+            });
+
+            // Show/hide navigation buttons
+            document.getElementById('prevBtn').classList.toggle('hidden', step === 1);
+            document.getElementById('nextBtn').classList.toggle('hidden', step === totalSteps);
+            document.getElementById('submitBtn').classList.toggle('hidden', step !== totalSteps);
+        }
+
+        // Event listeners for navigation
+        document.getElementById('nextBtn').addEventListener('click', () => {
+            if (currentStep < totalSteps) {
+                currentStep++;
+                showStep(currentStep);
+            }
+        });
+
+        document.getElementById('prevBtn').addEventListener('click', () => {
+            if (currentStep > 1) {
+                currentStep--;
+                showStep(currentStep);
+            }
+        });
+
+        // Form submission
+        document.getElementById('registrationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
+            console.log('Form submitted:', data);
+            // Here you would typically send the data to your server
+            alert('Registration submitted successfully!');
+        });
+
+        // Initialize form
+        showStep(1);
+    </script>
+</body>
+</html>
