@@ -1,246 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MedConnect - Appointment Management</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-      rel="stylesheet"
-    />
-    <style>
-      :root {
-        --primary-blue: #2a5c82;
-        --secondary-blue: #5c9baf;
-        --accent-teal: #4ecdc4;
-        --high-risk: #dc3545;
-        --medium-risk: #ffc107;
-        --low-risk: #28a745;
-      }
+<%- include('../../layouts/doctor-layout', {
+  title: "Appointment Management",
+  page: "appointment-management",
+  doctor: doctor,
+  content: 'pages/doctor/appointment-management-content'
+}) %>
 
-      body {
-        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-        min-height: 100vh;
-      }
-
-      .medical-header {
-        background: var(--primary-blue);
-        padding: 1rem;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      }
-
-      .dashboard-container {
-        background: rgba(255, 255, 255, 0.95);
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s ease;
-      }
-
-      .btn-medical {
-        background: var(--accent-teal);
-        color: white;
-        padding: 12px 30px;
-        transition: all 0.3s ease;
-      }
-
-      .btn-medical:hover {
-        background: var(--secondary-blue);
-        transform: translateY(-2px);
-      }
-
-      .btn-outline-medical {
-        color: var(--accent-teal);
-        border: 1px solid var(--accent-teal);
-        transition: all 0.3s ease;
-      }
-
-      .btn-outline-medical:hover {
-        background: var(--accent-teal);
-        color: white;
-      }
-
-      .card-medical {
-        border-radius: 15px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-        transition: all 0.3s ease;
-      }
-
-      .card-medical:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-      }
-
-      .sidebar {
-        background: var(--primary-blue);
-        color: white;
-      }
-
-      .nav-link {
-        color: rgba(255, 255, 255, 0.8);
-        transition: all 0.3s ease;
-        padding: 0.8rem 1rem;
-        border-radius: 10px;
-        margin-bottom: 0.5rem;
-      }
-
-      .nav-link:hover, .nav-link.active {
-        background: rgba(255, 255, 255, 0.1);
-        color: white;
-      }
-
-      .nav-link i {
-        margin-right: 10px;
-      }
-
-      .health-metric {
-        height: 6px;
-        border-radius: 3px;
-      }
-
-      .risk-badge-high {
-        background-color: var(--high-risk);
-        color: white;
-      }
-
-      .risk-badge-medium {
-        background-color: var(--medium-risk);
-        color: black;
-      }
-
-      .risk-badge-low {
-        background-color: var(--low-risk);
-        color: white;
-      }
-
-      .decorative-wave {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 150px;
-        background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg"><path fill="%232A5C82" fill-opacity="0.1" d="M0,160L48,170.7C96,181,192,203,288,186.7C384,171,480,117,576,101.3C672,85,768,107,864,138.7C960,171,1056,213,1152,208C1248,203,1344,149,1392,122.7L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
-      }
-
-      .status-pending {
-        background-color: #ffc107;
-        color: #212529;
-      }
-
-      .status-approved {
-        background-color: #28a745;
-        color: white;
-      }
-
-      .status-completed {
-        background-color: #6c757d;
-        color: white;
-      }
-
-      .status-rejected {
-        background-color: #dc3545;
-        color: white;
-      }
-
-      .appointment-card {
-        transition: all 0.3s ease;
-      }
-
-      .appointment-card:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-      }
-
-      .search-container {
-        position: relative;
-      }
-
-      .search-container i {
-        position: absolute;
-        left: 15px;
-        top: 50%;
-        transform: translateY(-50%);
-        color: #6c757d;
-      }
-
-      .search-input {
-        padding-left: 40px;
-        border-radius: 20px;
-      }
-
-      .filter-dropdown .dropdown-menu {
-        width: 250px;
-        padding: 15px;
-      }
-
-      .time-slot-suggestion {
-        background-color: rgba(78, 205, 196, 0.1);
-        border-left: 3px solid var(--accent-teal);
-      }
-    </style>
-  </head>
-  <body>
-    <nav class="navbar medical-header">
-      <div class="container">
-        <a class="navbar-brand text-white" href="#">
-          <i class="fas fa-hospital me-2"></i>MedConnect
-        </a>
-        <div class="dropdown">
-          <button class="btn text-white dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="fas fa-user-md me-2"></i>Dr. Sarah Wilson
-          </button>
-          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-            <li><a class="dropdown-item" href="profile.html"><i class="fas fa-id-card me-2"></i>Profile</a></li>
-            <li><a class="dropdown-item" href="settings.html"><i class="fas fa-cog me-2"></i>Settings</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="/logout"><i class="fas fa-sign-out-alt me-2"></i>Log Out</a></li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-
-    <div class="w-full">
-      <div class="dashboard-container row g-0 w-full" >
-        <!-- Sidebar -->
-        <div class="col-md-3 sidebar p-4">
-          <div class="d-flex align-items-center mb-4">
-            <i class="fas fa-user-md fs-1 me-3"></i>
-            <div>
-              <h5 class="mb-0">Dr. Sarah Wilson</h5>
-              <small class="text-light">Oncologist</small>
-            </div>
-          </div>
-          <div class="nav flex-column">
-            <a href="dashboard.html" class="nav-link">
-              <i class="fas fa-home"></i>Dashboard
-            </a>
-            <a href="appointment-management.html" class="nav-link active">
-              <i class="fas fa-calendar-check"></i>Appointments
-            </a>
-            <a href="patient-info.html" class="nav-link">
-              <i class="fas fa-user-injured"></i>Patient Info
-            </a>
-            <a href="progress-reports.html" class="nav-link">
-              <i class="fas fa-chart-line"></i>Progress Reports
-            </a>
-            <a href="feedback-management.html" class="nav-link">
-              <i class="fas fa-comment-medical"></i>Feedback
-            </a>
-            <a href="resources.html" class="nav-link">
-              <i class="fas fa-book-medical"></i>Resources
-            </a>
-            <a href="profile.html" class="nav-link">
-              <i class="fas fa-user"></i>Profile
-            </a>
-          </div>
-        </div>
-        
-        <!-- Main Content -->
-        <div class="col-md-9 p-4 bg-white">
-          <h2 class="mb-4">Appointment Management</h2>
-          
+<div class="container-fluid">
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card card-medical">
+        <div class="card-body">
+          <h5 class="card-title">Appointment Management</h5>
+          <!-- Rest of your appointment management content -->
           <!-- Notifications -->
           <div class="alert alert-info d-flex align-items-center" role="alert">
             <i class="fas fa-bell fs-5 me-3"></i>
@@ -533,7 +304,7 @@
                         <button class="btn btn-sm btn-danger me-2" data-bs-toggle="modal" data-bs-target="#rejectModal" data-patient="Robert Davis" data-date="Mar 22, 2025" data-time="1:00 - 2:00 PM">
                           <i class="fas fa-times me-1"></i>Reject
                         </button>
-                        <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#rescheduleModal" data-patient="Robert Davis" data-date="Mar 22, 2025" data-time="  data-bs-target="#rescheduleModal" data-patient="Robert Davis" data-date="Mar 22, 2025" data-time="1:00 - 2:00 PM">
+                        <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#rescheduleModal" data-patient="Robert Davis" data-date="Mar 22, 2025" data-time="1:00 - 2:00 PM">
                           <i class="fas fa-sync-alt me-1"></i>Reschedule
                         </button>
                       </div>
@@ -713,388 +484,388 @@
         </div>
       </div>
     </div>
+  </div>
+</div>
 
-    <!-- Approve Appointment Modal -->
-    <div class="modal fade" id="approveModal" tabindex="-1" aria-labelledby="approveModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="approveModalLabel">Approve Appointment</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+<!-- Approve Appointment Modal -->
+<div class="modal fade" id="approveModal" tabindex="-1" aria-labelledby="approveModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="approveModalLabel">Approve Appointment</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to approve the appointment for <span id="approvePatient">Patient Name</span>?</p>
+        <div class="mb-3">
+          <strong>Date:</strong> <span id="approveDate">Date</span>
+        </div>
+        <div class="mb-3">
+          <strong>Time:</strong> <span id="approveTime">Time</span>
+        </div>
+        <div class="mb-3">
+          <label for="approveNotes" class="form-label">Additional Notes (optional)</label>
+          <textarea class="form-control" id="approveNotes" rows="3" placeholder="Add any special instructions or notes for the patient"></textarea>
+        </div>
+        <div class="form-check mb-3">
+          <input class="form-check-input" type="checkbox" id="sendApprovalNotification" checked>
+          <label class="form-check-label" for="sendApprovalNotification">
+            Send notification to patient
+          </label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-success" id="confirmApprove">Approve Appointment</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Reject Appointment Modal -->
+<div class="modal fade" id="rejectModal" tabindex="-1" aria-labelledby="rejectModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="rejectModalLabel">Reject Appointment</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to reject the appointment for <span id="rejectPatient">Patient Name</span>?</p>
+        <div class="mb-3">
+          <strong>Date:</strong> <span id="rejectDate">Date</span>
+        </div>
+        <div class="mb-3">
+          <strong>Time:</strong> <span id="rejectTime">Time</span>
+        </div>
+        <div class="mb-3">
+          <label for="rejectReason" class="form-label">Reason for Rejection</label>
+          <select class="form-select" id="rejectReason" required>
+            <option value="" selected disabled>Select a reason</option>
+            <option value="unavailable">Doctor unavailable at requested time</option>
+            <option value="specialist">Need to see a different specialist</option>
+            <option value="tests">Additional tests required before appointment</option>
+            <option value="emergency">Emergency cases taking priority</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div class="mb-3" id="otherRejectReasonDiv" style="display: none;">
+          <label for="otherRejectReason" class="form-label">Please Specify</label>
+          <textarea class="form-control" id="otherRejectReason" rows="2"></textarea>
+        </div>
+        <div class="mb-3">
+          <label for="alternativeSuggestion" class="form-label">Alternative Suggestion</label>
+          <textarea class="form-control" id="alternativeSuggestion" rows="2" placeholder="Suggest an alternative time, date, or doctor"></textarea>
+        </div>
+        <div class="form-check mb-3">
+          <input class="form-check-input" type="checkbox" id="sendRejectionNotification" checked>
+          <label class="form-check-label" for="sendRejectionNotification">
+            Send notification to patient
+          </label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-danger" id="confirmReject">Reject Appointment</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Reschedule Appointment Modal -->
+<div class="modal fade" id="rescheduleModal" tabindex="-1" aria-labelledby="rescheduleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="rescheduleModalLabel">Reschedule Appointment</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Reschedule appointment for <span id="reschedulePatient">Patient Name</span></p>
+        <div class="mb-3">
+          <strong>Current Date:</strong> <span id="rescheduleDate">Date</span>
+        </div>
+        <div class="mb-3">
+          <strong>Current Time:</strong> <span id="rescheduleTime">Time</span>
+        </div>
+        <div class="mb-3">
+          <label for="newDate" class="form-label">New Date</label>
+          <input type="date" class="form-control" id="newDate" required min="2025-03-22">
+        </div>
+        <div class="mb-3">
+          <label for="newTime" class="form-label">New Time</label>
+          <select class="form-select" id="newTime" required>
+            <option value="" selected disabled>Select a time slot</option>
+            <option value="09:00">9:00 AM - 10:00 AM</option>
+            <option value="10:00">10:00 AM - 11:00 AM</option>
+            <option value="11:00">11:00 AM - 12:00 PM</option>
+            <option value="13:00">1:00 PM - 2:00 PM</option>
+            <option value="14:00">2:00 PM - 3:00 PM</option>
+            <option value="15:00">3:00 PM - 4:00 PM</option>
+            <option value="16:00">4:00 PM - 5:00 PM</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="rescheduleReason" class="form-label">Reason for Rescheduling</label>
+          <textarea class="form-control" id="rescheduleReason" rows="2"></textarea>
+        </div>
+        <div class="form-check mb-3">
+          <input class="form-check-input" type="checkbox" id="sendRescheduleNotification" checked>
+          <label class="form-check-label" for="sendRescheduleNotification">
+            Send notification to patient
+          </label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" id="confirmReschedule">Reschedule</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Patient Details Modal -->
+<div class="modal fade" id="patientDetailsModal" tabindex="-1" aria-labelledby="patientDetailsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="patientDetailsModalLabel">Patient Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row mb-4">
+          <div class="col-md-6">
+            <h6>Personal Information</h6>
+            <div class="mb-2">
+              <strong>Name:</strong> <span id="patientName">Patient Name</span>
+            </div>
+            <div class="mb-2">
+              <strong>ID:</strong> <span id="patientID">Patient ID</span>
+            </div>
+            <div class="mb-2">
+              <strong>Age:</strong> <span id="patientAge">Age</span>
+            </div>
+            <div class="mb-2">
+              <strong>Gender:</strong> <span id="patientGender">Gender</span>
+            </div>
+            <div class="mb-2">
+              <strong>Contact:</strong> <span id="patientContact">Contact</span>
+            </div>
+            <div class="mb-2">
+              <strong>Email:</strong> <span id="patientEmail">Email</span>
+            </div>
           </div>
-          <div class="modal-body">
-            <p>Are you sure you want to approve the appointment for <span id="approvePatient">Patient Name</span>?</p>
-            <div class="mb-3">
-              <strong>Date:</strong> <span id="approveDate">Date</span>
+          <div class="col-md-6">
+            <h6>Medical Information</h6>
+            <div class="mb-2">
+              <strong>Diagnosis:</strong> <span id="patientDiagnosis">Diagnosis</span>
             </div>
-            <div class="mb-3">
-              <strong>Time:</strong> <span id="approveTime">Time</span>
+            <div class="mb-2">
+              <strong>Risk Level:</strong> <span id="patientRisk">Risk Level</span>
             </div>
-            <div class="mb-3">
-              <label for="approveNotes" class="form-label">Additional Notes (optional)</label>
-              <textarea class="form-control" id="approveNotes" rows="3" placeholder="Add any special instructions or notes for the patient"></textarea>
+            <div class="mb-2">
+              <strong>Treatment Stage:</strong> <span id="patientStage">Stage</span>
             </div>
-            <div class="form-check mb-3">
-              <input class="form-check-input" type="checkbox" id="sendApprovalNotification" checked>
-              <label class="form-check-label" for="sendApprovalNotification">
-                Send notification to patient
-              </label>
+            <div class="mb-2">
+              <strong>Primary Physician:</strong> <span id="patientPhysician">Physician</span>
+            </div>
+            <div class="mb-2">
+              <strong>Last Visit:</strong> <span id="patientLastVisit">Last Visit</span>
             </div>
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-            <button type="button" class="btn btn-success" id="confirmApprove">Approve Appointment</button>
+        </div>
+        <div class="mb-4">
+          <h6>Recent Medical History</h6>
+          <div id="patientHistory" class="bg-light p-3 rounded">
+            Medical history will appear here
+          </div>
+        </div>
+        <div class="mb-4">
+          <h6>Upcoming Appointments</h6>
+          <div id="patientAppointments" class="bg-light p-3 rounded">
+            Appointments will appear here
           </div>
         </div>
       </div>
-    </div>
-
-    <!-- Reject Appointment Modal -->
-    <div class="modal fade" id="rejectModal" tabindex="-1" aria-labelledby="rejectModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="rejectModalLabel">Reject Appointment</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <p>Are you sure you want to reject the appointment for <span id="rejectPatient">Patient Name</span>?</p>
-            <div class="mb-3">
-              <strong>Date:</strong> <span id="rejectDate">Date</span>
-            </div>
-            <div class="mb-3">
-              <strong>Time:</strong> <span id="rejectTime">Time</span>
-            </div>
-            <div class="mb-3">
-              <label for="rejectReason" class="form-label">Reason for Rejection</label>
-              <select class="form-select" id="rejectReason" required>
-                <option value="" selected disabled>Select a reason</option>
-                <option value="unavailable">Doctor unavailable at requested time</option>
-                <option value="specialist">Need to see a different specialist</option>
-                <option value="tests">Additional tests required before appointment</option>
-                <option value="emergency">Emergency cases taking priority</option>
-                <option value="other">Other</option>
-              </select>
-            </div>
-            <div class="mb-3" id="otherRejectReasonDiv" style="display: none;">
-              <label for="otherRejectReason" class="form-label">Please Specify</label>
-              <textarea class="form-control" id="otherRejectReason" rows="2"></textarea>
-            </div>
-            <div class="mb-3">
-              <label for="alternativeSuggestion" class="form-label">Alternative Suggestion</label>
-              <textarea class="form-control" id="alternativeSuggestion" rows="2" placeholder="Suggest an alternative time, date, or doctor"></textarea>
-            </div>
-            <div class="form-check mb-3">
-              <input class="form-check-input" type="checkbox" id="sendRejectionNotification" checked>
-              <label class="form-check-label" for="sendRejectionNotification">
-                Send notification to patient
-              </label>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-            <button type="button" class="btn btn-danger" id="confirmReject">Reject Appointment</button>
-          </div>
-        </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <a href="patient-info.html" class="btn btn-medical">View Full Profile</a>
       </div>
     </div>
+  </div>
+</div>
 
-    <!-- Reschedule Appointment Modal -->
-    <div class="modal fade" id="rescheduleModal" tabindex="-1" aria-labelledby="rescheduleModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="rescheduleModalLabel">Reschedule Appointment</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <p>Reschedule appointment for <span id="reschedulePatient">Patient Name</span></p>
-            <div class="mb-3">
-              <strong>Current Date:</strong> <span id="rescheduleDate">Date</span>
-            </div>
-            <div class="mb-3">
-              <strong>Current Time:</strong> <span id="rescheduleTime">Time</span>
-            </div>
-            <div class="mb-3">
-              <label for="newDate" class="form-label">New Date</label>
-              <input type="date" class="form-control" id="newDate" required min="2025-03-22">
-            </div>
-            <div class="mb-3">
-              <label for="newTime" class="form-label">New Time</label>
-              <select class="form-select" id="newTime" required>
-                <option value="" selected disabled>Select a time slot</option>
-                <option value="09:00">9:00 AM - 10:00 AM</option>
-                <option value="10:00">10:00 AM - 11:00 AM</option>
-                <option value="11:00">11:00 AM - 12:00 PM</option>
-                <option value="13:00">1:00 PM - 2:00 PM</option>
-                <option value="14:00">2:00 PM - 3:00 PM</option>
-                <option value="15:00">3:00 PM - 4:00 PM</option>
-                <option value="16:00">4:00 PM - 5:00 PM</option>
-              </select>
-            </div>
-            <div class="mb-3">
-              <label for="rescheduleReason" class="form-label">Reason for Rescheduling</label>
-              <textarea class="form-control" id="rescheduleReason" rows="2"></textarea>
-            </div>
-            <div class="form-check mb-3">
-              <input class="form-check-input" type="checkbox" id="sendRescheduleNotification" checked>
-              <label class="form-check-label" for="sendRescheduleNotification">
-                Send notification to patient
-              </label>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-            <button type="button" class="btn btn-primary" id="confirmReschedule">Reschedule</button>
-          </div>
-        </div>
-      </div>
-    </div>
+<div class="decorative-wave"></div>
 
-    <!-- Patient Details Modal -->
-    <div class="modal fade" id="patientDetailsModal" tabindex="-1" aria-labelledby="patientDetailsModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="patientDetailsModalLabel">Patient Details</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <div class="row mb-4">
-              <div class="col-md-6">
-                <h6>Personal Information</h6>
-                <div class="mb-2">
-                  <strong>Name:</strong> <span id="patientName">Patient Name</span>
-                </div>
-                <div class="mb-2">
-                  <strong>ID:</strong> <span id="patientID">Patient ID</span>
-                </div>
-                <div class="mb-2">
-                  <strong>Age:</strong> <span id="patientAge">Age</span>
-                </div>
-                <div class="mb-2">
-                  <strong>Gender:</strong> <span id="patientGender">Gender</span>
-                </div>
-                <div class="mb-2">
-                  <strong>Contact:</strong> <span id="patientContact">Contact</span>
-                </div>
-                <div class="mb-2">
-                  <strong>Email:</strong> <span id="patientEmail">Email</span>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <h6>Medical Information</h6>
-                <div class="mb-2">
-                  <strong>Diagnosis:</strong> <span id="patientDiagnosis">Diagnosis</span>
-                </div>
-                <div class="mb-2">
-                  <strong>Risk Level:</strong> <span id="patientRisk">Risk Level</span>
-                </div>
-                <div class="mb-2">
-                  <strong>Treatment Stage:</strong> <span id="patientStage">Stage</span>
-                </div>
-                <div class="mb-2">
-                  <strong>Primary Physician:</strong> <span id="patientPhysician">Physician</span>
-                </div>
-                <div class="mb-2">
-                  <strong>Last Visit:</strong> <span id="patientLastVisit">Last Visit</span>
-                </div>
-              </div>
-            </div>
-            <div class="mb-4">
-              <h6>Recent Medical History</h6>
-              <div id="patientHistory" class="bg-light p-3 rounded">
-                Medical history will appear here
-              </div>
-            </div>
-            <div class="mb-4">
-              <h6>Upcoming Appointments</h6>
-              <div id="patientAppointments" class="bg-light p-3 rounded">
-                Appointments will appear here
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <a href="patient-info.html" class="btn btn-medical">View Full Profile</a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="decorative-wave"></div>
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        // Handle approve modal
-        const approveModal = document.getElementById('approveModal');
-        if(approveModal) {
-          approveModal.addEventListener('show.bs.modal', function(event) {
-            const button = event.relatedTarget;
-            const patient = button.getAttribute('data-patient');
-            const date = button.getAttribute('data-date');
-            const time = button.getAttribute('data-time');
-            
-            document.getElementById('approvePatient').textContent = patient;
-            document.getElementById('approveDate').textContent = date;
-            document.getElementById('approveTime').textContent = time;
-          });
-          
-          // Handle approve confirmation
-          const confirmApprove = document.getElementById('confirmApprove');
-          if(confirmApprove) {
-            confirmApprove.addEventListener('click', function() {
-              // Here you would add AJAX call to approve the appointment
-              alert('Appointment approved successfully.');
-              // Close modal and refresh page
-              const modal = bootstrap.Modal.getInstance(approveModal);
-              modal.hide();
-              location.reload();
-            });
-          }
-        }
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Handle approve modal
+    const approveModal = document.getElementById('approveModal');
+    if(approveModal) {
+      approveModal.addEventListener('show.bs.modal', function(event) {
+        const button = event.relatedTarget;
+        const patient = button.getAttribute('data-patient');
+        const date = button.getAttribute('data-date');
+        const time = button.getAttribute('data-time');
         
-        // Handle reject modal
-        const rejectModal = document.getElementById('rejectModal');
-        if(rejectModal) {
-          rejectModal.addEventListener('show.bs.modal', function(event) {
-            const button = event.relatedTarget;
-            const patient = button.getAttribute('data-patient');
-            const date = button.getAttribute('data-date');
-            const time = button.getAttribute('data-time');
-            
-            document.getElementById('rejectPatient').textContent = patient;
-            document.getElementById('rejectDate').textContent = date;
-            document.getElementById('rejectTime').textContent = time;
-          });
-          
-          // Show "other" reason field if "other" is selected
-          const rejectReason = document.getElementById('rejectReason');
-          const otherRejectReasonDiv = document.getElementById('otherRejectReasonDiv');
-          
-          if(rejectReason) {
-            rejectReason.addEventListener('change', function() {
-              otherRejectReasonDiv.style.display = this.value === 'other' ? 'block' : 'none';
-            });
-          }
-          
-          // Handle reject confirmation
-          const confirmReject = document.getElementById('confirmReject');
-          if(confirmReject) {
-            confirmReject.addEventListener('click', function() {
-              // Here you would add AJAX call to reject the appointment
-              alert('Appointment rejected successfully.');
-              // Close modal and refresh page
-              const modal = bootstrap.Modal.getInstance(rejectModal);
-              modal.hide();
-              location.reload();
-            });
-          }
-        }
+        document.getElementById('approvePatient').textContent = patient;
+        document.getElementById('approveDate').textContent = date;
+        document.getElementById('approveTime').textContent = time;
+      });
+      
+      // Handle approve confirmation
+      const confirmApprove = document.getElementById('confirmApprove');
+      if(confirmApprove) {
+        confirmApprove.addEventListener('click', function() {
+          // Here you would add AJAX call to approve the appointment
+          alert('Appointment approved successfully.');
+          // Close modal and refresh page
+          const modal = bootstrap.Modal.getInstance(approveModal);
+          modal.hide();
+          location.reload();
+        });
+      }
+    }
+    
+    // Handle reject modal
+    const rejectModal = document.getElementById('rejectModal');
+    if(rejectModal) {
+      rejectModal.addEventListener('show.bs.modal', function(event) {
+        const button = event.relatedTarget;
+        const patient = button.getAttribute('data-patient');
+        const date = button.getAttribute('data-date');
+        const time = button.getAttribute('data-time');
         
-        // Handle reschedule modal
-        const rescheduleModal = document.getElementById('rescheduleModal');
-        if(rescheduleModal) {
-          rescheduleModal.addEventListener('show.bs.modal', function(event) {
-            const button = event.relatedTarget;
-            const patient = button.getAttribute('data-patient');
-            const date = button.getAttribute('data-date');
-            const time = button.getAttribute('data-time');
-            
-            document.getElementById('reschedulePatient').textContent = patient;
-            if(date) document.getElementById('rescheduleDate').textContent = date;
-            if(time) document.getElementById('rescheduleTime').textContent = time;
-          });
-          
-          // Handle reschedule confirmation
-          const confirmReschedule = document.getElementById('confirmReschedule');
-          if(confirmReschedule) {
-            confirmReschedule.addEventListener('click', function() {
-              const newDate = document.getElementById('newDate').value;
-              const newTime = document.getElementById('newTime').value;
-              
-              if(!newDate || !newTime) {
-                alert('Please select a new date and time.');
-                return;
-              }
-              
-              // Here you would add AJAX call to reschedule the appointment
-              alert('Appointment rescheduled successfully.');
-              // Close modal and refresh page
-              const modal = bootstrap.Modal.getInstance(rescheduleModal);
-              modal.hide();
-              location.reload();
-            });
-          }
-        }
+        document.getElementById('rejectPatient').textContent = patient;
+        document.getElementById('rejectDate').textContent = date;
+        document.getElementById('rejectTime').textContent = time;
+      });
+      
+      // Show "other" reason field if "other" is selected
+      const rejectReason = document.getElementById('rejectReason');
+      const otherRejectReasonDiv = document.getElementById('otherRejectReasonDiv');
+      
+      if(rejectReason) {
+        rejectReason.addEventListener('change', function() {
+          otherRejectReasonDiv.style.display = this.value === 'other' ? 'block' : 'none';
+        });
+      }
+      
+      // Handle reject confirmation
+      const confirmReject = document.getElementById('confirmReject');
+      if(confirmReject) {
+        confirmReject.addEventListener('click', function() {
+          // Here you would add AJAX call to reject the appointment
+          alert('Appointment rejected successfully.');
+          // Close modal and refresh page
+          const modal = bootstrap.Modal.getInstance(rejectModal);
+          modal.hide();
+          location.reload();
+        });
+      }
+    }
+    
+    // Handle reschedule modal
+    const rescheduleModal = document.getElementById('rescheduleModal');
+    if(rescheduleModal) {
+      rescheduleModal.addEventListener('show.bs.modal', function(event) {
+        const button = event.relatedTarget;
+        const patient = button.getAttribute('data-patient');
+        const date = button.getAttribute('data-date');
+        const time = button.getAttribute('data-time');
         
-        // Handle patient details modal
-        const patientDetailsModal = document.getElementById('patientDetailsModal');
-        if(patientDetailsModal) {
-          patientDetailsModal.addEventListener('show.bs.modal', function(event) {
-            const button = event.relatedTarget;
-            const patientId = button.getAttribute('data-patient-id');
-            
-            // Here you would fetch patient details using AJAX
-            // For now, we'll use dummy data
-            const patientData = {
-              'JW001': {
-                name: 'James Wilson',
-                age: 58,
-                gender: 'Male',
-                contact: '(555) 123-4567',
-                email: 'james.wilson@example.com',
-                diagnosis: 'Stage 3 Lung Cancer',
-                risk: 'High',
-                stage: 'Undergoing chemotherapy',
-                physician: 'Dr. Sarah Wilson',
-                lastVisit: 'Mar 10, 2025',
-                history: 'Patient has been undergoing chemotherapy for the past 3 months. Recent CT scan shows reduction in tumor size. Experiencing increased fatigue and nausea after last session.',
-                appointments: 'Mar 24, 2025 - Follow-up after chemotherapy (Pending)'
-              },
-              'SJ002': {
-                name: 'Sarah Johnson',
-                age: 45,
-                gender: 'Female',
-                contact: '(555) 234-5678',
-                email: 'sarah.johnson@example.com',
-                diagnosis: 'Stage 2 Breast Cancer',
-                risk: 'Medium',
-                stage: 'Recently diagnosed',
-                physician: 'Dr. Sarah Wilson',
-                lastVisit: 'Mar 15, 2025',
-                history: 'Recently diagnosed with Stage 2 Breast Cancer. Initial consultation completed. Awaiting treatment plan discussion.',
-                appointments: 'Mar 23, 2025 - Initial consultation after diagnosis (Pending)'
-              },
-              // Add more patient data as needed
-            };
-            
-            // Fill in the modal with patient data
-            if(patientData[patientId]) {
-              const patient = patientData[patientId];
-              document.getElementById('patientName').textContent = patient.name;
-              document.getElementById('patientID').textContent = patientId;
-              document.getElementById('patientAge').textContent = patient.age;
-              document.getElementById('patientGender').textContent = patient.gender;
-              document.getElementById('patientContact').textContent = patient.contact;
-              document.getElementById('patientEmail').textContent = patient.email;
-              document.getElementById('patientDiagnosis').textContent = patient.diagnosis;
-              document.getElementById('patientRisk').textContent = patient.risk;
-              document.getElementById('patientStage').textContent = patient.stage;
-              document.getElementById('patientPhysician').textContent = patient.physician;
-              document.getElementById('patientLastVisit').textContent = patient.lastVisit;
-              document.getElementById('patientHistory').textContent = patient.history;
-              document.getElementById('patientAppointments').textContent = patient.appointments;
-            } else {
-              // If patient data not found, show placeholder
-              document.getElementById('patientName').textContent = 'Patient data not available';
-            }
-          });
+        document.getElementById('reschedulePatient').textContent = patient;
+        if(date) document.getElementById('rescheduleDate').textContent = date;
+        if(time) document.getElementById('rescheduleTime').textContent = time;
+      });
+      
+      // Handle reschedule confirmation
+      const confirmReschedule = document.getElementById('confirmReschedule');
+      if(confirmReschedule) {
+        confirmReschedule.addEventListener('click', function() {
+          const newDate = document.getElementById('newDate').value;
+          const newTime = document.getElementById('newTime').value;
+          
+          if(!newDate || !newTime) {
+            alert('Please select a new date and time.');
+            return;
+          }
+          
+          // Here you would add AJAX call to reschedule the appointment
+          alert('Appointment rescheduled successfully.');
+          // Close modal and refresh page
+          const modal = bootstrap.Modal.getInstance(rescheduleModal);
+          modal.hide();
+          location.reload();
+        });
+      }
+    }
+    
+    // Handle patient details modal
+    const patientDetailsModal = document.getElementById('patientDetailsModal');
+    if(patientDetailsModal) {
+      patientDetailsModal.addEventListener('show.bs.modal', function(event) {
+        const button = event.relatedTarget;
+        const patientId = button.getAttribute('data-patient-id');
+        
+        // Here you would fetch patient details using AJAX
+        // For now, we'll use dummy data
+        const patientData = {
+          'JW001': {
+            name: 'James Wilson',
+            age: 58,
+            gender: 'Male',
+            contact: '(555) 123-4567',
+            email: 'james.wilson@example.com',
+            diagnosis: 'Stage 3 Lung Cancer',
+            risk: 'High',
+            stage: 'Undergoing chemotherapy',
+            physician: 'Dr. Sarah Wilson',
+            lastVisit: 'Mar 10, 2025',
+            history: 'Patient has been undergoing chemotherapy for the past 3 months. Recent CT scan shows reduction in tumor size. Experiencing increased fatigue and nausea after last session.',
+            appointments: 'Mar 24, 2025 - Follow-up after chemotherapy (Pending)'
+          },
+          'SJ002': {
+            name: 'Sarah Johnson',
+            age: 45,
+            gender: 'Female',
+            contact: '(555) 234-5678',
+            email: 'sarah.johnson@example.com',
+            diagnosis: 'Stage 2 Breast Cancer',
+            risk: 'Medium',
+            stage: 'Recently diagnosed',
+            physician: 'Dr. Sarah Wilson',
+            lastVisit: 'Mar 15, 2025',
+            history: 'Recently diagnosed with Stage 2 Breast Cancer. Initial consultation completed. Awaiting treatment plan discussion.',
+            appointments: 'Mar 23, 2025 - Initial consultation after diagnosis (Pending)'
+          },
+          // Add more patient data as needed
+        };
+        
+        // Fill in the modal with patient data
+        if(patientData[patientId]) {
+          const patient = patientData[patientId];
+          document.getElementById('patientName').textContent = patient.name;
+          document.getElementById('patientID').textContent = patientId;
+          document.getElementById('patientAge').textContent = patient.age;
+          document.getElementById('patientGender').textContent = patient.gender;
+          document.getElementById('patientContact').textContent = patient.contact;
+          document.getElementById('patientEmail').textContent = patient.email;
+          document.getElementById('patientDiagnosis').textContent = patient.diagnosis;
+          document.getElementById('patientRisk').textContent = patient.risk;
+          document.getElementById('patientStage').textContent = patient.stage;
+          document.getElementById('patientPhysician').textContent = patient.physician;
+          document.getElementById('patientLastVisit').textContent = patient.lastVisit;
+          document.getElementById('patientHistory').textContent = patient.history;
+          document.getElementById('patientAppointments').textContent = patient.appointments;
+        } else {
+          // If patient data not found, show placeholder
+          document.getElementById('patientName').textContent = 'Patient data not available';
         }
       });
-    </script>
-  </body>
-</html>
+    }
+  });
+</script>
 

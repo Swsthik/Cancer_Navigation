@@ -48,13 +48,13 @@
     <nav class="bg-primary shadow-md">
         <div class="container mx-auto px-4 py-3">
             <div class="flex justify-between items-center">
-                <a class="text-white text-xl font-semibold flex items-center" href="#">
+                <a class="text-white text-xl font-semibold flex items-center" href="/">
                     <i class="fas fa-hospital text-accent mr-2"></i>MedConnect
                 </a>
                 <div class="hidden md:flex items-center space-x-4">
-                    <a href="#" class="text-white hover:text-accent transition-colors text-sm">About</a>
-                    <a href="#" class="text-white hover:text-accent transition-colors text-sm">Contact</a>
-                    <a href="#" class="bg-accent hover:bg-darkAccent text-white rounded-full px-4 py-2 text-sm font-medium transition-colors">Login</a>
+                    <a href="/about" class="text-white hover:text-accent transition-colors text-sm">About</a>
+                    <a href="/contact" class="text-white hover:text-accent transition-colors text-sm">Contact</a>
+                    <a href="/login" class="bg-accent hover:bg-darkAccent text-white rounded-full px-4 py-2 text-sm font-medium transition-colors">Login</a>
                 </div>
                 <button class="md:hidden text-white">
                     <i class="fas fa-bars"></i>
@@ -108,7 +108,7 @@
                     </div>
                     
                     <!-- Registration Form -->
-                    <form id="registrationForm" class="space-y-6">
+                    <form id="registrationForm" action="/doctor/signup" method="POST" class="space-y-6">
                         <!-- Step 1: Personal Information -->
                         <div class="step" id="step1">
                             <div class="text-center mb-8">
@@ -248,26 +248,20 @@
                                             and <a href="#" class="text-accent hover:underline">Privacy Policy</a>
                                         </label>
                                     </div>
-                                    <div class="flex items-start">
-                                        <input type="checkbox" name="hipaa" required class="mt-1 h-4 w-4 text-accent">
-                                        <label class="ml-3 text-sm text-gray-700">
-                                            I agree to comply with HIPAA regulations
-                                        </label>
-                                    </div>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Navigation Buttons -->
-                        <div class="mt-8 flex justify-between">
-                            <button type="button" id="prevBtn" class="hidden px-6 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">
-                                <i class="fas fa-arrow-left mr-2"></i>Back
+                        <div class="flex justify-between mt-8">
+                            <button type="button" id="prevBtn" class="hidden bg-gray-200 hover:bg-gray-300 text-gray-700 px-6 py-2 rounded-lg transition-colors">
+                                Previous
                             </button>
-                            <button type="button" id="nextBtn" class="ml-auto px-6 py-2 bg-accent text-white rounded hover:bg-darkAccent">
-                                Next<i class="fas fa-arrow-right ml-2"></i>
+                            <button type="button" id="nextBtn" class="bg-accent hover:bg-darkAccent text-white px-6 py-2 rounded-lg transition-colors">
+                                Next
                             </button>
-                            <button type="submit" id="submitBtn" class="hidden ml-auto px-6 py-2 bg-accent text-white rounded hover:bg-darkAccent">
-                                <i class="fas fa-check mr-2"></i>Submit
+                            <button type="submit" id="submitBtn" class="hidden bg-accent hover:bg-darkAccent text-white px-6 py-2 rounded-lg transition-colors">
+                                Submit
                             </button>
                         </div>
                     </form>
@@ -277,63 +271,63 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            let currentStep = 1;
-            const totalSteps = 4;
+        // Form step navigation
+        let currentStep = 1;
+        const totalSteps = 4;
+        const form = document.getElementById('registrationForm');
+        const steps = document.querySelectorAll('.step');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const submitBtn = document.getElementById('submitBtn');
 
-            function showStep(step) {
-                document.querySelectorAll('.step').forEach(el => el.classList.add('hidden'));
-                document.getElementById(`step${step}`).classList.remove('hidden');
-                
-                document.getElementById('prevBtn').classList.toggle('hidden', step === 1);
-                document.getElementById('nextBtn').classList.toggle('hidden', step === totalSteps);
-                document.getElementById('submitBtn').classList.toggle('hidden', step !== totalSteps);
-            }
-
-            function validateStep(step) {
-                const currentStepEl = document.getElementById(`step${step}`);
-                const inputs = currentStepEl.querySelectorAll('input, select');
-                let valid = true;
-
-                inputs.forEach(input => {
-                    if (input.required && !input.value.trim()) {
-                        input.classList.add('border-red-500');
-                        valid = false;
-                    } else {
-                        input.classList.remove('border-red-500');
-                    }
-                });
-
-                return valid;
-            }
-
-            document.getElementById('nextBtn').addEventListener('click', () => {
-                if (validateStep(currentStep)) {
-                    currentStep++;
-                    showStep(currentStep);
-                }
+        function showStep(step) {
+            steps.forEach((s, index) => {
+                s.classList.toggle('hidden', index + 1 !== step);
             });
+            
+            prevBtn.classList.toggle('hidden', step === 1);
+            nextBtn.classList.toggle('hidden', step === totalSteps);
+            submitBtn.classList.toggle('hidden', step !== totalSteps);
+        }
 
-            document.getElementById('prevBtn').addEventListener('click', () => {
+        nextBtn.addEventListener('click', () => {
+            if (currentStep < totalSteps) {
+                currentStep++;
+                showStep(currentStep);
+            }
+        });
+
+        prevBtn.addEventListener('click', () => {
+            if (currentStep > 1) {
                 currentStep--;
                 showStep(currentStep);
-            });
+            }
+        });
 
-            document.getElementById('registrationForm').addEventListener('submit', (e) => {
-                e.preventDefault();
-                if (validateStep(currentStep)) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Registration Complete!',
-                        text: 'Your account is pending verification',
-                        confirmButtonColor: '#2a5c82'
-                    });
-                }
-            });
+        // Profile picture preview
+        const profilePic = document.getElementById('profilePic');
+        const profilePreview = document.getElementById('profilePreview');
 
-            // Initialize first step
-            showStep(1);
+        profilePic.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    profilePreview.innerHTML = `<img src="${e.target.result}" class="w-full h-full object-cover" alt="Profile Preview">`;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // SSN visibility toggle
+        const ssnInput = document.getElementById('ssnInput');
+        const toggleSSN = document.getElementById('toggleSSN');
+
+        toggleSSN.addEventListener('click', () => {
+            const type = ssnInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            ssnInput.setAttribute('type', type);
+            toggleSSN.innerHTML = type === 'password' ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
         });
     </script>
 </body>
-</html>
+</html> 

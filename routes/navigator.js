@@ -14,7 +14,10 @@ router.get("/dashboard", isLoggedIn, (req, res) => {
   if (req.user.userType !== "Patient-Navigator") {
     return res.redirect(`/${req.user.userType.toLowerCase()}/dashboard`);
   }
-  res.render("pages/navigator/dashboard.ejs", { user: req.user });
+  res.render("pages/navigator/dashboard.ejs", { 
+    user: req.user,
+    activePage: "dashboard"
+  });
 });
 
 

@@ -1,143 +1,169 @@
 # Cancer Navigation System
 
-A web-based platform that connects patients with patient navigators and caregivers to facilitate cancer care coordination and support.
+A comprehensive healthcare platform designed to facilitate communication and coordination between cancer patients, doctors, patient navigators, and caregivers.
+
+## Overview
+
+The Cancer Navigation System is a web-based application that streamlines the cancer care journey by connecting all stakeholders in the treatment process. It provides specialized interfaces for different user roles and facilitates efficient patient care management.
 
 ## Features
 
-- **Multi-User Authentication System**
+### For Doctors
+- **Dashboard**: Overview of appointments, patient requests, and feedback
+- **Patient Management**: View and manage patient information
+- **Appointment Management**: Schedule and track patient appointments
+- **Progress Reports**: Create and monitor patient progress reports
+- **Resource Center**: Access medical resources and guidelines
 
-  - Patient Portal
-  - Patient Navigator Dashboard
-  - Caregiver Interface
+### For Patients
+- **Treatment Timeline**: Track treatment progress and upcoming appointments
+- **Document Management**: Store and access medical records
+- **Communication Hub**: Direct communication with doctors and navigators
+- **Resource Access**: Educational materials and support resources
 
-- **Role-Based Access Control**
-  - Specific dashboards and features for each user type
-  - Secure authentication and session management
-  - User type validation during login
+### For Patient Navigators
+- **Patient Tracking**: Monitor patient progress and needs
+- **Resource Coordination**: Connect patients with necessary resources
+- **Communication Management**: Facilitate patient-doctor communication
+- **Support Services**: Coordinate additional support services
 
-## Prerequisites
+### For Caregivers
+- **Patient Monitoring**: Track patient's treatment schedule
+- **Communication**: Direct line with healthcare providers
+- **Resource Access**: Caregiver support materials
 
-Before running this application, make sure you have the following installed:
+## Technical Stack
 
-- Node.js (v14 or higher)
-- MongoDB (v4.4 or higher)
-- npm (Node Package Manager)
-
-## Environment Variables
-
-Create a `.env` file in the root directory with the following variables:
-
-```env
-PORT=2000
-ATLASDB_URL=your_mongodb_connection_string
-SESSION_SECRET=AKJKHD@65
-```
+- **Backend**: Node.js with Express.js
+- **Frontend**: EJS templating engine with Bootstrap 5
+- **Database**: MongoDB with Mongoose ODM
+- **Authentication**: Passport.js
+- **Additional Libraries**:
+  - Chart.js for data visualization
+  - Font Awesome for icons
+  - Bootstrap for responsive design
 
 ## Installation
 
-1. Clone the repository:
+1. **Prerequisites**
+   ```bash
+   - Node.js (v14 or higher)
+   - MongoDB (v4.4 or higher)
+   - npm (v6 or higher)
+   ```
 
-```bash
-git clone https://github.com/yourusername/Cancer_Navigation.git
-cd Cancer_Navigation
-```
+2. **Clone the Repository**
+   ```bash
+   git clone [repository-url]
+   cd Cancer_Navigation
+   ```
 
-2. Install dependencies:
+3. **Install Dependencies**
+   ```bash
+   npm install
+   ```
 
-```bash
-npm install
-```
+4. **Environment Setup**
+   Create a `.env` file in the root directory:
+   ```env
+   PORT=3000
+   MONGODB_URI=mongodb://localhost:27017/cancer_navigation
+   SESSION_SECRET=your_session_secret
+   ```
 
-3. Set up environment variables:
+5. **Database Setup**
+   ```bash
+   # Start MongoDB service
+   mongod
+   ```
 
-- Copy `.env.example` to `.env`
-- Update the MongoDB connection string and session secret
+6. **Start the Application**
+   ```bash
+   # Development mode
+   npm run dev
 
-## Running the Application
-
-1. Start the server:
-
-```bash
-npm start  or node app.js
-```
-
-2. Access the application:
-
-- Open your browser and navigate to `http://localhost:2000`
-- You will be redirected to the login page
-
-## User Types and Access
-
-1. **Patient**
-
-   - Can view appointments
-   - Access medical records
-   - Communicate with navigator
-   - View personal health information
-
-2. **Patient Navigator**
-
-   - Manage multiple patients
-   - Track appointments
-   - Monitor patient progress
-   - Access resources
-   - View recent activities
-
-3. **Caregiver**
-   - View assigned patients
-   - Manage care schedule
-   - Take care notes
-   - Communicate with healthcare team
+   # Production mode
+   npm start
+   ```
 
 ## Project Structure
 
 ```
 Cancer_Navigation/
-├── models/
-│   └── user.js
-├── views/
-│   ├── pages/
-│   │   ├── auth/
-│   │   │   ├── login.ejs
-│   │   │   └── signup.ejs
-│   │   ├── patient/
-│   │   │   └── dashboard.ejs
-│   │   ├── navigator/
-│   │   │   └── dashboard.ejs
-│   │   └── caregiver/
-│   │       └── dashboard.ejs
-├── public/
-├── app.js
-├── package.json
-└── .env
+├── models/              # Database models
+├── routes/              # Route handlers
+├── views/              
+│   ├── pages/          # Page templates
+│   │   ├── auth/       # Authentication pages
+│   │   ├── doctor/     # Doctor interface
+│   │   ├── patient/    # Patient interface
+│   │   └── navigator/  # Navigator interface
+│   └── partials/       # Reusable components
+├── public/             # Static files
+├── config/             # Configuration files
+└── middleware/         # Custom middleware
 ```
 
-## Dependencies
+## User Roles and Access
 
-- Express.js - Web framework
-- MongoDB/Mongoose - Database
-- Passport.js - Authentication
-- EJS - Templating
-- Bootstrap - Frontend styling
-- SweetAlert2 - Notifications
-- jQuery - AJAX requests
+1. **Doctor**
+   - Full access to patient medical records
+   - Appointment management
+   - Progress report creation
+   - Resource management
+
+2. **Patient**
+   - Personal medical record access
+   - Appointment scheduling
+   - Communication with care team
+   - Resource access
+
+3. **Patient Navigator**
+   - Patient coordination
+   - Resource management
+   - Communication facilitation
+   - Support service coordination
+
+4. **Caregiver**
+   - Limited patient information access
+   - Appointment viewing
+   - Communication with care team
 
 ## Security Features
 
-- Password hashing using Passport-Local-Mongoose
-- Session-based authentication
+- Secure authentication using Passport.js
 - Role-based access control
-- User type validation
-- Error handling with user-friendly messages
+- Session management
+- Password encryption
+- CSRF protection
+- XSS prevention
 
 ## Contributing
 
 1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a Pull Request
 
 ## License
 
-This project is licensed under the ISC License.
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Support
+
+For support, please contact [support email/contact information]
+
+## Acknowledgments
+
+- Healthcare professionals who provided domain expertise
+- Open source community for various tools and libraries
+- Contributors and testers
+
+## Future Enhancements
+
+- Mobile application development
+- Integration with hospital management systems
+- Advanced analytics and reporting
+- Telemedicine features
+- AI-powered recommendations

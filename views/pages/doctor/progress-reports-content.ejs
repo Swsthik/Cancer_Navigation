@@ -1,0 +1,185 @@
+<div class="container mt-4">
+    <!-- Header Section with Search and Filters -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search reports..." id="searchReports">
+                <button class="btn btn-primary" type="button">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </div>
+        <div class="col-md-6 text-end">
+            <button class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#newReportModal">
+                <i class="fas fa-plus"></i> New Report
+            </button>
+            <button class="btn btn-secondary">
+                <i class="fas fa-file-export"></i> Export Reports
+            </button>
+        </div>
+    </div>
+
+    <!-- Filters Row -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <select class="form-select" id="patientFilter">
+                <option value="">All Patients</option>
+                <% if (patients && patients.length > 0) { %>
+                    <% patients.forEach(patient => { %>
+                        <option value="<%= patient._id %>"><%= patient.name %></option>
+                    <% }) %>
+                <% } %>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <select class="form-select" id="statusFilter">
+                <option value="">All Statuses</option>
+                <option value="improving">Improving</option>
+                <option value="stable">Stable</option>
+                <option value="declining">Declining</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <select class="form-select" id="dateFilter">
+                <option value="">All Dates</option>
+                <option value="today">Today</option>
+                <option value="week">This Week</option>
+                <option value="month">This Month</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Reports List -->
+    <div class="row">
+        <% if (reports && reports.length > 0) { %>
+            <% reports.forEach(report => { %>
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <h5 class="card-title mb-0"><%= report.patientName %></h5>
+                                <span class="badge <%= report.status === 'improving' ? 'bg-success' : 
+                                                     report.status === 'stable' ? 'bg-info' : 
+                                                     'bg-warning' %>">
+                                    <%= report.status.charAt(0).toUpperCase() + report.status.slice(1) %>
+                                </span>
+                            </div>
+                            <div class="mb-3">
+                                <small class="text-muted">Report Date: <%= new Date(report.date).toLocaleDateString() %></small>
+                            </div>
+                            <p class="card-text"><%= report.summary %></p>
+                            <div class="progress mb-3">
+                                <div class="progress-bar" role="progressbar" 
+                                     style="width: <%= report.progressPercentage %>%"
+                                     aria-valuenow="<%= report.progressPercentage %>" 
+                                     aria-valuemin="0" 
+                                     aria-valuemax="100">
+                                    <%= report.progressPercentage %>%
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-end">
+                                <button class="btn btn-outline-primary btn-sm me-2" 
+                                        onclick="viewReport('<%= report._id %>')">
+                                    View Details
+                                </button>
+                                <button class="btn btn-outline-secondary btn-sm"
+                                        onclick="editReport('<%= report._id %>')">
+                                    Edit Report
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        <% } else { %>
+            <div class="col-12">
+                <div class="alert alert-info">
+                    No progress reports found. Create a new report to get started.
+                </div>
+            </div>
+        <% } %>
+    </div>
+</div>
+
+<!-- New Report Modal -->
+<div class="modal fade" id="newReportModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">New Progress Report</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="newReportForm">
+                    <div class="mb-3">
+                        <label class="form-label">Patient</label>
+                        <select class="form-select" required>
+                            <option value="">Select Patient</option>
+                            <% if (patients && patients.length > 0) { %>
+                                <% patients.forEach(patient => { %>
+                                    <option value="<%= patient._id %>"><%= patient.name %></option>
+                                <% }) %>
+                            <% } %>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Status</label>
+                        <select class="form-select" required>
+                            <option value="improving">Improving</option>
+                            <option value="stable">Stable</option>
+                            <option value="declining">Declining</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Progress Percentage</label>
+                        <input type="number" class="form-control" min="0" max="100" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Summary</label>
+                        <textarea class="form-control" rows="4" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Detailed Notes</label>
+                        <textarea class="form-control" rows="6"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="saveNewReport()">Save Report</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function viewReport(reportId) {
+    // Add AJAX call to fetch and display report details
+    console.log('Viewing report:', reportId);
+}
+
+function editReport(reportId) {
+    // Add AJAX call to fetch report data and open edit modal
+    console.log('Editing report:', reportId);
+}
+
+function saveNewReport() {
+    // Add AJAX call to save new report
+    const form = document.getElementById('newReportForm');
+    // Add form validation and submission logic
+    console.log('Saving new report');
+}
+
+// Add event listeners for filters
+document.getElementById('searchReports').addEventListener('input', function(e) {
+    // Add search functionality
+    console.log('Searching:', e.target.value);
+});
+
+['patientFilter', 'statusFilter', 'dateFilter'].forEach(filterId => {
+    document.getElementById(filterId).addEventListener('change', function(e) {
+        // Add filter functionality
+        console.log(`${filterId} changed:`, e.target.value);
+    });
+});
+</script> 

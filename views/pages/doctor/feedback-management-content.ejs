@@ -1,0 +1,96 @@
+<div class="container mt-4">
+    <div class="row">
+        <!-- Feedback Statistics Card -->
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Feedback Overview</h5>
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div>Total Feedback</div>
+                        <div class="h4 mb-0"><%= feedbacks ? feedbacks.length : 0 %></div>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>Average Rating</div>
+                        <div class="h4 mb-0">
+                            <% if (feedbacks && feedbacks.length > 0) { %>
+                                <%= (feedbacks.reduce((sum, f) => sum + f.rating, 0) / feedbacks.length).toFixed(1) %>
+                            <% } else { %>
+                                N/A
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Feedback List -->
+        <div class="col-md-8 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Recent Feedback</h5>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Patient</th>
+                                    <th>Rating</th>
+                                    <th>Date</th>
+                                    <th>Comment</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% if (feedbacks && feedbacks.length > 0) { %>
+                                    <% feedbacks.forEach(feedback => { %>
+                                        <tr>
+                                            <td><%= feedback.patientName %></td>
+                                            <td>
+                                                <% for(let i = 0; i < 5; i++) { %>
+                                                    <i class="fas fa-star <%= i < feedback.rating ? 'text-warning' : 'text-muted' %>"></i>
+                                                <% } %>
+                                            </td>
+                                            <td><%= new Date(feedback.date).toLocaleDateString() %></td>
+                                            <td><%= feedback.comment %></td>
+                                            <td>
+                                                <button class="btn btn-sm btn-primary" onclick="viewFeedbackDetails('<%= feedback._id %>')">
+                                                    View
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    <% }) %>
+                                <% } else { %>
+                                    <tr>
+                                        <td colspan="5" class="text-center">No feedback available</td>
+                                    </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Feedback Details Modal -->
+<div class="modal fade" id="feedbackDetailsModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Feedback Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="feedbackDetailsContent">
+                <!-- Content will be loaded dynamically -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function viewFeedbackDetails(feedbackId) {
+    // Add AJAX call here to fetch feedback details
+    const modal = new bootstrap.Modal(document.getElementById('feedbackDetailsModal'));
+    modal.show();
+}
+</script> 

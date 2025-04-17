@@ -33,6 +33,35 @@ const UserSchema = new mongoose.Schema({
     enum: ["Patient", "Patient-Navigator", "Caregiver", "Doctor"],
     required: true,
   },
+  // Doctor-specific fields
+  specialization: {
+    type: String,
+    required: function() {
+      return this.userType === "Doctor";
+    }
+  },
+  experience: {
+    type: Number,
+    required: function() {
+      return this.userType === "Doctor";
+    }
+  },
+  hospital: {
+    type: String,
+    required: function() {
+      return this.userType === "Doctor";
+    }
+  },
+  profileImage: {
+    type: String,
+    default: "/images/default-doctor.png"
+  },
+  licenseNumber: {
+    type: String,
+    required: function() {
+      return this.userType === "Doctor";
+    }
+  }
 });
 
 // Add username, hash and salt field to schema

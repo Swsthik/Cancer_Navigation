@@ -14,106 +14,70 @@
         --accent-teal: #4ecdc4;
       }
 
-      body {
-        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-        min-height: 100vh;
-      }
-
-      .content-container {
-        background: rgba(255, 255, 255, 0.95);
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        border-radius: 15px;
-        margin-top: 2rem;
-        margin-bottom: 2rem;
-      }
-
-      .btn-medical {
-        background: var(--accent-teal);
-        color: white;
-        padding: 12px 30px;
-        transition: all 0.3s ease;
-      }
-
-      .btn-medical:hover {
-        background: var(--secondary-blue);
-        transform: translateY(-2px);
-      }
-
-      .progress-card {
-        border-radius: 15px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-      }
-
       .wave-bg {
         position: fixed;
         bottom: 0;
         left: 0;
         width: 100%;
-        height: 100px;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%232a5c82' fill-opacity='0.1' d='M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,149.3C960,160,1056,160,1152,138.7C1248,117,1344,75,1392,53.3L1440,32L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E");
-        background-size: cover;
-        background-repeat: no-repeat;
+        height: 150px;
+        background: url('data:image/svg+xml;utf8,%3Csvg viewBox=%220 0 1440 320%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cpath fill=%22%232A5C82%22 fill-opacity=%220.1%22 d=%22M0,160L48,170.7C96,181,192,203,288,186.7C384,171,480,117,576,101.3C672,85,768,107,864,138.7C960,171,1056,213,1152,208C1248,203,1344,149,1392,122.7L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z%22%3E%3C/path%3E%3C/svg%3E');
         z-index: -1;
       }
     </style>
   </head>
-  <body class="bg-gray-50">
-    <%- include('../../partials/navigator-header') %>
-    <%- include('../../partials/navigator-sidebar') %>
+  <body class="bg-gray-100">
+    <div class="min-h-screen" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
+      <!-- Include header partial -->
+      <%- include('../../partials/navigator-header') %>
 
-    <div class="p-4 sm:ml-64">
-      <div class="p-4 rounded-lg mt-14">
-        <div class="content-container p-6">
-          <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 style="color: var(--primary-blue);">Patient Progress Tracking</h2>
-            <button class="btn btn-medical" onclick="addNewPatient()">
-              <i class="fas fa-plus me-2"></i>Add New Patient
-            </button>
-          </div>
+      <div class="w-full">
+        <div class="flex flex-wrap w-full">
+          <!-- Include sidebar partial -->
+          <%- include('../../partials/navigator-sidebar') %>
 
-          <div class="row mb-4">
-            <div class="col-md-3">
-              <div class="progress-card p-4">
-                <h5 class="mb-3">Active Patients</h5>
-                <h2 class="mb-0" style="color: var(--primary-blue);">24</h2>
-                <p class="text-muted mb-0"><small>↑ 12% from last month</small></p>
-              </div>
+          <!-- Main Content -->
+          <div class="w-full md:w-3/4 p-4">
+            <div class="flex justify-between items-center mb-4">
+              <h2 class="text-2xl font-bold" style="color: var(--primary-blue);">Patient Progress Tracking</h2>
+              <button class="px-4 py-2 rounded-md text-white" style="background: var(--accent-teal);" onclick="addNewPatient()">
+                <i class="fas fa-plus mr-2"></i>Add New Patient
+              </button>
             </div>
-            <div class="col-md-3">
-              <div class="progress-card p-4">
-                <h5 class="mb-3">Pending Tasks</h5>
-                <h2 class="mb-0" style="color: var(--secondary-blue);">12</h2>
-                <p class="text-muted mb-0"><small>3 high priority</small></p>
-              </div>
-            </div>
-            <div class="col-md-3">
-              <div class="progress-card p-4">
-                <h5 class="mb-3">Completed Tasks</h5>
-                <h2 class="mb-0" style="color: var(--accent-teal);">45</h2>
-                <p class="text-muted mb-0"><small>This week</small></p>
-              </div>
-            </div>
-            <div class="col-md-3">
-              <div class="progress-card p-4">
-                <h5 class="mb-3">Critical Cases</h5>
-                <h2 class="mb-0" style="color: #ef4444;">3</h2>
-                <p class="text-muted mb-0"><small>Needs immediate attention</small></p>
-              </div>
-            </div>
-          </div>
 
-          <div class="filter-section mb-4">
-            <div class="row g-3">
-              <div class="col-md-4">
-                <div class="input-group">
-                  <span class="input-group-text">
-                    <i class="fas fa-search"></i>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+              <div class="bg-white rounded-md shadow-sm p-4">
+                <h5 class="text-gray-600 mb-3">Active Patients</h5>
+                <h2 class="text-2xl font-bold mb-1" style="color: var(--primary-blue);">24</h2>
+                <p class="text-gray-500 text-sm">↑ 12% from last month</p>
+              </div>
+              <div class="bg-white rounded-md shadow-sm p-4">
+                <h5 class="text-gray-600 mb-3">Pending Tasks</h5>
+                <h2 class="text-2xl font-bold mb-1" style="color: var(--secondary-blue);">12</h2>
+                <p class="text-gray-500 text-sm">3 high priority</p>
+              </div>
+              <div class="bg-white rounded-md shadow-sm p-4">
+                <h5 class="text-gray-600 mb-3">Completed Tasks</h5>
+                <h2 class="text-2xl font-bold mb-1" style="color: var(--accent-teal);">45</h2>
+                <p class="text-gray-500 text-sm">This week</p>
+              </div>
+              <div class="bg-white rounded-md shadow-sm p-4">
+                <h5 class="text-gray-600 mb-3">Critical Cases</h5>
+                <h2 class="text-2xl font-bold mb-1 text-red-500">3</h2>
+                <p class="text-gray-500 text-sm">Needs immediate attention</p>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+              <div class="col-span-2">
+                <div class="relative">
+                  <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                    <i class="fas fa-search text-gray-400"></i>
                   </span>
-                  <input type="text" class="form-control" placeholder="Search patients..." id="searchPatients">
+                  <input type="text" class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md" placeholder="Search patients..." id="searchPatients">
                 </div>
               </div>
-              <div class="col-md-3">
-                <select class="form-select" id="statusFilter">
+              <div>
+                <select class="w-full px-4 py-2 border border-gray-300 rounded-md" id="statusFilter">
                   <option value="">All Statuses</option>
                   <option value="active">Active</option>
                   <option value="pending">Pending</option>
@@ -121,127 +85,66 @@
                   <option value="critical">Critical</option>
                 </select>
               </div>
-              <div class="col-md-3">
-                <input type="text" class="form-control" id="dateRange" placeholder="Date Range">
-              </div>
-              <div class="col-md-2">
-                <button class="btn btn-medical w-100" onclick="applyFilters()">
-                  <i class="fas fa-filter me-2"></i>Apply
-                </button>
+              <div>
+                <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-md" id="dateRange" placeholder="Date Range">
               </div>
             </div>
-          </div>
 
-          <div class="chart-container mb-4">
-            <canvas id="progressChart"></canvas>
-          </div>
+            <div class="mb-4">
+              <canvas id="progressChart"></canvas>
+            </div>
 
-          <div id="patientsList">
-            <!-- Patient Progress Cards -->
-            <div class="progress-card p-4">
-              <div class="d-flex justify-content-between align-items-start mb-3">
-                <div>
-                  <h5>Sarah Johnson</h5>
-                  <p class="text-muted mb-0">MRN: 1234567 • Breast Cancer Stage II</p>
+            <div class="space-y-4">
+              <!-- Patient Progress Cards -->
+              <div class="bg-white rounded-md shadow-sm p-4">
+                <div class="flex justify-between items-start mb-3">
+                  <div>
+                    <h5 class="text-lg font-semibold">Sarah Johnson</h5>
+                    <p class="text-gray-500 text-sm">MRN: 1234567 • Breast Cancer Stage II</p>
+                  </div>
+                  <span class="px-3 py-1 rounded-full text-sm bg-yellow-100 text-yellow-800">2 Tasks Pending</span>
                 </div>
-                <span class="status-badge status-pending">2 Tasks Pending</span>
-              </div>
-              <div class="timeline-item ps-4">
-                <p class="mb-1"><strong>Next Appointment:</strong> March 15, 2024</p>
-                <p class="mb-1"><strong>Last Contact:</strong> 2 days ago</p>
-                <p class="mb-0"><strong>Care Plan Progress:</strong> 75%</p>
-              </div>
-              <div class="progress mb-3">
-                <div class="progress-bar bg-success" role="progressbar" style="width: 75%"></div>
-              </div>
-              <div class="d-flex justify-content-end">
-                <button class="btn btn-outline-secondary me-2" onclick="viewDetails('1234567')">
-                  <i class="fas fa-eye me-2"></i>View Details
-                </button>
-                <button class="btn btn-outline-secondary me-2" onclick="scheduleAppointment('1234567')">
-                  <i class="fas fa-calendar me-2"></i>Schedule
-                </button>
-                <button class="btn btn-medical" onclick="updateProgress('1234567')">
-                  <i class="fas fa-edit me-2"></i>Update Progress
-                </button>
-              </div>
-            </div>
-
-            <div class="progress-card p-4">
-              <div class="d-flex justify-content-between align-items-start mb-3">
-                <div>
-                  <h5>Michael Chen</h5>
-                  <p class="text-muted mb-0">MRN: 1234568 • Lung Cancer Stage III</p>
+                <div class="space-y-2 mb-3">
+                  <p class="text-sm"><span class="font-medium">Next Appointment:</span> March 15, 2024</p>
+                  <p class="text-sm"><span class="font-medium">Last Contact:</span> 2 days ago</p>
+                  <p class="text-sm"><span class="font-medium">Care Plan Progress:</span> 75%</p>
                 </div>
-                <span class="status-badge status-critical">Critical</span>
-              </div>
-              <div class="timeline-item ps-4">
-                <p class="mb-1"><strong>Next Appointment:</strong> March 12, 2024</p>
-                <p class="mb-1"><strong>Last Contact:</strong> 5 days ago</p>
-                <p class="mb-0"><strong>Care Plan Progress:</strong> 45%</p>
-              </div>
-              <div class="progress mb-3">
-                <div class="progress-bar bg-warning" role="progressbar" style="width: 45%"></div>
-              </div>
-              <div class="d-flex justify-content-end">
-                <button class="btn btn-outline-secondary me-2" onclick="viewDetails('1234568')">
-                  <i class="fas fa-eye me-2"></i>View Details
-                </button>
-                <button class="btn btn-outline-secondary me-2" onclick="scheduleAppointment('1234568')">
-                  <i class="fas fa-calendar me-2"></i>Schedule
-                </button>
-                <button class="btn btn-medical" onclick="updateProgress('1234568')">
-                  <i class="fas fa-edit me-2"></i>Update Progress
-                </button>
-              </div>
-            </div>
-
-            <div class="progress-card p-4">
-              <div class="d-flex justify-content-between align-items-start mb-3">
-                <div>
-                  <h5>Emily Rodriguez</h5>
-                  <p class="text-muted mb-0">MRN: 1234569 • Colorectal Cancer Stage I</p>
+                <div class="w-full bg-gray-200 rounded-full h-2.5 mb-3">
+                  <div class="bg-green-500 h-2.5 rounded-full" style="width: 75%"></div>
                 </div>
-                <span class="status-badge status-completed">On Track</span>
+                <div class="flex justify-end space-x-2">
+                  <button class="px-4 py-2 border border-gray-300 rounded-md text-sm" onclick="viewDetails('1234567')">
+                    <i class="fas fa-eye mr-2"></i>View Details
+                  </button>
+                  <button class="px-4 py-2 border border-gray-300 rounded-md text-sm" onclick="scheduleAppointment('1234567')">
+                    <i class="fas fa-calendar mr-2"></i>Schedule
+                  </button>
+                  <button class="px-4 py-2 rounded-md text-white text-sm" style="background: var(--accent-teal);" onclick="updateProgress('1234567')">
+                    <i class="fas fa-edit mr-2"></i>Update Progress
+                  </button>
+                </div>
               </div>
-              <div class="timeline-item ps-4">
-                <p class="mb-1"><strong>Next Appointment:</strong> March 20, 2024</p>
-                <p class="mb-1"><strong>Last Contact:</strong> Today</p>
-                <p class="mb-0"><strong>Care Plan Progress:</strong> 90%</p>
-              </div>
-              <div class="progress mb-3">
-                <div class="progress-bar bg-success" role="progressbar" style="width: 90%"></div>
-              </div>
-              <div class="d-flex justify-content-end">
-                <button class="btn btn-outline-secondary me-2" onclick="viewDetails('1234569')">
-                  <i class="fas fa-eye me-2"></i>View Details
-                </button>
-                <button class="btn btn-outline-secondary me-2" onclick="scheduleAppointment('1234569')">
-                  <i class="fas fa-calendar me-2"></i>Schedule
-                </button>
-                <button class="btn btn-medical" onclick="updateProgress('1234569')">
-                  <i class="fas fa-edit me-2"></i>Update Progress
-                </button>
-              </div>
-            </div>
-          </div>
 
-          <div class="quick-actions">
-            <button class="quick-action-btn" onclick="showEmergencyContacts()" title="Emergency Contacts">
-              <i class="fas fa-phone"></i>
-            </button>
-            <button class="quick-action-btn" onclick="showQuickNotes()" title="Quick Notes">
-              <i class="fas fa-sticky-note"></i>
-            </button>
-            <button class="quick-action-btn" onclick="exportData()" title="Export Data">
-              <i class="fas fa-download"></i>
-            </button>
+              <!-- Add other patient cards here -->
+            </div>
+
+            <div class="fixed bottom-6 right-6 flex space-x-2">
+              <button class="w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center" onclick="showEmergencyContacts()" title="Emergency Contacts">
+                <i class="fas fa-phone"></i>
+              </button>
+              <button class="w-10 h-10 rounded-full bg-green-500 text-white flex items-center justify-center" onclick="showQuickNotes()" title="Quick Notes">
+                <i class="fas fa-sticky-note"></i>
+              </button>
+              <button class="w-10 h-10 rounded-full bg-purple-500 text-white flex items-center justify-center" onclick="exportData()" title="Export Data">
+                <i class="fas fa-download"></i>
+              </button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <div class="wave-bg"></div>
+      <div class="wave-bg"></div>
+    </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>

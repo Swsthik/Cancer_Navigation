@@ -1,0 +1,110 @@
+<div class="container mt-4">
+    <div class="row">
+        <!-- Profile Information Card -->
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <img src="<%= doctor.profileImage || '/images/default-doctor.png' %>" 
+                         class="rounded-circle mb-3" 
+                         alt="Doctor Profile" 
+                         style="width: 150px; height: 150px; object-fit: cover;">
+                    <h4 class="card-title">Dr. <%= doctor.name %></h4>
+                    <p class="text-muted"><%= doctor.specialization %></p>
+                    <button class="btn btn-primary" onclick="toggleEditMode()">Edit Profile</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Details Card -->
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <form id="profileForm" class="profile-view-mode">
+                        <div class="mb-3">
+                            <label class="form-label">Full Name</label>
+                            <input type="text" class="form-control" value="<%= doctor.name %>" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" value="<%= doctor.email %>" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Specialization</label>
+                            <input type="text" class="form-control" value="<%= doctor.specialization %>" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Experience (Years)</label>
+                            <input type="number" class="form-control" value="<%= doctor.experience %>" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Contact Number</label>
+                            <input type="tel" class="form-control" value="<%= doctor.phone %>" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Hospital/Clinic</label>
+                            <input type="text" class="form-control" value="<%= doctor.hospital %>" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Address</label>
+                            <textarea class="form-control" rows="3" readonly><%= doctor.address %></textarea>
+                        </div>
+                        <div class="edit-mode-buttons" style="display: none;">
+                            <button type="submit" class="btn btn-success">Save Changes</button>
+                            <button type="button" class="btn btn-secondary" onclick="cancelEdit()">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.profile-view-mode input[readonly],
+.profile-view-mode textarea[readonly] {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+}
+
+.edit-mode-buttons {
+    margin-top: 20px;
+}
+
+.edit-mode-buttons button {
+    margin-right: 10px;
+}
+</style>
+
+<script>
+function toggleEditMode() {
+    const form = document.getElementById('profileForm');
+    const inputs = form.querySelectorAll('input, textarea');
+    const editButtons = document.querySelector('.edit-mode-buttons');
+    
+    inputs.forEach(input => {
+        input.readOnly = !input.readOnly;
+    });
+    
+    editButtons.style.display = editButtons.style.display === 'none' ? 'block' : 'none';
+}
+
+function cancelEdit() {
+    const form = document.getElementById('profileForm');
+    const inputs = form.querySelectorAll('input, textarea');
+    const editButtons = document.querySelector('.edit-mode-buttons');
+    
+    inputs.forEach(input => {
+        input.readOnly = true;
+        input.value = input.defaultValue;
+    });
+    
+    editButtons.style.display = 'none';
+}
+
+document.getElementById('profileForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    // Add AJAX call here to update profile information
+    alert('Profile updated successfully!');
+    toggleEditMode();
+});
+</script> 

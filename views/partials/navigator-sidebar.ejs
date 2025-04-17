@@ -3,40 +3,63 @@
   class="w-full md:w-1/4 p-4"
   style="background: #2a5c82; color: white; min-height: calc(100vh - 62px);"
 >
-  <div class="flex items-center mb-4">
-    <i class="fas fa-user-nurse text-3xl mr-3"></i>
+  <div class="flex items-center mb-6 p-2 rounded-md" style="background: rgba(255, 255, 255, 0.1);">
+    <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center mr-3">
+      <i class="fas fa-user-nurse text-xl" style="color: #2a5c82;"></i>
+    </div>
     <div>
-      <h5 class="mb-0"><%= user.fullName %></h5>
-      <small class="text-gray-200">Patient Navigator</small>
+      <h5 class="mb-0 font-medium"><%= user.fullName %></h5>
+      <small class="text-gray-200 text-sm">Patient Navigator</small>
     </div>
   </div>
-  <div class="flex flex-col">
-    <a href="/navigator/dashboard" class="py-2 text-white opacity-75 hover:opacity-100">
-      <i class="fas fa-home mr-2"></i>Dashboard
+  <div class="flex flex-col space-y-1">
+    <a 
+      href="/navigator/dashboard" 
+      class="py-3 px-4 text-white rounded-md transition-all duration-200 flex items-center <%= activePage === 'dashboard' ? 'bg-white bg-opacity-20' : 'opacity-75 hover:opacity-100 hover:bg-white hover:bg-opacity-10' %>"
+    >
+      <i class="fas fa-home mr-3 w-5 text-center"></i>Dashboard
     </a>
     <a
       href="/navigator/appointment-management"
-      class="py-2 text-white opacity-75 hover:opacity-100"
+      class="py-3 px-4 text-white rounded-md transition-all duration-200 flex items-center <%= activePage === 'appointment-management' ? 'bg-white bg-opacity-20' : 'opacity-75 hover:opacity-100 hover:bg-white hover:bg-opacity-10' %>"
     >
-      <i class="fas fa-calendar-check mr-2"></i>Appointments
+      <i class="fas fa-calendar-check mr-3 w-5 text-center"></i>Appointments
     </a>
-    <a href="/navigator/patient-management" class="py-2 text-white opacity-75 hover:opacity-100">
-      <i class="fas fa-users mr-2"></i>Patient Management
+    <a 
+      href="/navigator/patient-management" 
+      class="py-3 px-4 text-white rounded-md transition-all duration-200 flex items-center <%= activePage === 'patient-management' ? 'bg-white bg-opacity-20' : 'opacity-75 hover:opacity-100 hover:bg-white hover:bg-opacity-10' %>"
+    >
+      <i class="fas fa-users mr-3 w-5 text-center"></i>Patient Management
     </a>
-    <a href="/navigator/care-plan" class="py-2 text-white opacity-75 hover:opacity-100">
-      <i class="fas fa-clipboard-list mr-2"></i>Care Plans
+    <a 
+      href="/navigator/care-plan" 
+      class="py-3 px-4 text-white rounded-md transition-all duration-200 flex items-center <%= activePage === 'care-plan' ? 'bg-white bg-opacity-20' : 'opacity-75 hover:opacity-100 hover:bg-white hover:bg-opacity-10' %>"
+    >
+      <i class="fas fa-clipboard-list mr-3 w-5 text-center"></i>Care Plans
     </a>
-    <a href="/navigator/progress-tracking" class="py-2 text-white opacity-75 hover:opacity-100">
-      <i class="fas fa-chart-line mr-2"></i>Progress Tracking
+    <a 
+      href="/navigator/progress-tracking" 
+      class="py-3 px-4 text-white rounded-md transition-all duration-200 flex items-center <%= activePage === 'progress-tracking' ? 'bg-white bg-opacity-20' : 'opacity-75 hover:opacity-100 hover:bg-white hover:bg-opacity-10' %>"
+    >
+      <i class="fas fa-chart-line mr-3 w-5 text-center"></i>Progress Tracking
     </a>
-    <a href="/navigator/learning" class="py-2 text-white opacity-75 hover:opacity-100">
-      <i class="fas fa-book-medical mr-2"></i>Learning Resources
+    <a 
+      href="/navigator/learning" 
+      class="py-3 px-4 text-white rounded-md transition-all duration-200 flex items-center <%= activePage === 'learning' ? 'bg-white bg-opacity-20' : 'opacity-75 hover:opacity-100 hover:bg-white hover:bg-opacity-10' %>"
+    >
+      <i class="fas fa-book-medical mr-3 w-5 text-center"></i>Learning Resources
     </a>
-    <a href="/navigator/profile" class="py-2 text-white opacity-75 hover:opacity-100">
-      <i class="fas fa-user mr-2"></i>Profile
+    <a 
+      href="/navigator/profile" 
+      class="py-3 px-4 text-white rounded-md transition-all duration-200 flex items-center <%= activePage === 'profile' ? 'bg-white bg-opacity-20' : 'opacity-75 hover:opacity-100 hover:bg-white hover:bg-opacity-10' %>"
+    >
+      <i class="fas fa-user mr-3 w-5 text-center"></i>Profile
     </a>
-    <a href="/navigator/settings" class="py-2 text-white opacity-75 hover:opacity-100">
-      <i class="fas fa-cog mr-2"></i>Settings
+    <a 
+      href="/navigator/settings" 
+      class="py-3 px-4 text-white rounded-md transition-all duration-200 flex items-center <%= activePage === 'settings' ? 'bg-white bg-opacity-20' : 'opacity-75 hover:opacity-100 hover:bg-white hover:bg-opacity-10' %>"
+    >
+      <i class="fas fa-cog mr-3 w-5 text-center"></i>Settings
     </a>
   </div>
 </div> 
