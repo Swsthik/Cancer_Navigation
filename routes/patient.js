@@ -166,6 +166,21 @@ router.get("/reports", isLoggedIn, (req, res) => {
   });
 });
 
+router.get("/cancer-details", isLoggedIn, (req, res) => {
+  if (req.user.userType !== "Patient") {
+    return res.redirect(`/${req.user.userType.toLowerCase()}/cancer-details`);
+  }
+  const currentUser = {
+    fullName: req.user.fullName,
+    email: req.user.email,
+    id: req.user.id,
+  };
+  res.render("pages/patient/cancer-details.ejs", {
+    currentUser: currentUser,
+    activePage: "cancer-details",
+  });
+});
+
 // Add other patient routes here
 
 module.exports = router;

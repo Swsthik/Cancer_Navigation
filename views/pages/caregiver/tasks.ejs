@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('../../partials/head') %>
+    <title>Tasks - Caregiver Portal</title>
+  </head>
+  <body class="bg-gray-50">
+    <!-- Include the sidebar -->
+    <%- include('../../partials/caregiver-sidebar') %>
+
+    <!-- Main Content -->
+    <div class="ml-64 p-8">
+      <div class="container mx-auto">
+        <div class="flex justify-between items-center mb-6">
+          <h1 class="text-3xl font-semibold">Tasks</h1>
+          <button class="bg-primary-blue text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+            <i class="fas fa-plus mr-2"></i>Add New Task
+          </button>
+        </div>
+        
+        <!-- Tasks Summary Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center justify-between">
+              <h3 class="text-lg font-semibold text-gray-700">Pending Tasks</h3>
+              <span class="text-2xl font-bold text-primary-blue">8</span>
+            </div>
+            <p class="text-sm text-gray-500 mt-2">Tasks to be completed</p>
+          </div>
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center justify-between">
+              <h3 class="text-lg font-semibold text-gray-700">Completed Today</h3>
+              <span class="text-2xl font-bold text-green-500">5</span>
+            </div>
+            <p class="text-sm text-gray-500 mt-2">Tasks finished today</p>
+          </div>
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center justify-between">
+              <h3 class="text-lg font-semibold text-gray-700">Overdue</h3>
+              <span class="text-2xl font-bold text-red-500">2</span>
+            </div>
+            <p class="text-sm text-gray-500 mt-2">Tasks past deadline</p>
+            </div>
+          </div>
+          
+        <!-- Tasks List -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+          <div class="flex justify-between items-center mb-4">
+            <h2 class="text-xl font-semibold">Today's Tasks</h2>
+            <div class="flex space-x-2">
+              <button class="px-3 py-1 text-sm bg-gray-100 rounded hover:bg-gray-200">
+                <i class="fas fa-filter mr-1"></i>Filter
+              </button>
+              <button class="px-3 py-1 text-sm bg-gray-100 rounded hover:bg-gray-200">
+                <i class="fas fa-sort mr-1"></i>Sort
+              </button>
+            </div>
+          </div>
+          
+          <!-- Task Items -->
+          <div class="space-y-4">
+            <!-- Task 1 -->
+            <div class="border-l-4 border-primary-blue p-4 bg-blue-50">
+              <div class="flex justify-between items-start">
+                <div>
+                  <h3 class="font-semibold text-lg">Morning Medication</h3>
+                  <p class="text-gray-600">Administer medications to John Doe at 8:00 AM</p>
+                  <div class="flex items-center mt-2">
+                    <span class="text-sm text-gray-500 mr-4">
+                      <i class="fas fa-user mr-1"></i>John Doe
+                    </span>
+                    <span class="text-sm text-gray-500">
+                      <i class="fas fa-clock mr-1"></i>8:00 AM
+                    </span>
+                  </div>
+                </div>
+                <button class="text-green-500 hover:text-green-700">
+                  <i class="fas fa-check-circle text-xl"></i>
+                </button>
+              </div>
+            </div>
+            
+            <!-- Task 2 -->
+            <div class="border-l-4 border-yellow-500 p-4 bg-yellow-50">
+              <div class="flex justify-between items-start">
+                <div>
+                  <h3 class="font-semibold text-lg">Physical Therapy</h3>
+                  <p class="text-gray-600">Assist with morning exercises and mobility training</p>
+                  <div class="flex items-center mt-2">
+                    <span class="text-sm text-gray-500 mr-4">
+                      <i class="fas fa-user mr-1"></i>Emily Martin
+                    </span>
+                    <span class="text-sm text-gray-500">
+                      <i class="fas fa-clock mr-1"></i>10:30 AM
+                    </span>
+                  </div>
+                </div>
+                <button class="text-yellow-500 hover:text-yellow-700">
+                  <i class="fas fa-clock text-xl"></i>
+                </button>
+                  </div>
+                </div>
+                
+            <!-- Task 3 -->
+            <div class="border-l-4 border-red-500 p-4 bg-red-50">
+              <div class="flex justify-between items-start">
+                <div>
+                  <h3 class="font-semibold text-lg">Doctor's Appointment</h3>
+                  <p class="text-gray-600">Transport to oncology appointment at City Hospital</p>
+                  <div class="flex items-center mt-2">
+                    <span class="text-sm text-gray-500 mr-4">
+                      <i class="fas fa-user mr-1"></i>Robert Wilson
+                    </span>
+                    <span class="text-sm text-gray-500">
+                      <i class="fas fa-clock mr-1"></i>2:00 PM
+                    </span>
+                  </div>
+                </div>
+                <button class="text-red-500 hover:text-red-700">
+                  <i class="fas fa-exclamation-circle text-xl"></i>
+                </button>
+            </div>
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+    <%- include('../../partials/footer') %>
+    </body>
+  </html>
+                

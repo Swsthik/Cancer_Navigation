@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('../../partials/head') %>
+    <title>Dashboard - Caregiver Portal</title>
+  </head>
+  <body class="bg-gray-50">
+    <!-- Include the sidebar -->
+    <%- include('../../partials/caregiver-sidebar') %>
+
+    <!-- Main Content -->
+    <div class="ml-64 p-8">
+      <div class="container mx-auto">
+        <h1 class="text-3xl font-semibold mb-6">Dashboard</h1>
+        
+        <!-- Summary Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center justify-between">
+              <div>
+                <h3 class="text-lg font-semibold text-gray-700">Total Patients</h3>
+                <p class="text-3xl font-bold text-primary-blue">3</p>
+              </div>
+              <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                <i class="fas fa-users text-primary-blue text-xl"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center justify-between">
+              <div>
+                <h3 class="text-lg font-semibold text-gray-700">Today's Appointments</h3>
+                <p class="text-3xl font-bold text-green-500">4</p>
+              </div>
+              <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                <i class="fas fa-calendar-check text-green-500 text-xl"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center justify-between">
+              <div>
+                <h3 class="text-lg font-semibold text-gray-700">Pending Tasks</h3>
+                <p class="text-3xl font-bold text-yellow-500">8</p>
+              </div>
+              <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center">
+                <i class="fas fa-tasks text-yellow-500 text-xl"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center justify-between">
+              <div>
+                <h3 class="text-lg font-semibold text-gray-700">Care Notes</h3>
+                <p class="text-3xl font-bold text-purple-500">12</p>
+              </div>
+              <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
+                <i class="fas fa-clipboard text-purple-500 text-xl"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Upcoming Appointments -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-xl font-semibold mb-4">Upcoming Appointments</h2>
+            <div class="space-y-4">
+              <div class="flex items-center p-4 bg-blue-50 rounded-lg">
+                <div class="w-12 h-12 bg-primary-blue rounded-lg flex items-center justify-center text-white mr-4">
+                  <i class="fas fa-calendar"></i>
+                </div>
+                <div>
+                  <h3 class="font-semibold">John Doe - Oncology Checkup</h3>
+                  <p class="text-gray-600">Tomorrow, 10:00 AM at City Hospital</p>
+                </div>
+              </div>
+
+              <div class="flex items-center p-4 bg-green-50 rounded-lg">
+                <div class="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center text-white mr-4">
+                  <i class="fas fa-calendar"></i>
+                </div>
+                <div>
+                  <h3 class="font-semibold">Emily Martin - Physical Therapy</h3>
+                  <p class="text-gray-600">March 25, 2:30 PM at Wellness Center</p>
+                </div>
+              </div>
+
+              <div class="flex items-center p-4 bg-yellow-50 rounded-lg">
+                <div class="w-12 h-12 bg-yellow-500 rounded-lg flex items-center justify-center text-white mr-4">
+                  <i class="fas fa-calendar"></i>
+                </div>
+                <div>
+                  <h3 class="font-semibold">Robert Wilson - Lab Tests</h3>
+                  <p class="text-gray-600">March 28, 11:00 AM at Medical Lab</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recent Care Notes -->
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-xl font-semibold mb-4">Recent Care Notes</h2>
+            <div class="space-y-4">
+              <div class="border-l-4 border-primary-blue pl-4">
+                <h3 class="font-semibold">John Doe - Morning Check</h3>
+                <p class="text-gray-600">Patient reported good sleep, vital signs normal. Administered morning medications as scheduled.</p>
+                <p class="text-sm text-gray-500 mt-2">March 23, 2024 - 8:30 AM</p>
+              </div>
+
+              <div class="border-l-4 border-green-500 pl-4">
+                <h3 class="font-semibold">Emily Martin - Physical Therapy</h3>
+                <p class="text-gray-600">Completed 30 minutes of mobility exercises. Patient showed improvement in range of motion.</p>
+                <p class="text-sm text-gray-500 mt-2">March 22, 2024 - 3:15 PM</p>
+              </div>
+
+              <div class="border-l-4 border-yellow-500 pl-4">
+                <h3 class="font-semibold">Robert Wilson - Evening Update</h3>
+                <p class="text-gray-600">Patient experienced mild fatigue after chemotherapy. Resting comfortably with prescribed medications.</p>
+                <p class="text-sm text-gray-500 mt-2">March 22, 2024 - 7:45 PM</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Medication Schedule -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+          <h2 class="text-xl font-semibold mb-4">Today's Medication Schedule</h2>
+          <div class="overflow-x-auto">
+            <table class="min-w-full">
+              <thead>
+                <tr class="bg-gray-50">
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Patient</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Medication</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Dosage</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Time</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-200">
+                <tr>
+                  <td class="px-6 py-4 whitespace-nowrap">John Doe</td>
+                  <td class="px-6 py-4 whitespace-nowrap">Painkiller</td>
+                  <td class="px-6 py-4 whitespace-nowrap">500mg</td>
+                  <td class="px-6 py-4 whitespace-nowrap">8:00 AM</td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                      Completed
+                    </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="px-6 py-4 whitespace-nowrap">Emily Martin</td>
+                  <td class="px-6 py-4 whitespace-nowrap">Antibiotic</td>
+                  <td class="px-6 py-4 whitespace-nowrap">250mg</td>
+                  <td class="px-6 py-4 whitespace-nowrap">12:00 PM</td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                      Pending
+                    </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="px-6 py-4 whitespace-nowrap">Robert Wilson</td>
+                  <td class="px-6 py-4 whitespace-nowrap">Chemotherapy</td>
+                  <td class="px-6 py-4 whitespace-nowrap">100mg</td>
+                  <td class="px-6 py-4 whitespace-nowrap">2:00 PM</td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                      Pending
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <%- include('../../partials/footer') %>
+  </body>
+</html>

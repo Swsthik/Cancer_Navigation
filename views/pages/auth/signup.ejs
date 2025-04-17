@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MedConnect - Sign Up</title>
+    <title>CanConnect - Sign Up</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -60,13 +60,41 @@
         height: 150px;
         background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg"><path fill="%232A5C82" fill-opacity="0.1" d="M0,160L48,170.7C96,181,192,203,288,186.7C384,171,480,117,576,101.3C672,85,768,107,864,138.7C960,171,1056,213,1152,208C1248,203,1344,149,1392,122.7L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
       }
+
+      /* Add loading spinner styles */
+      .loading-spinner {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.8);
+        z-index: 9999;
+      }
+      .spinner {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 50px;
+        height: 50px;
+        border: 5px solid #f3f3f3;
+        border-top: 5px solid #4ecdc4;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+      @keyframes spin {
+        0% { transform: translate(-50%, -50%) rotate(0deg); }
+        100% { transform: translate(-50%, -50%) rotate(360deg); }
+      }
     </style>
   </head>
   <body>
     <nav class="navbar medical-header">
       <div class="container">
         <a class="navbar-brand text-white" href="#">
-          <i class="fas fa-hospital me-2"></i>MedConnect
+          <i class="fas fa-hospital me-2"></i>CanConnect
         </a>
       </div>
     </nav>
@@ -182,6 +210,11 @@
 
     <div class="decorative-wave"></div>
 
+    <!-- Add loading spinner HTML -->
+    <div class="loading-spinner" id="loadingSpinner">
+      <div class="spinner"></div>
+    </div>
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Add SweetAlert2 JS -->
@@ -189,7 +222,10 @@
     <script>
       $(document).ready(function () {
         $("#signupForm").submit(function (e) {
-          // e.preventDefault();
+          e.preventDefault();
+          
+          // Show loading spinner
+          $("#loadingSpinner").show();
 
           const formData = {
             username: $('input[name="username"]').val(),
@@ -205,6 +241,7 @@
 
           // Basic validation
           if (!formData.sex) {
+            $("#loadingSpinner").hide();
             Swal.fire({
               icon: "error",
               title: "Error",
@@ -214,6 +251,7 @@
           }
 
           if (!formData.userType) {
+            $("#loadingSpinner").hide();
             Swal.fire({
               icon: "error",
               title: "Error",
@@ -235,19 +273,21 @@
                   timer: 1500,
                   showConfirmButton: false,
                 }).then(() => {
-                  window.location.href = response.redirect;
+                  // Navigate to the appropriate dashboard based on user type
+                  const dashboardUrl = `/${formData.userType.toLowerCase()}/dashboard`;
+                  window.location.href = dashboardUrl;
                 });
               }
             },
             error: function (xhr) {
+              $("#loadingSpinner").hide();
               const response = xhr.responseJSON;
               Swal.fire({
                 icon: "error",
                 title: "Registration Failed",
-                text:
-                  response.message || "An error occurred during registration",
+                text: response.message || "An error occurred during registration",
               });
-            },
+            }
           });
         });
       });

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('../../partials/head') %>
+    <title>Profile - Caregiver Portal</title>
+  </head>
+  <body class="bg-gray-50">
+    <!-- Include the sidebar -->
+    <%- include('../../partials/caregiver-sidebar') %>
+
+    <!-- Main Content -->
+    <div class="ml-64 p-8">
+      <div class="container mx-auto">
+        <h1 class="text-3xl font-semibold mb-6">Profile</h1>
+        
+        <!-- Profile Content -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- Profile Card -->
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex flex-col items-center">
+              <div class="w-32 h-32 rounded-full bg-primary-blue flex items-center justify-center text-white text-4xl mb-4">
+                SJ
+              </div>
+              <h2 class="text-xl font-semibold">Sarah Johnson</h2>
+              <p class="text-gray-600">Certified Caregiver</p>
+              <div class="mt-4 flex space-x-2">
+                <span class="bg-blue-100 text-primary-blue px-3 py-1 rounded-full text-sm">NFCA Certified</span>
+                <span class="bg-green-100 text-green-600 px-3 py-1 rounded-full text-sm">5 Years Experience</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Contact Information -->
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-lg font-semibold mb-4">Contact Information</h3>
+            <div class="space-y-4">
+              <div class="flex items-center">
+                <i class="fas fa-envelope text-primary-blue mr-3"></i>
+                <span>sarah.johnson@example.com</span>
+              </div>
+              <div class="flex items-center">
+                <i class="fas fa-phone text-primary-blue mr-3"></i>
+                <span>(555) 123-4567</span>
+              </div>
+              <div class="flex items-center">
+                <i class="fas fa-map-marker-alt text-primary-blue mr-3"></i>
+                <span>123 Caregiver St, Healthcare City, HC 12345</span>
+              </div>
+              <div class="flex items-center">
+                <i class="fas fa-calendar-alt text-primary-blue mr-3"></i>
+                <span>Member since January 2020</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Skills & Certifications -->
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-lg font-semibold mb-4">Skills & Certifications</h3>
+            <div class="space-y-3">
+              <div class="flex items-center">
+                <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                <span>CPR & First Aid Certified</span>
+              </div>
+              <div class="flex items-center">
+                <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                <span>Medication Administration</span>
+              </div>
+              <div class="flex items-center">
+                <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                <span>Patient Care Planning</span>
+              </div>
+              <div class="flex items-center">
+                <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                <span>Emergency Response</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Current Patients -->
+        <div class="mt-8">
+          <h2 class="text-2xl font-semibold mb-4">Current Patients</h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Patient 1 -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+              <div class="flex items-center mb-4">
+                <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-primary-blue mr-4">
+                  JD
+                </div>
+                <div>
+                  <h3 class="font-semibold">John Doe</h3>
+                  <p class="text-sm text-gray-600">Age 65, Prostate Cancer</p>
+                </div>
+              </div>
+              <div class="space-y-2">
+                <div class="flex justify-between text-sm">
+                  <span class="text-gray-600">Next Appointment</span>
+                  <span class="font-medium">Tomorrow, 10:00 AM</span>
+                </div>
+                <div class="flex justify-between text-sm">
+                  <span class="text-gray-600">Medications</span>
+                  <span class="font-medium">3 Daily</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Patient 2 -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+              <div class="flex items-center mb-4">
+                <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-primary-blue mr-4">
+                  EM
+                </div>
+                <div>
+                  <h3 class="font-semibold">Emily Martin</h3>
+                  <p class="text-sm text-gray-600">Age 58, Breast Cancer</p>
+                </div>
+              </div>
+              <div class="space-y-2">
+                <div class="flex justify-between text-sm">
+                  <span class="text-gray-600">Next Appointment</span>
+                  <span class="font-medium">March 25, 2:30 PM</span>
+                </div>
+                <div class="flex justify-between text-sm">
+                  <span class="text-gray-600">Medications</span>
+                  <span class="font-medium">5 Daily</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Patient 3 -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+              <div class="flex items-center mb-4">
+                <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-primary-blue mr-4">
+                  RW
+                </div>
+                <div>
+                  <h3 class="font-semibold">Robert Wilson</h3>
+                  <p class="text-sm text-gray-600">Age 72, Lung Cancer</p>
+                </div>
+              </div>
+              <div class="space-y-2">
+                <div class="flex justify-between text-sm">
+                  <span class="text-gray-600">Next Appointment</span>
+                  <span class="font-medium">March 28, 11:00 AM</span>
+                </div>
+                <div class="flex justify-between text-sm">
+                  <span class="text-gray-600">Medications</span>
+                  <span class="font-medium">4 Daily</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <%- include('../../partials/footer') %>
+  </body>
+</html>

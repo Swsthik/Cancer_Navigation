@@ -238,4 +238,28 @@ router.get("/settings", isLoggedIn, (req, res) => {
   });
 });
 
+// Cancer Details route
+router.get("/cancer-details", isLoggedIn, (req, res) => {
+  if (req.user.userType !== "Doctor") {
+    return res.redirect(`/${req.user.userType.toLowerCase()}/dashboard`);
+  }
+
+  // Mock data for patients - replace with actual database query
+  const patients = [
+    { id: '1', fullName: 'John Doe' },
+    { id: '2', fullName: 'Jane Smith' },
+    { id: '3', fullName: 'Robert Johnson' }
+  ];
+
+  res.render("pages/doctor/cancer-details.ejs", {
+    title: "Cancer Details",
+    page: "cancer-details",
+    doctor: {
+      fullName: req.user.fullName,
+      specialization: req.user.specialization
+    },
+    patients: patients
+  });
+});
+
 module.exports = router;

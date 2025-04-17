@@ -1,10 +1,10 @@
-# Cancer Navigation System
+# CanConnect
 
 A comprehensive healthcare platform designed to facilitate communication and coordination between cancer patients, doctors, patient navigators, and caregivers.
 
 ## Overview
 
-The Cancer Navigation System is a web-based application that streamlines the cancer care journey by connecting all stakeholders in the treatment process. It provides specialized interfaces for different user roles and facilitates efficient patient care management.
+CanConnect is a web-based application that streamlines the cancer care journey by connecting all stakeholders in the treatment process. It provides specialized interfaces for different user roles and facilitates efficient patient care management.
 
 ## Features
 
@@ -55,7 +55,7 @@ The Cancer Navigation System is a web-based application that streamlines the can
 2. **Clone the Repository**
    ```bash
    git clone [repository-url]
-   cd Cancer_Navigation
+   cd CanConnect
    ```
 
 3. **Install Dependencies**
@@ -89,7 +89,7 @@ The Cancer Navigation System is a web-based application that streamlines the can
 ## Project Structure
 
 ```
-Cancer_Navigation/
+CanConnect/
 ├── models/              # Database models
 ├── routes/              # Route handlers
 ├── views/              

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('../../partials/head') %>
+    <title>Medications - Caregiver Portal</title>
+  </head>
+  <body class="bg-gray-50">
+    <!-- Include the sidebar -->
+    <%- include('../../partials/caregiver-sidebar') %>
+
+    <!-- Main Content -->
+    <div class="ml-64 p-8">
+      <div class="container mx-auto">
+        <div class="flex justify-between items-center mb-6">
+          <h1 class="text-3xl font-semibold">Medications</h1>
+          <button class="bg-primary-blue text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+            <i class="fas fa-plus mr-2"></i>Add Medication
+          </button>
+        </div>
+        
+        <!-- Medication Schedule -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          <!-- Today's Schedule -->
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-xl font-semibold mb-4">Today's Medication Schedule</h2>
+            <div class="space-y-4">
+              <div class="border-l-4 border-primary-blue pl-4">
+                <div class="flex justify-between items-start">
+                  <div>
+                    <h3 class="font-semibold">John Doe - Painkiller</h3>
+                    <p class="text-gray-600">500mg, 8:00 AM</p>
+                    <p class="text-sm text-gray-500 mt-1">Take with food</p>
+                  </div>
+                  <span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                    Administered
+                  </span>
+                </div>
+              </div>
+
+              <div class="border-l-4 border-yellow-500 pl-4">
+                <div class="flex justify-between items-start">
+                  <div>
+                    <h3 class="font-semibold">Emily Martin - Antibiotic</h3>
+                    <p class="text-gray-600">250mg, 12:00 PM</p>
+                    <p class="text-sm text-gray-500 mt-1">Take with water</p>
+                  </div>
+                  <span class="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                    Pending
+                  </span>
+                </div>
+              </div>
+
+              <div class="border-l-4 border-blue-500 pl-4">
+                <div class="flex justify-between items-start">
+                  <div>
+                    <h3 class="font-semibold">Robert Wilson - Chemotherapy</h3>
+                    <p class="text-gray-600">100mg, 2:00 PM</p>
+                    <p class="text-sm text-gray-500 mt-1">Hospital administration required</p>
+                  </div>
+                  <span class="px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
+                    Scheduled
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Medication Inventory -->
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-xl font-semibold mb-4">Medication Inventory</h2>
+            <div class="space-y-4">
+              <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                    <div>
+                  <h3 class="font-semibold">Painkiller (500mg)</h3>
+                  <p class="text-sm text-gray-600">John Doe</p>
+                    </div>
+                <div class="text-right">
+                  <p class="text-sm text-gray-600">15 tablets remaining</p>
+                  <p class="text-xs text-red-500">Refill needed in 3 days</p>
+                      </div>
+                    </div>
+                    
+              <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <div>
+                  <h3 class="font-semibold">Antibiotic (250mg)</h3>
+                  <p class="text-sm text-gray-600">Emily Martin</p>
+                          </div>
+                <div class="text-right">
+                  <p class="text-sm text-gray-600">28 tablets remaining</p>
+                  <p class="text-xs text-green-500">Sufficient supply</p>
+                      </div>
+                    </div>
+                    
+              <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <div>
+                  <h3 class="font-semibold">Chemotherapy (100mg)</h3>
+                  <p class="text-sm text-gray-600">Robert Wilson</p>
+                </div>
+                <div class="text-right">
+                  <p class="text-sm text-gray-600">Hospital supply</p>
+                  <p class="text-xs text-green-500">Next delivery: March 30</p>
+                </div>
+              </div>
+            </div>
+                    </div>
+                  </div>
+                  
+        <!-- Medication Statistics -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-lg font-semibold mb-4">Medication Types</h3>
+            <div class="space-y-4">
+              <div>
+                <div class="flex justify-between mb-1">
+                  <span class="text-sm font-medium text-gray-700">Pain Management</span>
+                  <span class="text-sm font-medium text-primary-blue">40%</span>
+                    </div>
+                <div class="w-full bg-gray-200 rounded-full h-2">
+                  <div class="bg-primary-blue h-2 rounded-full" style="width: 40%"></div>
+                    </div>
+                  </div>
+              <div>
+                <div class="flex justify-between mb-1">
+                  <span class="text-sm font-medium text-gray-700">Antibiotics</span>
+                  <span class="text-sm font-medium text-green-500">30%</span>
+                      </div>
+                <div class="w-full bg-gray-200 rounded-full h-2">
+                  <div class="bg-green-500 h-2 rounded-full" style="width: 30%"></div>
+                                </div>
+                              </div>
+              <div>
+                <div class="flex justify-between mb-1">
+                  <span class="text-sm font-medium text-gray-700">Chemotherapy</span>
+                  <span class="text-sm font-medium text-yellow-500">30%</span>
+                            </div>
+                <div class="w-full bg-gray-200 rounded-full h-2">
+                  <div class="bg-yellow-500 h-2 rounded-full" style="width: 30%"></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-lg font-semibold mb-4">Administration Status</h3>
+            <div class="space-y-4">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="font-medium">Administered</p>
+                  <p class="text-sm text-gray-600">5 medications</p>
+                </div>
+                <span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                  50%
+                </span>
+                  </div>
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="font-medium">Pending</p>
+                  <p class="text-sm text-gray-600">3 medications</p>
+                </div>
+                <span class="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                  30%
+                </span>
+              </div>
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="font-medium">Missed</p>
+                  <p class="text-sm text-gray-600">2 medications</p>
+                </div>
+                <span class="px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">
+                  20%
+                </span>
+          </div>
+        </div>
+      </div>
+  
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-lg font-semibold mb-4">Recent Changes</h3>
+            <div class="space-y-4">
+              <div class="flex items-start">
+                <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-primary-blue mr-3">
+                  <i class="fas fa-pills"></i>
+                </div>
+                <div>
+                  <p class="font-medium">New Medication Added</p>
+                  <p class="text-sm text-gray-600">John Doe - Painkiller 500mg</p>
+                </div>
+                  </div>
+              <div class="flex items-start">
+                <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-500 mr-3">
+                  <i class="fas fa-check"></i>
+                </div>
+                <div>
+                  <p class="font-medium">Medication Administered</p>
+                  <p class="text-sm text-gray-600">Emily Martin - Antibiotic 250mg</p>
+                </div>
+                  </div>
+              <div class="flex items-start">
+                <div class="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center text-red-500 mr-3">
+                  <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div>
+                  <p class="font-medium">Low Inventory Alert</p>
+                  <p class="text-sm text-gray-600">Painkiller 500mg - 15 tablets remaining</p>
+                </div>
+            </div>
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+    <%- include('../../partials/footer') %>
+    </body>
+  </html>

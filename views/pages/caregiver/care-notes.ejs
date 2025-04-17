@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('../../partials/head') %>
+    <title>Care Notes - Caregiver Portal</title>
+  </head>
+  <body class="bg-gray-50">
+    <!-- Include the sidebar -->
+    <%- include('../../partials/caregiver-sidebar') %>
+
+    <!-- Main Content -->
+    <div class="ml-64 p-8">
+      <div class="container mx-auto">
+        <div class="flex justify-between items-center mb-6">
+          <h1 class="text-3xl font-semibold">Care Notes</h1>
+          <button class="bg-primary-blue text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+            <i class="fas fa-plus mr-2"></i>Add New Note
+          </button>
+        </div>
+
+        <!-- Recent Care Notes -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          <!-- Patient Notes -->
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-xl font-semibold mb-4">Recent Patient Notes</h2>
+            <div class="space-y-4">
+              <div class="border-l-4 border-primary-blue pl-4">
+                <div class="flex justify-between items-start">
+                  <div>
+                    <h3 class="font-semibold">John Doe - Morning Check</h3>
+                    <p class="text-gray-600">Patient reported good sleep, vital signs normal. Administered morning medications as scheduled.</p>
+                    <p class="text-sm text-gray-500 mt-1">March 23, 2024 - 8:30 AM</p>
+                  </div>
+                  <span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                    Completed
+                  </span>
+                </div>
+              </div>
+
+              <div class="border-l-4 border-yellow-500 pl-4">
+                <div class="flex justify-between items-start">
+                  <div>
+                    <h3 class="font-semibold">Emily Martin - Physical Therapy</h3>
+                    <p class="text-gray-600">Completed 30 minutes of mobility exercises. Patient showed improvement in range of motion.</p>
+                    <p class="text-sm text-gray-500 mt-1">March 22, 2024 - 3:15 PM</p>
+                  </div>
+                  <span class="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                    In Progress
+                  </span>
+                </div>
+              </div>
+
+              <div class="border-l-4 border-blue-500 pl-4">
+                <div class="flex justify-between items-start">
+                  <div>
+                    <h3 class="font-semibold">Robert Wilson - Evening Update</h3>
+                    <p class="text-gray-600">Patient experienced mild fatigue after chemotherapy. Resting comfortably with prescribed medications.</p>
+                    <p class="text-sm text-gray-500 mt-1">March 22, 2024 - 7:45 PM</p>
+                  </div>
+                  <span class="px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
+                    Follow-up Needed
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Care Plan Updates -->
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-xl font-semibold mb-4">Care Plan Updates</h2>
+            <div class="space-y-4">
+              <div class="border-l-4 border-green-500 pl-4">
+                <div class="flex justify-between items-start">
+                  <div>
+                    <h3 class="font-semibold">John Doe - Treatment Progress</h3>
+                    <p class="text-gray-600">Positive response to new medication regimen. Pain levels decreased by 30%.</p>
+                    <p class="text-sm text-gray-500 mt-1">March 21, 2024 - 2:00 PM</p>
+                  </div>
+                  <span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                    Positive
+                  </span>
+                </div>
+              </div>
+
+              <div class="border-l-4 border-red-500 pl-4">
+                <div class="flex justify-between items-start">
+                  <div>
+                    <h3 class="font-semibold">Emily Martin - Diet Adjustment</h3>
+                    <p class="text-gray-600">Patient reported nausea after meals. Nutrition plan adjusted to smaller, more frequent meals.</p>
+                    <p class="text-sm text-gray-500 mt-1">March 20, 2024 - 11:30 AM</p>
+                  </div>
+                  <span class="px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">
+                    Attention Required
+                  </span>
+                </div>
+              </div>
+
+              <div class="border-l-4 border-purple-500 pl-4">
+                <div class="flex justify-between items-start">
+                  <div>
+                    <h3 class="font-semibold">Robert Wilson - Therapy Session</h3>
+                    <p class="text-gray-600">Completed breathing exercises. Patient showing improved lung capacity.</p>
+                    <p class="text-sm text-gray-500 mt-1">March 19, 2024 - 4:15 PM</p>
+                  </div>
+                  <span class="px-2 py-1 text-xs font-semibold rounded-full bg-purple-100 text-purple-800">
+                    Progress
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Care Notes Statistics -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-lg font-semibold mb-4">Note Categories</h3>
+            <div class="space-y-4">
+              <div>
+                <div class="flex justify-between mb-1">
+                  <span class="text-sm font-medium text-gray-700">Daily Updates</span>
+                  <span class="text-sm font-medium text-primary-blue">40%</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2">
+                  <div class="bg-primary-blue h-2 rounded-full" style="width: 40%"></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex justify-between mb-1">
+                  <span class="text-sm font-medium text-gray-700">Treatment Notes</span>
+                  <span class="text-sm font-medium text-green-500">30%</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2">
+                  <div class="bg-green-500 h-2 rounded-full" style="width: 30%"></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex justify-between mb-1">
+                  <span class="text-sm font-medium text-gray-700">Care Plan Updates</span>
+                  <span class="text-sm font-medium text-yellow-500">30%</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2">
+                  <div class="bg-yellow-500 h-2 rounded-full" style="width: 30%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-lg font-semibold mb-4">Note Status</h3>
+            <div class="space-y-4">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="font-medium">Completed</p>
+                  <p class="text-sm text-gray-600">15 notes</p>
+                </div>
+                <span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                  50%
+                </span>
+              </div>
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="font-medium">In Progress</p>
+                  <p class="text-sm text-gray-600">9 notes</p>
+                </div>
+                <span class="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                  30%
+                </span>
+              </div>
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="font-medium">Follow-up Needed</p>
+                  <p class="text-sm text-gray-600">6 notes</p>
+                </div>
+                <span class="px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">
+                  20%
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-lg font-semibold mb-4">Recent Activities</h3>
+            <div class="space-y-4">
+              <div class="flex items-start">
+                <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-primary-blue mr-3">
+                  <i class="fas fa-notes-medical"></i>
+                </div>
+                <div>
+                  <p class="font-medium">New Care Note Added</p>
+                  <p class="text-sm text-gray-600">John Doe - Morning Check</p>
+                </div>
+              </div>
+              <div class="flex items-start">
+                <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-500 mr-3">
+                  <i class="fas fa-check"></i>
+                </div>
+                <div>
+                  <p class="font-medium">Care Plan Updated</p>
+                  <p class="text-sm text-gray-600">Emily Martin - Diet Adjustment</p>
+                </div>
+              </div>
+              <div class="flex items-start">
+                <div class="w-8 h-8 rounded-full bg-yellow-100 flex items-center justify-center text-yellow-500 mr-3">
+                  <i class="fas fa-exclamation-circle"></i>
+                </div>
+                <div>
+                  <p class="font-medium">Follow-up Required</p>
+                  <p class="text-sm text-gray-600">Robert Wilson - Evening Update</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <%- include('../../partials/footer') %>
+  </body>
+</html>

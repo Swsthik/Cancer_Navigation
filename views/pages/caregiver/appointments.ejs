@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('../../partials/head') %>
+    <title>Appointments - Caregiver Portal</title>
+  </head>
+  <body class="bg-gray-50">
+    <!-- Include the sidebar -->
+    <%- include('../../partials/caregiver-sidebar') %>
+
+    <!-- Main Content -->
+    <div class="ml-64 p-8">
+      <div class="container mx-auto">
+        <div class="flex justify-between items-center mb-6">
+          <h1 class="text-3xl font-semibold">Appointments</h1>
+          <button class="bg-primary-blue text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+            <i class="fas fa-plus mr-2"></i>Schedule Appointment
+          </button>
+        </div>
+
+        <!-- Calendar View -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+          <div class="flex justify-between items-center mb-6">
+            <h2 class="text-xl font-semibold">March 2024</h2>
+            <div class="flex space-x-2">
+              <button class="p-2 rounded-lg hover:bg-gray-100">
+                <i class="fas fa-chevron-left"></i>
+              </button>
+              <button class="p-2 rounded-lg hover:bg-gray-100">
+                <i class="fas fa-chevron-right"></i>
+              </button>
+            </div>
+          </div>
+          <div class="grid grid-cols-7 gap-2">
+            <div class="text-center font-semibold py-2">Sun</div>
+            <div class="text-center font-semibold py-2">Mon</div>
+            <div class="text-center font-semibold py-2">Tue</div>
+            <div class="text-center font-semibold py-2">Wed</div>
+            <div class="text-center font-semibold py-2">Thu</div>
+            <div class="text-center font-semibold py-2">Fri</div>
+            <div class="text-center font-semibold py-2">Sat</div>
+            
+            <!-- Calendar days -->
+            <div class="text-center py-2 text-gray-400">25</div>
+            <div class="text-center py-2 text-gray-400">26</div>
+            <div class="text-center py-2 text-gray-400">27</div>
+            <div class="text-center py-2 text-gray-400">28</div>
+            <div class="text-center py-2 text-gray-400">29</div>
+            <div class="text-center py-2">1</div>
+            <div class="text-center py-2">2</div>
+            
+            <div class="text-center py-2">3</div>
+            <div class="text-center py-2">4</div>
+            <div class="text-center py-2">5</div>
+            <div class="text-center py-2">6</div>
+            <div class="text-center py-2">7</div>
+            <div class="text-center py-2">8</div>
+            <div class="text-center py-2">9</div>
+            
+            <div class="text-center py-2">10</div>
+            <div class="text-center py-2">11</div>
+            <div class="text-center py-2">12</div>
+            <div class="text-center py-2">13</div>
+            <div class="text-center py-2">14</div>
+            <div class="text-center py-2">15</div>
+            <div class="text-center py-2">16</div>
+            
+            <div class="text-center py-2">17</div>
+            <div class="text-center py-2">18</div>
+            <div class="text-center py-2">19</div>
+            <div class="text-center py-2">20</div>
+            <div class="text-center py-2">21</div>
+            <div class="text-center py-2">22</div>
+            <div class="text-center py-2">23</div>
+            
+            <div class="text-center py-2">24</div>
+            <div class="text-center py-2 bg-primary-blue text-white rounded-lg">25</div>
+            <div class="text-center py-2">26</div>
+            <div class="text-center py-2">27</div>
+            <div class="text-center py-2 bg-primary-blue text-white rounded-lg">28</div>
+            <div class="text-center py-2">29</div>
+            <div class="text-center py-2">30</div>
+            
+            <div class="text-center py-2">31</div>
+            <div class="text-center py-2 text-gray-400">1</div>
+            <div class="text-center py-2 text-gray-400">2</div>
+            <div class="text-center py-2 text-gray-400">3</div>
+            <div class="text-center py-2 text-gray-400">4</div>
+            <div class="text-center py-2 text-gray-400">5</div>
+            <div class="text-center py-2 text-gray-400">6</div>
+          </div>
+        </div>
+
+        <!-- Upcoming Appointments -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Today's Appointments -->
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-xl font-semibold mb-4">Today's Appointments</h2>
+            <div class="space-y-4">
+              <div class="border-l-4 border-primary-blue pl-4">
+                <div class="flex justify-between items-start">
+                  <div>
+                    <h3 class="font-semibold">John Doe - Oncology Checkup</h3>
+                    <p class="text-gray-600">10:00 AM - 11:00 AM</p>
+                    <p class="text-sm text-gray-500 mt-1">City Hospital, Room 305</p>
+                  </div>
+                  <span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                    Confirmed
+                  </span>
+                </div>
+              </div>
+
+              <div class="border-l-4 border-yellow-500 pl-4">
+                <div class="flex justify-between items-start">
+                  <div>
+                    <h3 class="font-semibold">Emily Martin - Physical Therapy</h3>
+                    <p class="text-gray-600">2:30 PM - 3:30 PM</p>
+                    <p class="text-sm text-gray-500 mt-1">Wellness Center, Room 102</p>
+                  </div>
+                  <span class="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                    Pending
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Upcoming Appointments -->
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-xl font-semibold mb-4">Upcoming Appointments</h2>
+            <div class="space-y-4">
+              <div class="border-l-4 border-primary-blue pl-4">
+                <div class="flex justify-between items-start">
+                  <div>
+                    <h3 class="font-semibold">Robert Wilson - Lab Tests</h3>
+                    <p class="text-gray-600">March 28, 11:00 AM - 12:00 PM</p>
+                    <p class="text-sm text-gray-500 mt-1">Medical Lab, Room 201</p>
+                  </div>
+                  <span class="px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
+                    Scheduled
+                  </span>
+                </div>
+              </div>
+
+              <div class="border-l-4 border-green-500 pl-4">
+                <div class="flex justify-between items-start">
+                  <div>
+                    <h3 class="font-semibold">John Doe - Follow-up</h3>
+                    <p class="text-gray-600">April 2, 9:00 AM - 10:00 AM</p>
+                    <p class="text-sm text-gray-500 mt-1">City Hospital, Room 305</p>
+                  </div>
+                  <span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                    Confirmed
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Appointment Statistics -->
+        <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-lg font-semibold mb-4">Appointment Types</h3>
+            <div class="space-y-4">
+              <div>
+                <div class="flex justify-between mb-1">
+                  <span class="text-sm font-medium text-gray-700">Checkups</span>
+                  <span class="text-sm font-medium text-primary-blue">40%</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2">
+                  <div class="bg-primary-blue h-2 rounded-full" style="width: 40%"></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex justify-between mb-1">
+                  <span class="text-sm font-medium text-gray-700">Therapy</span>
+                  <span class="text-sm font-medium text-green-500">30%</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2">
+                  <div class="bg-green-500 h-2 rounded-full" style="width: 30%"></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex justify-between mb-1">
+                  <span class="text-sm font-medium text-gray-700">Tests</span>
+                  <span class="text-sm font-medium text-yellow-500">30%</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2">
+                  <div class="bg-yellow-500 h-2 rounded-full" style="width: 30%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-lg font-semibold mb-4">Appointment Status</h3>
+            <div class="space-y-4">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="font-medium">Confirmed</p>
+                  <p class="text-sm text-gray-600">5 appointments</p>
+                </div>
+                <span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                  50%
+                </span>
+              </div>
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="font-medium">Pending</p>
+                  <p class="text-sm text-gray-600">3 appointments</p>
+                </div>
+                <span class="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                  30%
+                </span>
+              </div>
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="font-medium">Cancelled</p>
+                  <p class="text-sm text-gray-600">2 appointments</p>
+                </div>
+                <span class="px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">
+                  20%
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-lg font-semibold mb-4">Recent Changes</h3>
+            <div class="space-y-4">
+              <div class="flex items-start">
+                <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-primary-blue mr-3">
+                  <i class="fas fa-calendar-plus"></i>
+                </div>
+                <div>
+                  <p class="font-medium">New Appointment Added</p>
+                  <p class="text-sm text-gray-600">John Doe - April 2, 9:00 AM</p>
+                </div>
+              </div>
+              <div class="flex items-start">
+                <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-500 mr-3">
+                  <i class="fas fa-check"></i>
+                </div>
+                <div>
+                  <p class="font-medium">Appointment Confirmed</p>
+                  <p class="text-sm text-gray-600">Emily Martin - March 25, 2:30 PM</p>
+                </div>
+              </div>
+              <div class="flex items-start">
+                <div class="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center text-red-500 mr-3">
+                  <i class="fas fa-times"></i>
+                </div>
+                <div>
+                  <p class="font-medium">Appointment Cancelled</p>
+                  <p class="text-sm text-gray-600">Robert Wilson - March 20, 11:00 AM</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <%- include('../../partials/footer') %>
+  </body>
+</html>

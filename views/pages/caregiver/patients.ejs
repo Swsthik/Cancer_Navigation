@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('../../partials/head') %>
+    <title>Patients - Caregiver Portal</title>
+  </head>
+  <body class="bg-gray-50">
+    <!-- Include the sidebar -->
+    <%- include('../../partials/caregiver-sidebar') %>
+
+    <!-- Main Content -->
+    <div class="ml-64 p-8">
+      <div class="container mx-auto">
+        <div class="flex justify-between items-center mb-6">
+          <h1 class="text-3xl font-semibold">Patients</h1>
+          <button class="bg-primary-blue text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+            <i class="fas fa-plus mr-2"></i>Add New Patient
+          </button>
+        </div>
+
+        <!-- Patient Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Patient 1 -->
+          <div class="bg-white rounded-lg shadow-md overflow-hidden">
+            <div class="p-6">
+              <div class="flex items-center mb-4">
+                <div class="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center text-primary-blue text-2xl mr-4">
+                  JD
+                </div>
+                <div>
+                  <h2 class="text-xl font-semibold">John Doe</h2>
+                  <p class="text-gray-600">Age 65, Prostate Cancer</p>
+                </div>
+              </div>
+              <div class="space-y-3">
+                <div class="flex items-center">
+                  <i class="fas fa-phone text-primary-blue mr-3"></i>
+                  <span>(555) 123-4567</span>
+                </div>
+                <div class="flex items-center">
+                  <i class="fas fa-envelope text-primary-blue mr-3"></i>
+                  <span>john.doe@example.com</span>
+                </div>
+                <div class="flex items-center">
+                  <i class="fas fa-map-marker-alt text-primary-blue mr-3"></i>
+                  <span>123 Main St, Healthcare City</span>
+                </div>
+              </div>
+            </div>
+            <div class="bg-gray-50 px-6 py-4">
+              <div class="flex justify-between items-center">
+                <div>
+                  <p class="text-sm text-gray-600">Next Appointment</p>
+                  <p class="font-semibold">Tomorrow, 10:00 AM</p>
+                </div>
+                <button class="text-primary-blue hover:text-blue-700">
+                  <i class="fas fa-ellipsis-v"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Patient 2 -->
+          <div class="bg-white rounded-lg shadow-md overflow-hidden">
+            <div class="p-6">
+              <div class="flex items-center mb-4">
+                <div class="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center text-green-600 text-2xl mr-4">
+                  EM
+                </div>
+                <div>
+                  <h2 class="text-xl font-semibold">Emily Martin</h2>
+                  <p class="text-gray-600">Age 58, Breast Cancer</p>
+                </div>
+              </div>
+              <div class="space-y-3">
+                <div class="flex items-center">
+                  <i class="fas fa-phone text-primary-blue mr-3"></i>
+                  <span>(555) 234-5678</span>
+                </div>
+                <div class="flex items-center">
+                  <i class="fas fa-envelope text-primary-blue mr-3"></i>
+                  <span>emily.martin@example.com</span>
+                </div>
+                <div class="flex items-center">
+                  <i class="fas fa-map-marker-alt text-primary-blue mr-3"></i>
+                  <span>456 Oak Ave, Healthcare City</span>
+                </div>
+              </div>
+            </div>
+            <div class="bg-gray-50 px-6 py-4">
+              <div class="flex justify-between items-center">
+                <div>
+                  <p class="text-sm text-gray-600">Next Appointment</p>
+                  <p class="font-semibold">March 25, 2:30 PM</p>
+                </div>
+                <button class="text-primary-blue hover:text-blue-700">
+                  <i class="fas fa-ellipsis-v"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Patient 3 -->
+          <div class="bg-white rounded-lg shadow-md overflow-hidden">
+            <div class="p-6">
+              <div class="flex items-center mb-4">
+                <div class="w-16 h-16 rounded-full bg-yellow-100 flex items-center justify-center text-yellow-600 text-2xl mr-4">
+                  RW
+                </div>
+                <div>
+                  <h2 class="text-xl font-semibold">Robert Wilson</h2>
+                  <p class="text-gray-600">Age 72, Lung Cancer</p>
+                </div>
+              </div>
+              <div class="space-y-3">
+                <div class="flex items-center">
+                  <i class="fas fa-phone text-primary-blue mr-3"></i>
+                  <span>(555) 345-6789</span>
+                </div>
+                <div class="flex items-center">
+                  <i class="fas fa-envelope text-primary-blue mr-3"></i>
+                  <span>robert.wilson@example.com</span>
+                </div>
+                <div class="flex items-center">
+                  <i class="fas fa-map-marker-alt text-primary-blue mr-3"></i>
+                  <span>789 Pine St, Healthcare City</span>
+                </div>
+              </div>
+            </div>
+            <div class="bg-gray-50 px-6 py-4">
+              <div class="flex justify-between items-center">
+                <div>
+                  <p class="text-sm text-gray-600">Next Appointment</p>
+                  <p class="font-semibold">March 28, 11:00 AM</p>
+                </div>
+                <button class="text-primary-blue hover:text-blue-700">
+                  <i class="fas fa-ellipsis-v"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Patient Statistics -->
+        <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-lg font-semibold mb-4">Treatment Progress</h3>
+            <div class="space-y-4">
+              <div>
+                <div class="flex justify-between mb-1">
+                  <span class="text-sm font-medium text-gray-700">John Doe</span>
+                  <span class="text-sm font-medium text-primary-blue">75%</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2">
+                  <div class="bg-primary-blue h-2 rounded-full" style="width: 75%"></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex justify-between mb-1">
+                  <span class="text-sm font-medium text-gray-700">Emily Martin</span>
+                  <span class="text-sm font-medium text-green-500">60%</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2">
+                  <div class="bg-green-500 h-2 rounded-full" style="width: 60%"></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex justify-between mb-1">
+                  <span class="text-sm font-medium text-gray-700">Robert Wilson</span>
+                  <span class="text-sm font-medium text-yellow-500">45%</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2">
+                  <div class="bg-yellow-500 h-2 rounded-full" style="width: 45%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-lg font-semibold mb-4">Medication Schedule</h3>
+            <div class="space-y-4">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="font-medium">Morning Medications</p>
+                  <p class="text-sm text-gray-600">8:00 AM</p>
+                </div>
+                <span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                  On Time
+                </span>
+              </div>
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="font-medium">Afternoon Medications</p>
+                  <p class="text-sm text-gray-600">2:00 PM</p>
+                </div>
+                <span class="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                  Pending
+                </span>
+              </div>
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="font-medium">Evening Medications</p>
+                  <p class="text-sm text-gray-600">8:00 PM</p>
+                </div>
+                <span class="px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800">
+                  Upcoming
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-lg font-semibold mb-4">Recent Activities</h3>
+            <div class="space-y-4">
+              <div class="flex items-start">
+                <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-primary-blue mr-3">
+                  <i class="fas fa-calendar-check"></i>
+                </div>
+                <div>
+                  <p class="font-medium">Doctor's Appointment</p>
+                  <p class="text-sm text-gray-600">Completed yesterday</p>
+                </div>
+              </div>
+              <div class="flex items-start">
+                <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-500 mr-3">
+                  <i class="fas fa-pills"></i>
+                </div>
+                <div>
+                  <p class="font-medium">Medication Refill</p>
+                  <p class="text-sm text-gray-600">Completed 2 days ago</p>
+                </div>
+              </div>
+              <div class="flex items-start">
+                <div class="w-8 h-8 rounded-full bg-yellow-100 flex items-center justify-center text-yellow-500 mr-3">
+                  <i class="fas fa-notes-medical"></i>
+                </div>
+                <div>
+                  <p class="font-medium">Care Notes Update</p>
+                  <p class="text-sm text-gray-600">Updated 3 days ago</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <%- include('../../partials/footer') %>
+  </body>
+</html>
