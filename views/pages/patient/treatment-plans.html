@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MedConnect - Treatment Plans</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary-blue: #2a5c82;
+        --secondary-blue: #5c9baf;
+        --accent-teal: #4ecdc4;
+      }
+
+      body {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        min-height: 100vh;
+      }
+
+      .medical-header {
+        background: var(--primary-blue);
+        padding: 1rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .dashboard-container {
+        background: rgba(255, 255, 255, 0.95);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+      }
+
+      .btn-medical {
+        background: var(--accent-teal);
+        color: white;
+        padding: 12px 30px;
+        transition: all 0.3s ease;
+      }
+
+      .btn-medical:hover {
+        background: var(--secondary-blue);
+        transform: translateY(-2px);
+      }
+
+      .btn-outline-medical {
+        color: var(--accent-teal);
+        border: 1px solid var(--accent-teal);
+        transition: all 0.3s ease;
+      }
+
+      .btn-outline-medical:hover {
+        background: var(--accent-teal);
+        color: white;
+      }
+
+      .card-medical {
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+      }
+
+      .card-medical:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .sidebar {
+        background: var(--primary-blue);
+        color: white;
+      }
+
+      .nav-link {
+        color: rgba(255, 255, 255, 0.8);
+        transition: all 0.3s ease;
+        padding: 0.8rem 1rem;
+        border-radius: 10px;
+        margin-bottom: 0.5rem;
+      }
+
+      .nav-link:hover, .nav-link.active {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+      }
+
+      .nav-link i {
+        margin-right: 10px;
+      }
+
+      .health-metric {
+        height: 6px;
+        border-radius: 3px;
+      }
+
+      .treatment-phase {
+        border-left: 4px solid var(--primary-blue);
+        padding-left: 15px;
+        margin-bottom: 20px;
+      }
+
+      .treatment-phase.completed {
+        border-left-color: #28a745;
+      }
+
+      .treatment-phase.active {
+        border-left-color: var(--accent-teal);
+      }
+
+      .treatment-phase.pending {
+        border-left-color: #adb5bd;
+      }
+
+      .timeline-item {
+        position: relative;
+        padding-left: 30px;
+        margin-bottom: 15px;
+      }
+
+      .timeline-item:before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 5px;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background-color: var(--primary-blue);
+      }
+
+      .timeline-item.completed:before {
+        background-color: #28a745;
+      }
+
+      .timeline-item.active:before {
+        background-color: var(--accent-teal);
+      }
+
+      .timeline-item.pending:before {
+        background-color: #adb5bd;
+      }
+
+      .timeline-item:after {
+        content: '';
+        position: absolute;
+        left: 5px;
+        top: 17px;
+        width: 2px;
+        height: calc(100% + 5px);
+        background-color: #dee2e6;
+      }
+
+      .timeline-item:last-child:after {
+        display: none;
+      }
+
+      .decorative-wave {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 150px;
+        background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg"><path fill="%232A5C82" fill-opacity="0.1" d="M0,160L48,170.7C96,181,192,203,288,186.7C384,171,480,117,576,101.3C672,85,768,107,864,138.7C960,171,1056,213,1152,208C1248,203,1344,149,1392,122.7L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
+      }
+
+      .protocol-label {
+        display: inline-block;
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        font-size: 0.8rem;
+        font-weight: 600;
+      }
+
+      .treatment-status {
+        width: 120px;
+        text-align: center;
+        padding: 0.35rem 0;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+      }
+
+      .status-active {
+        background-color: rgba(78, 205, 196, 0.2);
+        color: var(--accent-teal);
+      }
+
+      .status-completed {
+        background-color: rgba(40, 167, 69, 0.2);
+        color: #28a745;
+      }
+
+      .status-scheduled {
+        background-color: rgba(255, 193, 7, 0.2);
+        color: #ffc107;
+      }
+
+      .status-pending {
+        background-color: rgba(108, 117, 125, 0.2);
+        color: #6c757d;
+      }
+
+      .protocol-chemotherapy {
+        background-color: rgba(0, 123, 255, 0.1);
+        color: #0d6efd;
+      }
+
+      .protocol-radiation {
+        background-color: rgba(220, 53, 69, 0.1);
+        color: #dc3545;
+      }
+
+      .protocol-surgery {
+        background-color: rgba(111, 66, 193, 0.1);
+        color: #6f42c1;
+      }
+
+      .protocol-immunotherapy {
+        background-color: rgba(40, 167, 69, 0.1);
+        color: #28a745;
+      }
+
+      .protocol-supportive {
+        background-color: rgba(255, 193, 7, 0.1);
+        color: #ffc107;
+      }
+
+      .progress-title {
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+      }
+
+      .tab-content {
+        padding: 20px;
+        border: 1px solid #dee2e6;
+        border-top: none;
+        border-radius: 0 0 15px 15px;
+      }
+
+      .nav-tabs .nav-link {
+        border: 1px solid transparent;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+        color: #6c757d;
+        padding: 10px 20px;
+        font-weight: 500;
+      }
+
+      .nav-tabs .nav-link.active {
+        color: var(--primary-blue);
+        background-color: #fff;
+        border-color: #dee2e6 #dee2e6 #fff;
+      }
+
+      .side-effect {
+        padding: 10px 15px;
+        border-radius: 10px;
+        margin-bottom: 10px;
+        background-color: #f8f9fa;
+      }
+
+      .side-effect-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+      }
+
+      .side-effect-content {
+        padding-top: 10px;
+        display: none;
+      }
+
+      .side-effect.active .side-effect-content {
+        display: block;
+      }
+
+      .medication-item {
+        border-bottom: 1px solid #dee2e6;
+        padding: 15px 0;
+      }
+
+      .medication-item:last-child {
+        border-bottom: none;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar medical-header">
+      <div class="container">
+        <a class="navbar-brand text-white" href="#">
+          <i class="fas fa-hospital me-2"></i>MedConnect
+        </a>
+        <div class="dropdown">
+          <button class="btn text-white dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fas fa-user-circle me-2"></i>John Doe
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+            <li><a class="dropdown-item" href="profile.html"><i class="fas fa-id-card me-2"></i>Profile</a></li>
+            <li><a class="dropdown-item" href="settings.html"><i class="fas fa-cog me-2"></i>Settings</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="/logout"><i class="fas fa-sign-out-alt me-2"></i>Log Out</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="w-full">
+      <div class="dashboard-container row g-0 w-full">
+        <!-- Sidebar -->
+        <div class="col-md-3 sidebar p-4">
+          <div class="d-flex align-items-center mb-4">
+            <i class="fas fa-user-circle fs-1 me-3"></i>
+            <div>
+              <h5 class="mb-0">John Doe</h5>
+              <small class="text-light">Patient</small>
+            </div>
+          </div>
+          <div class="nav flex-column">
+            <a href="dashboard.html" class="nav-link">
+              <i class="fas fa-home"></i>Dashboard
+            </a>
+            <a href="cancer-conditions.html" class="nav-link">
+              <i class="fas fa-disease"></i>Cancer Conditions
+            </a>
+            <a href="disease-status.html" class="nav-link">
+              <i class="fas fa-heartbeat"></i>Disease Status
+            </a>
+            <a href="test-results.html" class="nav-link">
+              <i class="fas fa-flask"></i>Test Results
+            </a>
+            <a href="tnm-staging.html" class="nav-link">
+              <i class="fas fa-chart-line"></i>TNM Staging
+            </a>
+            <a href="risk-assessments.html" class="nav-link">
+              <i class="fas fa-calculator"></i>Risk Assessments
+            </a>
+            <a href="treatment-plans.html" class="nav-link active">
+              <i class="fas fa-clipboard-list"></i>Treatment Plans
+            </a>
+            <a href="appointments.html" class="nav-link">
+              <i class="fas fa-calendar-check"></i>Appointments
+            </a>
+            <a href="reports.html" class="nav-link">
+              <i class="fas fa-file-medical"></i>Reports
+            </a>
+            <a href="profile.html" class="nav-link">
+              <i class="fas fa-user"></i>Profile
+            </a>
+          </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="col-md-9 p-4 bg-white">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Treatment Plans</h2>
+            <div>
+              <button class="btn btn-outline-medical me-2">
+                <i class="fas fa-print me-2"></i>Print Plan
+              </button>
+              <button class="btn btn-medical">
+                <i class="fas fa-share-alt me-2"></i>Share with Provider
+              </button>
+            </div>
+          </div>
+
+          <!-- Treatment Plan Overview -->
+          <div class="card card-medical mb-4">
+            <div class="card-header bg-white">
+              <div class="d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Active Treatment Plan</h5>
+                <span class="badge bg-primary">Stage II Breast Cancer</span>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-6">
+                  <p><strong>Primary Cancer:</strong> Breast Cancer (Left)</p>
+                  <p><strong>Diagnosis Date:</strong> January 15, 2025</p>
+                  <p><strong>TNM Stage:</strong> T2N1M0 (Stage IIB)</p>
+                  <p><strong>Histology:</strong> Invasive Ductal Carcinoma</p>
+                </div>
+                <div class="col-md-6">
+                  <p><strong>Oncologist:</strong> Dr. Sarah Johnson</p>
+                  <p><strong>Protocol:</strong> AC-T (Adriamycin/Cyclophosphamide followed by Taxol)</p>
+                  <p><strong>Treatment Goal:</strong> Curative</p>
+                  <p><strong>Last Updated:</strong> March 18, 2025</p>
+                </div>
+              </div>
+
+              <div class="mt-4">
+                <h6>Overall Progress</h6>
+                <div class="progress health-metric">
+                  <div class="progress-bar bg-success" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <div class="d-flex justify-content-between mt-2">
+                  <small class="text-muted">Started: Jan 25, 2025</small>
+                  <small class="text-muted">4 of 8 cycles completed</small>
+                  <small class="text-muted">Expected completion: Jul 25, 2025</small>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Treatment Plan Tabs -->
+          <ul class="nav nav-tabs" id="treatmentTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="timeline-tab" data-bs-toggle="tab" data-bs-target="#timeline" type="button" role="tab" aria-controls="timeline" aria-selected="true">Treatment Timeline</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="medications-tab" data-bs-toggle="tab" data-bs-target="#medications" type="button" role="tab" aria-controls="medications" aria-selected="false">Medications</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="side-effects-tab" data-bs-toggle="tab" data-bs-target="#side-effects" type="button" role="tab" aria-controls="side-effects" aria-selected="false">Side Effects Management</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="notes-tab" data-bs-toggle="tab" data-bs-target="#notes" type="button" role="tab" aria-controls="notes" aria-selected="false">Clinical Notes</button>
+            </li>
+          </ul>
+          
+          <div class="tab-content" id="treatmentTabsContent">
+            <!-- Timeline Tab -->
+            <div class="tab-pane fade show active" id="timeline" role="tabpanel" aria-labelledby="timeline-tab">
+              <div class="treatment-phase completed">
+                <h5>Phase 1: Surgery</h5>
+                <p class="text-muted">Lumpectomy with Sentinel Lymph Node Biopsy</p>
+                
+                <div class="timeline-item completed">
+                  <div class="d-flex justify-content-between">
+                    <div>
+                      <h6>Pre-operative Assessment</h6>
+                      <p class="text-muted mb-0">Complete blood count, chest X-ray, ECG</p>
+                    </div>
+                    <div class="treatment-status status-completed">Completed</div>
+                  </div>
+                  <small>January 20, 2025</small>
+                </div>
+                
+                <div class="timeline-item completed">
+                  <div class="d-flex justify-content-between">
+                    <div>
+                      <h6>Breast-conserving Surgery</h6>
+                      <p class="text-muted mb-0">Left breast lumpectomy with sentinel lymph node biopsy</p>
+                    </div>
+                    <div class="treatment-status status-completed">Completed</div>
+                  </div>
+                  <small>January 25, 2025</small>
+                </div>
+                
+                <div class="timeline-item completed">
+                  <div class="d-flex justify-content-between">
+                    <div>
+                      <h6>Post-operative Follow-up</h6>
+                      <p class="text-muted mb-0">Wound assessment, pathology review</p>
+                    </div>
+                    <div class="treatment-status status-completed">Completed</div>
+                  </div>
+                  <small>February 5, 2025</small>
+                </div>
+              </div>
+              
+              <div class="treatment-phase active">
+                <h5>Phase 2: Chemotherapy</h5>
+                <p class="text-muted">AC-T Protocol (Adriamycin/Cyclophosphamide followed by Taxol)</p>
+                
+                <div class="timeline-item completed">
+                  <div class="d-flex justify-content-between">
+                    <div>
+                      <h6>AC Cycle 1</h6>
+                      <p class="text-muted mb-0">Adriamycin 60mg/m² + Cyclophosphamide 600mg/m²</p>
+                    </div>
+                    <div class="treatment-status status-completed">Completed</div>
+                  </div>
+                  <small>February 15, 2025</small>
+                </div>
+                
+                <div class="timeline-item completed">
+                  <div class="d-flex justify-content-between">
+                    <div>
+                      <h6>AC Cycle 2</h6>
+                      <p class="text-muted mb-0">Adriamycin 60mg/m² + Cyclophosphamide 600mg/m²</p>
+                    </div>
+                    <div class="treatment-status status-completed">Completed</div>
+                  </div>
+                  <small>March 8, 2025</small>
+                </div>
+                
+                <div class="timeline-item completed">
+                  <div class="d-flex justify-content-between">
+                    <div>
+                      <h6>AC Cycle 3</h6>
+                      <p class="text-muted mb-0">Adriamycin 60mg/m² + Cyclophosphamide 600mg/m²</p>
+                    </div>
+                    <div class="treatment-status status-completed">Completed</div>
+                  </div>
+                  <small>March 29, 2025</small>
+                </div>
+                
+                <div class="timeline-item active">
+                  <div class="d-flex justify-content-between">
+                    <div>
+                      <h6>AC Cycle 4</h6>
+                      <p class="text-muted mb-0">Adriamycin 60mg/m² + Cyclophosphamide 600mg/m²</p>
+                    </div>
+                    <div class="treatment-status status-active">In Progress</div>
+                  </div>
+                  <small>April 19, 2025</small>
+                </div>
+                
+                <div class="timeline-item pending">
+                  <div class="d-flex justify-content-between">
+                    <div>
+                      <h6>Paclitaxel Cycle 1</h6>
+                      <p class="text-muted mb-0">Paclitaxel 80mg/m² weekly</p>
+                    </div>
+                    <div class="treatment-status status-scheduled">Scheduled</div>
+                  </div>
+                  <small>May 10, 2025</small>
+                </div>
+                
+                <div class="timeline-item pending">
+                  <div class="d-flex justify-content-between">
+                    <div>
+                      <h6>Paclitaxel Cycle 2</h6>
+                      <p class="text-muted mb-0">Paclitaxel 80mg/m² weekly</p>
+                    </div>
+                    <div class="treatment-status status-pending">Pending</div>
+                  </div>
+                  <small>May 17, 2025</small>
+                </div>
+                
+                <div class="timeline-item pending">
+                  <div class="d-flex justify-content-between">
+                    <div>
+                      <h6>Paclitaxel Cycle 3</h6>
+                      <p class="text-muted mb-0">Paclitaxel 80mg/m² weekly</p>
+                    </div>
+                    <div class="treatment-status status-pending">Pending</div>
+                  </div>
+                  <small>May 24, 2025</small>
+                </div>
+                
+                <div class="timeline-item pending">
+                  <div class="d-flex justify-content-between">
+                    <div>
+                      <h6>Paclitaxel Cycle 4</h6>
+                      <p class="text-muted mb-0">Paclitaxel 80mg/m² weekly</p>
+                    </div>
+                    <div class="treatment-status status-pending">Pending</div>
+                  </div>
+                  <small>May 31, 2025</small>
+                </div>
+              </div>
+              
+              <div class="treatment-phase pending">
+                <h5>Phase 3: Radiation Therapy</h5>
+                <p class="text-muted">Whole Breast Irradiation</p>
+                
+                <div class="timeline-item pending">
+                  <div class="d-flex justify-content-between">
+                    <div>
+                      <h6>Radiation Planning</h6>
+                      <p class="text-muted mb-0">CT simulation for treatment planning</p>
+                    </div>
+                    <div class="treatment-status status-pending">Pending</div>
+                  </div>
+                  <small>June 15, 2025</small>
+                </div>
+                
+                <div class="timeline-item pending">
+                  <div class="d-flex justify-content-between">
+                    <div>
+                      <h6>Whole Breast Radiation</h6>
+                      <p class="text-muted mb-0">15 fractions over 3 weeks</p>
+                    </div>
+                    <div class="treatment-status status-pending">Pending</div>
+                  </div>
+                  <small>June 20 - July 10, 2025</small>
+                </div>
+              </div>
+              
+              <div class="treatment-phase pending">
+                <h5>Phase 4: Hormone Therapy</h5>
+                <p class="text-muted">Endocrine Therapy (ER+/PR+ tumor)</p>
+                
+                <div class="timeline-item pending">
+                  <div class="d-flex justify-content-between">
+                    <div>
+                      <h6>Hormone Therapy Initiation</h6>
+                      <p class="text-muted mb-0">Tamoxifen 20mg daily</p>
+                    </div>
+                    <div class="treatment-status status-pending">Pending</div>
+                  </div>
+                  <small>July 20, 2025</small>
+                </div>
+                
+                <div class="timeline-item pending">
+                  <div class="d-flex justify-content-between">
+                    <div>
+                      <h6>Long-term Hormone Therapy</h6>
+                      <p class="text-muted mb-0">Continuation for 5-10 years</p>
+                    </div>
+                    <div class="treatment-status status-pending">Pending</div>
+                  </div>
+                  <small>July 2025 - July 2030</small>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Medications Tab -->
+            <div class="tab-pane fade" id="medications" role="tabpanel" aria-labelledby="medications-tab">
+              <h5>Current Medications</h5>
+              
+              <div class="medication-item">
+                <div class="row">
+                  <div class="col-md-8">
+                    <h6>Adriamycin (Doxorubicin)</h6>
+                    <p class="text-muted mb-2">Chemotherapy - Anthracycline</p>
+                    <p class="mb-0"><span class="protocol-label protocol-chemotherapy">Chemotherapy</span></p>
+                  </div>
+                  <div class="col-md-4">
+                    <p><strong>Dose:</strong> 60mg/m²</p>
+                    <p><strong>Frequency:</strong> Every 21 days</p>
+                    <p><strong>Remaining:</strong> 0 of 4 cycles</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="medication-item">
+                <div class="row">
+                  <div class="col-md-8">
+                    <h6>Cyclophosphamide</h6>
+                    <p class="text-muted mb-2">Chemotherapy - Alkylating agent</p>
+                    <p class="mb-0"><span class="protocol-label protocol-chemotherapy">Chemotherapy</span></p>
+                  </div>
+                  <div class="col-md-4">
+                    <p><strong>Dose:</strong> 600mg/m²</p>
+                    <p><strong>Frequency:</strong> Every 21 days</p>
+                    <p><strong>Remaining:</strong> 0 of 4 cycles</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="medication-item">
+                <div class="row">
+                  <div class="col-md-8">
+                    <h6>Ondansetron (Zofran)</h6>
+                    <p class="text-muted mb-2">Anti-nausea medication</p>
+                    <p class="mb-0"><span class="protocol-label protocol-supportive">Supportive Care</span></p>
+                  </div>
+                  <div class="col-md-4">
+                    <p><strong>Dose:</strong> 8mg</p>
+                    <p><strong>Frequency:</strong> Every 8 hours as needed</p>
+                    <p><strong>Instructions:</strong> Take 30 minutes before chemotherapy and continue for 2-3 days after</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="medication-item">
+                <div class="row">
+                  <div class="col-md-8">
+                    <h6>Dexamethasone</h6>
+                    <p class="text-muted mb-2">Corticosteroid - Anti-inflammatory</p>
+                    <p class="mb-0"><span class="protocol-label protocol-supportive">Supportive Care</span></p>
+                  </div>
+                  <div class="col-md-4">
+                    <p><strong>Dose:</strong> 12mg</p>
+                    <p><strong>Frequency:</strong> Once before each chemotherapy session</p>
+                    <p><strong>Instructions:</strong> Take 30-60 minutes before chemotherapy</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="medication-item">
+                <div class="row">
+                  <div class="col-md-8">
+                    <h6>Filgrastim (Neupogen)</h6>
+                    <p class="text-muted mb-2">Growth factor - Neutropenia prevention</p>
+                    <p class="mb-0"><span class="protocol-label protocol-supportive">Supportive Care</span></p>
+                  </div>
+                  <div class="col-md-4">
+                    <p><strong>Dose:</strong> 300mcg</p>
+                    <p><strong>Frequency:</strong> Daily for 5 days after each chemotherapy cycle</p>
+                    <p><strong>Instructions:</strong> Subcutaneous injection, starting 24 hours after chemotherapy completion</p>
+                  </div>
+                </div>
+              </div>
+              
+              <h5 class="mt-4">Upcoming Medications</h5>
+              
+              <div class="medication-item">
+                <div class="row">
+                  <div class="col-md-8">
+                    <h6>Paclitaxel (Taxol)</h6>
+                    <p class="text-muted mb-2">Chemotherapy - Taxane</p>
+                    <p class="mb-0"><span class="protocol-label protocol-chemotherapy">Chemotherapy</span></p>
+                  </div>
+                  <div class="col-md-4">
+                    <p><strong>Dose:</strong> 80mg/m²</p>
+                    <p><strong>Frequency:</strong> Weekly</p>
+                    <p><strong>Duration:</strong> 4 cycles</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="medication-item">
+                <div class="row">
+                  <div class="col-md-8">
+                    <h6>Tamoxifen</h6>
+                    <p class="text-muted mb-2">Hormone therapy - Selective estrogen receptor modulator (SERM)</p>
+                    <p class="mb-0"><span class="protocol-label protocol-immunotherapy">Hormone Therapy</span></p>
+                  </div>
+                  <div class="col-md-4">
+                    <p><strong>Dose:</strong> 20mg</p>
+                    <p><strong>Frequency:</strong> Daily</p>
+                    <p><strong>Duration:</strong> 5-10 years</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Side Effects Tab -->
+            <div class="tab-pane fade" id="side-effects" role="tabpanel" aria-labelledby="side-effects-tab">
+              <div class="mb-4">
+                <h5>Current Management</h5>
+                <p>The following side effects have been reported and are being actively managed:</p>
+              </div>
+              
+              <div class="side-effect active">
+                <div class="side-effect-title" onclick="toggleSideEffect(this)">
+                  <h6>Nausea and Vomiting</h6>
+                  <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="side-effect-content">
+                  <p><strong>Severity:</strong> <span class="text-warning">Moderate</span></p>
+                  <p><strong>Management:</strong></p>
+                  <ul>
+                    <li>Ondansetron (Zofran) 8mg every 8 hours as needed</li>
+                    <li>Dexamethasone 8mg before chemotherapy</li>
+                    <li>Small, frequent meals throughout the day</li>
+                    <li>Adequate hydration</li>
+                    <li>Avoid strong smells and greasy foods</li>
+                  </ul>
+                  <p><strong>Status:</strong> Well-controlled with medications</p>
+                </div>
+              </div>
+              
+              <div class="side-effect">
+                <div class="side-effect-title" onclick="toggleSideEffect(this)">
+                  <h6>Fatigue</h6>
+                  <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="side-effect-content">
+                  <p><strong>Severity:</strong> <span class="text-warning">Moderate</span></p>
+                  <p><strong>Management:</strong></p>
+                  <ul>
+                    <li>Balanced rest and activity periods</li>
+                    <li>Light physical activity as tolerated</li>
+                    <li>Adequate hydration</li>
+                    <li>Nutritional support</li>
+                    <li>Energy conservation techniques</li>
+                  </ul>
+                  <p><strong>Status:</strong> Gradually improving between cycles</p>
+                </div>
+              </div>
+              
+              <div class="side-effect">
+                <div class="side-effect-title" onclick="toggleSideEffect(this)">
+                  <h6>Hair Loss (Alopecia)</h6>
+                  <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="side-effect-content">
+                  <p><strong>Severity:</strong> <span class="text-danger">Severe</span></p>
+                  <p><strong>Management:</strong></p>
+                  <ul>
+                    <li>Head covering options provided (wig, scarves, hats)</li>
+                    <li>Scalp care education</li>
+                    <li>Emotional support resources</li>
+                  </ul>
+                  <p><strong>Status:</strong> Expected to continue throughout treatment</p>
+                </div>
+              </div>
+              
+              <div class="side-effect">
+                <div class="side-effect-title" onclick="toggleSideEffect(this)">
+                  <h6>Neutropenia</h6>
+                  <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="side-effect-content">
+                  <p><strong>Severity:</strong> <span class="text-warning">Moderate</span></p>
+                  <p><strong>Management:</strong></p>
+                  <ul>
+                    <li>Filgrastim (Neupogen) prophylaxis</li>
+                    <li>Infection prevention education</li>
+                    <li>Weekly blood counts</li>
+                    <li>Avoid crowds and sick contacts</li>
+                  </ul>
+                  <p><strong>Status:</strong> Well-managed with growth factors</p>
+                </div>
+              </div>
+              
+              <div class="alert alert-info mt-4" role="alert">
+                <h6><i class="fas fa-lightbulb me-2"></i>Upcoming Side Effect Management</h6>
+                <p class="mb-0">Side effects for the upcoming Taxol (paclitaxel) treatment may differ. Potential side effects include peripheral neuropathy, joint/muscle pain, and skin changes. We will update your management plan prior to starting this medication.</p>
+              </div>
+            </div>
+            
+            <!-- Clinical Notes Tab -->
+            <div class="tab-pane fade" id="notes" role="tabpanel" aria-labelledby="notes-tab">
+              <div class="mb-4">
+                <h5>Latest Clinical Notes</h5>
+              </div>
+              
+              <div class="card card-medical mb-3">
+                <div class="card-header bg-white">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <h6 class="mb-0">Oncology Visit - March 29, 2025</h6>
+                    <span class="text-muted">Dr. Sarah Johnson</span>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <p><strong>Assessment:</strong> Patient tolerated cycle 3 of AC with moderate nausea and fatigue. Blood counts have recovered appropriately. No evidence of disease progression. ECOG Performance Status 1.</p>
+                  <p><strong>Disease Status:</strong> Responding to treatment.</p>
+                  <p><strong>Labs:</strong> WBC 4.2, ANC 2.1, Hgb 11.2, Plt 150. Liver and kidney function tests within normal limits.</p>
+                  <p><strong>Plan:</strong></p>
+                  <ul>
+                    <li>Proceed with cycle 4 of AC as scheduled on April 19</li>
+                    <li>Continue with current supportive medications</li>
+                    <li>Schedule echocardiogram prior to cycle 4 to assess cardiac function</li>
+                    <li>Consider dose reduction of cycle 4 if neutropenia worsens</li>
+                  </ul>
+                </div>
+              </div>
+              
+              <div class="card card-medical mb-3">
+                <div class="card-header bg-white">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <h6 class="mb-0">Oncology Visit - March 8, 2025</h6>
+                    <span class="text-muted">Dr. Sarah Johnson</span>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <p><strong>Assessment:</strong> Patient completed cycle 2 of AC with expected side effects. Grade 2 nausea, grade 1 fatigue, complete alopecia. No evidence of infection or other complications.</p>
+                  <p><strong>Disease Status:</strong> Clinical examination shows reduction in palpable disease.</p>
+                  <p><strong>Labs:</strong> WBC 3.8, ANC 1.9, Hgb 11.5, Plt 142. All other labs within normal limits.</p>
+                  <p><strong>Plan:</strong></p>
+                  <ul>
+                    <li>Proceed with cycle 3 of AC as scheduled</li>
+                    <li>Continue with current supportive medications</li>
+                    <li>Consider adding Neulasta instead of Neupogen if neutropenia worsens</li>
+                    <li>Patient educated on signs of febrile neutropenia and when to seek immediate medical attention</li>
+                  </ul>
+                </div>
+              </div>
+              
+              <div class="card card-medical">
+                <div class="card-header bg-white">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <h6 class="mb-0">Surgical Oncology Follow-up - February 5, 2025</h6>
+                    <span class="text-muted">Dr. Michael Chen</span>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <p><strong>Assessment:</strong> Patient recovering well from left breast lumpectomy with sentinel lymph node biopsy. Incision healing appropriately with no signs of infection.</p>
+                  <p><strong>Pathology Results:</strong> Invasive ductal carcinoma, grade 2, 2.8cm. Margins negative. 1 of 3 sentinel lymph nodes positive for metastatic disease. ER/PR positive, HER2 negative.</p>
+                  <p><strong>TNM Stage:</strong> pT2N1M0, Stage IIB.</p>
+                  <p><strong>Plan:</strong></p>
+                  <ul>
+                    <li>Refer to medical oncology for adjuvant chemotherapy</li>
+                    <li>Recommend AC-T regimen based on tumor characteristics and nodal involvement</li>
+                    <li>Follow-up in 3 months or after completion of chemotherapy</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Related Information -->
+          <div class="row mt-4">
+            <div class="col-md-6 mb-4">
+              <div class="card card-medical h-100">
+                <div class="card-header bg-white">
+                  <h5 class="mb-0">Care Team</h5>
+                </div>
+                <div class="card-body">
+                  <div class="d-flex mb-3">
+                    <div class="me-3">
+                      <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center text-white" style="width: 50px; height: 50px;">
+                        <i class="fas fa-user-md"></i>
+                      </div>
+                    </div>
+                    <div>
+                      <h6 class="mb-1">Dr. Sarah Johnson</h6>
+                      <div class="text-muted">Medical Oncologist</div>
+                      <div class="text-muted"><i class="far fa-envelope me-2"></i>s.johnson@medconnect.org</div>
+                      <div class="text-muted"><i class="fas fa-phone-alt me-2"></i>(555) 123-4567</div>
+                    </div>
+                  </div>
+                  
+                  <div class="d-flex mb-3">
+                    <div class="me-3">
+                      <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center text-white" style="width: 50px; height: 50px;">
+                        <i class="fas fa-user-md"></i>
+                      </div>
+                    </div>
+                    <div>
+                      <h6 class="mb-1">Dr. Michael Chen</h6>
+                      <div class="text-muted">Surgical Oncologist</div>
+                      <div class="text-muted"><i class="far fa-envelope me-2"></i>m.chen@medconnect.org</div>
+                      <div class="text-muted"><i class="fas fa-phone-alt me-2"></i>(555) 123-4568</div>
+                    </div>
+                  </div>
+                  
+                  <div class="d-flex">
+                    <div class="me-3">
+                      <div class="rounded-circle bg-info d-flex align-items-center justify-content-center text-white" style="width: 50px; height: 50px;">
+                        <i class="fas fa-user-nurse"></i>
+                      </div>
+                    </div>
+                    <div>
+                      <h6 class="mb-1">Emily Rodriguez, RN</h6>
+                      <div class="text-muted">Oncology Nurse Navigator</div>
+                      <div class="text-muted"><i class="far fa-envelope me-2"></i>e.rodriguez@medconnect.org</div>
+                      <div class="text-muted"><i class="fas fa-phone-alt me-2"></i>(555) 123-4569</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-md-6 mb-4">
+              <div class="card card-medical h-100">
+                <div class="card-header bg-white">
+                  <h5 class="mb-0">Resources & Support</h5>
+                </div>
+                <div class="card-body">
+                  <div class="mb-3">
+                    <h6><i class="fas fa-users me-2 text-primary"></i>Support Groups</h6>
+                    <p class="mb-1">Breast Cancer Support Network</p>
+                    <p class="text-muted small mb-0">Meets every Tuesday at 6:00 PM in the Cancer Center, Room 205</p>
+                  </div>
+                  
+                  <div class="mb-3">
+                    <h6><i class="fas fa-book-medical me-2 text-primary"></i>Educational Materials</h6>
+                    <p class="mb-1">Understanding Your Treatment: AC-T Chemotherapy</p>
+                    <p class="text-muted small mb-0">PDF guide available for download</p>
+                  </div>
+                  
+                  <div class="mb-3">
+                    <h6><i class="fas fa-hands-helping me-2 text-primary"></i>Financial Assistance</h6>
+                    <p class="mb-1">Cancer Care Financial Support Program</p>
+                    <p class="text-muted small mb-0">Contact: Maria Lopez at (555) 123-4570</p>
+                  </div>
+                  
+                  <div>
+                    <h6><i class="fas fa-heart me-2 text-primary"></i>Wellness Programs</h6>
+                    <p class="mb-1">Oncology Nutrition Services</p>
+                    <p class="text-muted small mb-0">Call (555) 123-4571 to schedule a consultation</p>
+                  </div>
+                </div>
+                <div class="card-footer bg-white">
+                  <button class="btn btn-outline-medical w-100">
+                    <i class="fas fa-external-link-alt me-2"></i>Access Patient Portal Resources
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="decorative-wave"></div>
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      function toggleSideEffect(element) {
+        const parent = element.parentElement;
+        parent.classList.toggle('active');
+        const icon = element.querySelector('i');
+        if (parent.classList.contains('active')) {
+          icon.classList.remove('fa-chevron-down');
+          icon.classList.add('fa-chevron-up');
+        } else {
+          icon.classList.remove('fa-chevron-up');
+          icon.classList.add('fa-chevron-down');
+        }
+      }
+    </script>
+  </body>
+</html>

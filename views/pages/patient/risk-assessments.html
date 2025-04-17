@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MedConnect - Risk Assessments</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary-blue: #2a5c82;
+        --secondary-blue: #5c9baf;
+        --accent-teal: #4ecdc4;
+      }
+
+      body {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        min-height: 100vh;
+      }
+
+      .medical-header {
+        background: var(--primary-blue);
+        padding: 1rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .dashboard-container {
+        background: rgba(255, 255, 255, 0.95);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+      }
+
+      .btn-medical {
+        background: var(--accent-teal);
+        color: white;
+        padding: 12px 30px;
+        transition: all 0.3s ease;
+      }
+
+      .btn-medical:hover {
+        background: var(--secondary-blue);
+        transform: translateY(-2px);
+      }
+
+      .btn-outline-medical {
+        color: var(--accent-teal);
+        border: 1px solid var(--accent-teal);
+        transition: all 0.3s ease;
+      }
+
+      .btn-outline-medical:hover {
+        background: var(--accent-teal);
+        color: white;
+      }
+
+      .card-medical {
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+      }
+
+      .card-medical:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .sidebar {
+        background: var(--primary-blue);
+        color: white;
+      }
+
+      .nav-link {
+        color: rgba(255, 255, 255, 0.8);
+        transition: all 0.3s ease;
+        padding: 0.8rem 1rem;
+        border-radius: 10px;
+        margin-bottom: 0.5rem;
+      }
+
+      .nav-link:hover, .nav-link.active {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+      }
+
+      .nav-link i {
+        margin-right: 10px;
+      }
+
+      .risk-metric {
+        height: 6px;
+        border-radius: 3px;
+      }
+
+      .decorative-wave {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 150px;
+        background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg"><path fill="%232A5C82" fill-opacity="0.1" d="M0,160L48,170.7C96,181,192,203,288,186.7C384,171,480,117,576,101.3C672,85,768,107,864,138.7C960,171,1056,213,1152,208C1248,203,1344,149,1392,122.7L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
+      }
+
+      .risk-high {
+        background-color: #dc3545;
+      }
+
+      .risk-medium {
+        background-color: #ffc107;
+      }
+
+      .risk-low {
+        background-color: #198754;
+      }
+
+      .risk-badge {
+        padding: 5px 10px;
+        border-radius: 20px;
+        color: white;
+        font-size: 12px;
+        display: inline-block;
+      }
+
+      .risk-score-circle {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        font-size: 24px;
+        margin: 0 auto 15px auto;
+      }
+
+      .risk-factor {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.5rem 0;
+        border-bottom: 1px solid #eee;
+      }
+
+      .risk-factor:last-child {
+        border-bottom: none;
+      }
+
+      .tab-content {
+        min-height: 400px;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar medical-header">
+      <div class="container">
+        <a class="navbar-brand text-white" href="#">
+          <i class="fas fa-hospital me-2"></i>MedConnect
+        </a>
+        <div class="dropdown">
+          <button class="btn text-white dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fas fa-user-circle me-2"></i>John Doe
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+            <li><a class="dropdown-item" href="profile.html"><i class="fas fa-id-card me-2"></i>Profile</a></li>
+            <li><a class="dropdown-item" href="settings.html"><i class="fas fa-cog me-2"></i>Settings</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="/logout"><i class="fas fa-sign-out-alt me-2"></i>Log Out</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="w-full">
+      <div class="dashboard-container row g-0 w-full">
+        <!-- Sidebar -->
+        <div class="col-md-3 sidebar p-4">
+          <div class="d-flex align-items-center mb-4">
+            <i class="fas fa-user-circle fs-1 me-3"></i>
+            <div>
+              <h5 class="mb-0">John Doe</h5>
+              <small class="text-light">Patient</small>
+            </div>
+          </div>
+          <div class="nav flex-column">
+            <a href="dashboard.html" class="nav-link">
+              <i class="fas fa-home"></i>Dashboard
+            </a>
+            <a href="cancer-conditions.html" class="nav-link">
+              <i class="fas fa-disease"></i>Cancer Conditions
+            </a>
+            <a href="disease-status.html" class="nav-link">
+              <i class="fas fa-heartbeat"></i>Disease Status
+            </a>
+            <a href="test-results.html" class="nav-link">
+              <i class="fas fa-flask"></i>Test Results
+            </a>
+            <a href="tnm-staging.html" class="nav-link">
+              <i class="fas fa-chart-line"></i>TNM Staging
+            </a>
+            <a href="risk-assessments.html" class="nav-link active">
+              <i class="fas fa-calculator"></i>Risk Assessments
+            </a>
+            <a href="treatment-plans.html" class="nav-link">
+              <i class="fas fa-clipboard-list"></i>Treatment Plans
+            </a>
+            <a href="appointments.html" class="nav-link">
+              <i class="fas fa-calendar-check"></i>Appointments
+            </a>
+            <a href="reports.html" class="nav-link">
+              <i class="fas fa-file-medical"></i>Reports
+            </a>
+            <a href="profile.html" class="nav-link">
+              <i class="fas fa-user"></i>Profile
+            </a>
+          </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="col-md-9 p-4 bg-white">
+          <h2 class="mb-4"><i class="fas fa-calculator me-2"></i>Risk Assessments</h2>
+          
+          <!-- Risk Assessment Introduction -->
+          <div class="alert alert-info d-flex align-items-center mb-4" role="alert">
+            <i class="fas fa-info-circle fs-5 me-3"></i>
+            <div>
+              Risk assessments help determine treatment strategies and predict outcomes. These assessments are regularly updated based on your condition and test results.
+            </div>
+          </div>
+          
+          <!-- Risk Assessment Selection -->
+          <ul class="nav nav-tabs mb-4" id="riskTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="rhabdomyosarcoma-tab" data-bs-toggle="tab" data-bs-target="#rhabdomyosarcoma" type="button" role="tab" aria-controls="rhabdomyosarcoma" aria-selected="true">
+                Rhabdomyosarcoma Risk
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link " id="all-risk-tab" data-bs-toggle="tab" data-bs-target="#all-risk" type="button" role="tab" aria-controls="all-risk" aria-selected="false">
+                ALL Risk
+              </button>
+            </li>
+          </ul>
+          
+          <div class="tab-content" id="riskTabsContent">
+            <!-- Rhabdomyosarcoma Risk -->
+            <div class="tab-pane fade show active" id="rhabdomyosarcoma" role="tabpanel" aria-labelledby="rhabdomyosarcoma-tab">
+              <div class="row">
+                <!-- Summary Card -->
+                <div class="col-md-4 mb-4">
+                  <div class="card card-medical h-100">
+                    <div class="card-header bg-white">
+                      <h5 class="mb-0">Risk Summary</h5>
+                    </div>
+                    <div class="card-body text-center">
+                      <div class="risk-score-circle risk-medium">
+                        2
+                      </div>
+                      <h4>Intermediate Risk</h4>
+                      <p class="text-muted">Last assessed: Mar 15, 2025</p>
+                      <hr>
+                      <div class="d-flex justify-content-between mb-2">
+                        <span>Current Risk Level:</span>
+                        <span class="risk-badge risk-medium">Intermediate</span>
+                      </div>
+                      <div class="d-flex justify-content-between">
+                        <span>Risk Trend:</span>
+                        <span><i class="fas fa-arrow-down text-success"></i> Improving</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Risk Details -->
+                <div class="col-md-8 mb-4">
+                  <div class="card card-medical h-100">
+                    <div class="card-header bg-white">
+                      <h5 class="mb-0">Rhabdomyosarcoma Risk Factors</h5>
+                    </div>
+                    <div class="card-body">
+                      <div class="risk-factor">
+                        <div>
+                          <h6 class="mb-0">Histologic Type</h6>
+                          <small class="text-muted">Based on pathology report</small>
+                        </div>
+                        <div>
+                          <span class="risk-badge risk-medium">Embryonal</span>
+                        </div>
+                      </div>
+                      
+                      <div class="risk-factor">
+                        <div>
+                          <h6 class="mb-0">Primary Site</h6>
+                          <small class="text-muted">Location impact on risk</small>
+                        </div>
+                        <div>
+                          <span class="risk-badge risk-low">Favorable</span>
+                        </div>
+                      </div>
+                      
+                      <div class="risk-factor">
+                        <div>
+                          <h6 class="mb-0">Tumor Size</h6>
+                          <small class="text-muted">From imaging studies</small>
+                        </div>
+                        <div>
+                          <span class="risk-badge risk-medium">5-10 cm</span>
+                        </div>
+                      </div>
+                      
+                      <div class="risk-factor">
+                        <div>
+                          <h6 class="mb-0">Regional Lymph Node Involvement</h6>
+                          <small class="text-muted">Status of nearby lymph nodes</small>
+                        </div>
+                        <div>
+                          <span class="risk-badge risk-medium">N1</span>
+                        </div>
+                      </div>
+                      
+                      <div class="risk-factor">
+                        <div>
+                          <h6 class="mb-0">Distant Metastasis</h6>
+                          <small class="text-muted">Spread to distant organs</small>
+                        </div>
+                        <div>
+                          <span class="risk-badge risk-low">Not Detected</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card-footer bg-white">
+                      <button class="btn btn-outline-medical" data-bs-toggle="modal" data-bs-target="#riskInfoModal">
+                        <i class="fas fa-info-circle me-2"></i>Learn About Risk Groups
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Risk Timeline -->
+                <div class="col-12 mb-4">
+                  <div class="card card-medical">
+                    <div class="card-header bg-white">
+                      <h5 class="mb-0">Risk Assessment History</h5>
+                    </div>
+                    <div class="card-body">
+                      <div class="d-flex mb-3 p-3 border-bottom">
+                        <div class="me-3">
+                          <div class="bg-light rounded p-3 text-center">
+                            <div class="fw-bold text-primary">15</div>
+                            <small>MAR</small>
+                          </div>
+                        </div>
+                        <div class="flex-grow-1">
+                          <h6>Intermediate Risk (Group 2)</h6>
+                          <div class="text-muted"><i class="fas fa-user-md me-2"></i>Assessed by Dr. Smith</div>
+                          <div class="progress mt-2 risk-metric">
+                            <div class="progress-bar risk-medium" role="progressbar" style="width: 65%" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div class="d-flex mb-3 p-3 border-bottom">
+                        <div class="me-3">
+                          <div class="bg-light rounded p-3 text-center">
+                            <div class="fw-bold text-primary">02</div>
+                            <small>FEB</small>
+                          </div>
+                        </div>
+                        <div class="flex-grow-1">
+                          <h6>High Risk (Group 3)</h6>
+                          <div class="text-muted"><i class="fas fa-user-md me-2"></i>Assessed by Dr. Johnson</div>
+                          <div class="progress mt-2 risk-metric">
+                            <div class="progress-bar risk-high" role="progressbar" style="width: 85%" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div class="d-flex p-3">
+                        <div class="me-3">
+                          <div class="bg-light rounded p-3 text-center">
+                            <div class="fw-bold text-primary">10</div>
+                            <small>JAN</small>
+                          </div>
+                        </div>
+                        <div class="flex-grow-1">
+                          <h6>High Risk (Group 3)</h6>
+                          <div class="text-muted"><i class="fas fa-user-md me-2"></i>Initial Assessment by Dr. Smith</div>
+                          <div class="progress mt-2 risk-metric">
+                            <div class="progress-bar risk-high" role="progressbar" style="width: 90%" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Recommendations -->
+                <div class="col-12">
+                  <div class="card card-medical">
+                    <div class="card-header bg-white">
+                      <h5 class="mb-0">Clinical Recommendations</h5>
+                    </div>
+                    <div class="card-body">
+                      <div class="alert alert-warning mb-3">
+                        <div class="d-flex">
+                          <i class="fas fa-exclamation-triangle me-3 fs-4"></i>
+                          <div>
+                            <h6 class="mb-1">Risk-Adapted Treatment Plan</h6>
+                            <p class="mb-0">Based on your intermediate risk assessment, a combination approach of surgery, chemotherapy, and radiation therapy is recommended.</p>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div class="d-flex align-items-center p-3 bg-light rounded mb-3">
+                        <i class="fas fa-clipboard-check text-success me-3 fs-4"></i>
+                        <div>
+                          <h6 class="mb-1">Follow-up Schedule</h6>
+                          <p class="mb-0">Monthly follow-ups for the first year, with imaging studies every 3 months to monitor response to treatment.</p>
+                        </div>
+                      </div>
+                      
+                      <div class="d-flex align-items-center p-3 bg-light rounded">
+                        <i class="fas fa-lightbulb text-warning me-3 fs-4"></i>
+                        <div>
+                          <h6 class="mb-1">Clinical Trial Eligibility</h6>
+                          <p class="mb-0">You may be eligible for the ARST2023 clinical trial for intermediate-risk rhabdomyosarcoma. Discuss with your oncologist at your next appointment.</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- ALL Risk -->
+            <div class="tab-pane fade" id="all-risk" role="tabpanel" aria-labelledby="all-risk-tab">
+              <div class="row">
+                <!-- Summary Card -->
+                <div class="col-md-4 mb-4">
+                  <div class="card card-medical h-100">
+                    <div class="card-header bg-white">
+                      <h5 class="mb-0">Risk Summary</h5>
+                    </div>
+                    <div class="card-body text-center">
+                      <div class="risk-score-circle risk-low">
+                        1
+                      </div>
+                      <h4>Standard Risk</h4>
+                      <p class="text-muted">Last assessed: Mar 10, 2025</p>
+                      <hr>
+                      <div class="d-flex justify-content-between mb-2">
+                        <span>Current Risk Level:</span>
+                        <span class="risk-badge risk-low">Standard</span>
+                      </div>
+                      <div class="d-flex justify-content-between">
+                        <span>Risk Trend:</span>
+                        <span><i class="fas fa-equals text-primary"></i> Stable</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Risk Details -->
+                <div class="col-md-8 mb-4">
+                  <div class="card card-medical h-100">
+                    <div class="card-header bg-white">
+                      <h5 class="mb-0">ALL Risk Factors</h5>
+                    </div>
+                    <div class="card-body">
+                      <div class="risk-factor">
+                        <div>
+                          <h6 class="mb-0">Age</h6>
+                          <small class="text-muted">Impact on risk classification</small>
+                        </div>
+                        <div>
+                          <span class="risk-badge risk-low">1-9 years</span>
+                        </div>
+                      </div>
+                      
+                      <div class="risk-factor">
+                        <div>
+                          <h6 class="mb-0">Initial White Blood Cell Count</h6>
+                          <small class="text-muted">At diagnosis</small>
+                        </div>
+                        <div>
+                          <span class="risk-badge risk-low">< 50,000/µL</span>
+                        </div>
+                      </div>
+                      
+                      <div class="risk-factor">
+                        <div>
+                          <h6 class="mb-0">Cytogenetics</h6>
+                          <small class="text-muted">Chromosome analysis</small>
+                        </div>
+                        <div>
+                          <span class="risk-badge risk-low">Favorable</span>
+                        </div>
+                      </div>
+                      
+                      <div class="risk-factor">
+                        <div>
+                          <h6 class="mb-0">CNS Involvement</h6>
+                          <small class="text-muted">Central nervous system status</small>
+                        </div>
+                        <div>
+                          <span class="risk-badge risk-low">CNS-1</span>
+                        </div>
+                      </div>
+                      
+                      <div class="risk-factor">
+                        <div>
+                          <h6 class="mb-0">Minimal Residual Disease</h6>
+                          <small class="text-muted">Day 29 assessment</small>
+                        </div>
+                        <div>
+                          <span class="risk-badge risk-low">< 0.01%</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card-footer bg-white">
+                      <button class="btn btn-outline-medical" data-bs-toggle="modal" data-bs-target="#allRiskInfoModal">
+                        <i class="fas fa-info-circle me-2"></i>Learn About ALL Risk Groups
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Risk Timeline -->
+                <div class="col-12 mb-4">
+                  <div class="card card-medical">
+                    <div class="card-header bg-white">
+                      <h5 class="mb-0">Risk Assessment History</h5>
+                    </div>
+                    <div class="card-body">
+                      <div class="d-flex mb-3 p-3 border-bottom">
+                        <div class="me-3">
+                          <div class="bg-light rounded p-3 text-center">
+                            <div class="fw-bold text-primary">10</div>
+                            <small>MAR</small>
+                          </div>
+                        </div>
+                        <div class="flex-grow-1">
+                          <h6>Standard Risk</h6>
+                          <div class="text-muted"><i class="fas fa-user-md me-2"></i>Assessed by Dr. Wilson</div>
+                          <div class="progress mt-2 risk-metric">
+                            <div class="progress-bar risk-low" role="progressbar" style="width: 35%" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100"></div>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div class="d-flex mb-3 p-3 border-bottom">
+                        <div class="me-3">
+                          <div class="bg-light rounded p-3 text-center">
+                            <div class="fw-bold text-primary">05</div>
+                            <small>FEB</small>
+                          </div>
+                        </div>
+                        <div class="flex-grow-1">
+                          <h6>Standard Risk</h6>
+                          <div class="text-muted"><i class="fas fa-user-md me-2"></i>Assessed by Dr. Wilson</div>
+                          <div class="progress mt-2 risk-metric">
+                            <div class="progress-bar risk-low" role="progressbar" style="width: 40%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div class="d-flex p-3">
+                        <div class="me-3">
+                          <div class="bg-light rounded p-3 text-center">
+                            <div class="fw-bold text-primary">15</div>
+                            <small>JAN</small>
+                          </div>
+                        </div>
+                        <div class="flex-grow-1">
+                          <h6>Standard Risk</h6>
+                          <div class="text-muted"><i class="fas fa-user-md me-2"></i>Initial Assessment by Dr. Wilson</div>
+                          <div class="progress mt-2 risk-metric">
+                            <div class="progress-bar risk-low" role="progressbar" style="width: 45%" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Recommendations -->
+                <div class="col-12">
+                  <div class="card card-medical">
+                    <div class="card-header bg-white">
+                      <h5 class="mb-0">Clinical Recommendations</h5>
+                    </div>
+                    <div class="card-body">
+                      <div class="alert alert-success mb-3">
+                        <div class="d-flex">
+                          <i class="fas fa-check-circle me-3 fs-4"></i>
+                          <div>
+                            <h6 class="mb-1">Standard-Risk Treatment Protocol</h6>
+                            <p class="mb-0">Based on your standard risk assessment, a standard three-phase treatment protocol is recommended: Induction, Consolidation, and Maintenance.</p>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div class="d-flex align-items-center p-3 bg-light rounded mb-3">
+                        <i class="fas fa-clipboard-check text-success me-3 fs-4"></i>
+                        <div>
+                          <h6 class="mb-1">Follow-up Schedule</h6>
+                          <p class="mb-0">Monthly bone marrow evaluations during induction, followed by quarterly evaluations during maintenance therapy.</p>
+                        </div>
+                      </div>
+                      
+                      <div class="d-flex align-items-center p-3 bg-light rounded">
+                        <i class="fas fa-lightbulb text-warning me-3 fs-4"></i>
+                        <div>
+                          <h6 class="mb-1">Supportive Care</h6>
+                          <p class="mb-0">Standard supportive care measures include infection prevention, nutritional support, and psychosocial services.</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Risk Info Modal for Rhabdomyosarcoma -->
+    <div class="modal fade" id="riskInfoModal" tabindex="-1" aria-labelledby="riskInfoModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="riskInfoModalLabel">Understanding Rhabdomyosarcoma Risk Groups</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <h6 class="text-primary">Low Risk (Group 1)</h6>
+            <ul>
+              <li>Localized disease at favorable sites</li>
+              <li>Completely resected tumors</li>
+              <li>No regional lymph node involvement</li>
+              <li>Embryonal histology</li>
+            </ul>
+            
+            <h6 class="text-warning">Intermediate Risk (Group 2)</h6>
+            <ul>
+              <li>Localized disease at unfavorable sites</li>
+              <li>Incompletely resected tumors</li>
+              <li>Regional lymph node involvement</li>
+              <li>Embryonal or alveolar histology</li>
+            </ul>
+            
+            <h6 class="text-danger">High Risk (Group 3)</h6>
+            <ul>
+              <li>Metastatic disease at diagnosis</li>
+              <li>Alveolar histology with unfavorable site</li>
+              <li>Large tumor size (>5cm)</li>
+              <li>Presence of distant metastasis</li>
+            </ul>
+            
+            <p class="mt-3">Risk stratification guides treatment intensity and duration, with higher-risk groups receiving more intensive therapy.</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Risk Info Modal for ALL -->
+    <div class="modal fade" id="allRiskInfoModal" tabindex="-1" aria-labelledby="allRiskInfoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="allRiskInfoModalLabel">Understanding ALL Risk Groups</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <h6 class="text-success">Standard Risk</h6>
+              <ul>
+                <li>Age: 1 to 9 years</li>
+                <li>Initial WBC count: <50,000/µL</li>
+                <li>Favorable cytogenetics (e.g., hyperdiploidy or ETV6-RUNX1)</li>
+                <li>No CNS involvement (CNS-1)</li>
+                <li>Good early response to treatment (MRD <0.01% after induction)</li>
+              </ul>
+              
+              <h6 class="text-warning">Intermediate Risk</h6>
+              <ul>
+                <li>Age: 10+ years or infants with favorable features</li>
+                <li>Initial WBC count: 50,000-100,000/µL</li>
+                <li>Unclear cytogenetic profile</li>
+                <li>CNS-2 status</li>
+                <li>Moderate early response to treatment (MRD 0.01-0.1% after induction)</li>
+              </ul>
+              
+              <h6 class="text-danger">High Risk</h6>
+              <ul>
+                <li>Unfavorable cytogenetics (e.g., Ph+ ALL, MLL rearrangements)</li>
+                <li>Initial WBC count: >100,000/µL</li>
+                <li>CNS-3 status</li>
+                <li>Poor early response to treatment (MRD >0.1% after induction)</li>
+                <li>Hypodiploidy</li>
+              </ul>
+              
+              <p class="mt-3">Risk stratification in ALL helps determine treatment intensity, duration, and the need for specific therapies or transplantation.</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <div class="decorative-wave"></div>
+      
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+      <script>
+        // Sample code for risk assessment functionality
+        $(document).ready(function() {
+          // Initialize tooltips
+          const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+          const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+          });
+          
+          // Handle risk assessment refresh button
+          $('.refresh-risk').click(function() {
+            Swal.fire({
+              title: 'Updating Risk Assessment',
+              text: 'Fetching the latest data to update your risk profile...',
+              icon: 'info',
+              showConfirmButton: false,
+              timer: 2000,
+              timerProgressBar: true,
+              didOpen: () => {
+                Swal.showLoading();
+              }
+            }).then(() => {
+              Swal.fire({
+                title: 'Risk Assessment Updated',
+                text: 'Your risk assessment has been updated with the latest data.',
+                icon: 'success',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#4ecdc4'
+              });
+            });
+          });
+          
+          // Toggle detailed risk factor information
+          $('.risk-factor').click(function() {
+            $(this).find('.risk-factor-details').slideToggle();
+          });
+          
+          // Handle tab navigation with history
+          $('a[data-bs-toggle="tab"]').on('shown.bs.tab', function (e) {
+            const target = $(e.target).attr("href");
+            history.pushState({}, '', target);
+          });
+          
+          // Support for back/forward navigation
+          window.addEventListener('popstate', function() {
+            const hash = window.location.hash;
+            if (hash) {
+              $('a[href="' + hash + '"]').tab('show');
+            } else {
+              $('a[href="#rhabdomyosarcoma"]').tab('show');
+            }
+          });
+          
+          // Load from URL hash on page load
+          const hash = window.location.hash;
+          if (hash) {
+            $('a[href="' + hash + '"]').tab('show');
+          }
+        });
+      </script>
+    </body>
+  </html>

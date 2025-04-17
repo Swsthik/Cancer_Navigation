@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MedConnect - Test Results</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary-blue: #2a5c82;
+        --secondary-blue: #5c9baf;
+        --accent-teal: #4ecdc4;
+      }
+
+      body {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        min-height: 100vh;
+      }
+
+      .medical-header {
+        background: var(--primary-blue);
+        padding: 1rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .dashboard-container {
+        background: rgba(255, 255, 255, 0.95);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+      }
+
+      .btn-medical {
+        background: var(--accent-teal);
+        color: white;
+        padding: 12px 30px;
+        transition: all 0.3s ease;
+      }
+
+      .btn-medical:hover {
+        background: var(--secondary-blue);
+        transform: translateY(-2px);
+      }
+
+      .btn-outline-medical {
+        color: var(--accent-teal);
+        border: 1px solid var(--accent-teal);
+        transition: all 0.3s ease;
+      }
+
+      .btn-outline-medical:hover {
+        background: var(--accent-teal);
+        color: white;
+      }
+
+      .card-medical {
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+      }
+
+      .card-medical:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .sidebar {
+        background: var(--primary-blue);
+        color: white;
+      }
+
+      .nav-link {
+        color: rgba(255, 255, 255, 0.8);
+        transition: all 0.3s ease;
+        padding: 0.8rem 1rem;
+        border-radius: 10px;
+        margin-bottom: 0.5rem;
+      }
+
+      .nav-link:hover, .nav-link.active {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+      }
+
+      .nav-link i {
+        margin-right: 10px;
+      }
+
+      .health-metric {
+        height: 6px;
+        border-radius: 3px;
+      }
+
+      .decorative-wave {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 150px;
+        background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg"><path fill="%232A5C82" fill-opacity="0.1" d="M0,160L48,170.7C96,181,192,203,288,186.7C384,171,480,117,576,101.3C672,85,768,107,864,138.7C960,171,1056,213,1152,208C1248,203,1344,149,1392,122.7L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
+      }
+
+      .test-value-normal {
+        color: #198754;
+      }
+
+      .test-value-abnormal {
+        color: #dc3545;
+      }
+
+      .test-value-warning {
+        color: #fd7e14;
+      }
+
+      .test-date-badge {
+        background-color: var(--primary-blue);
+        color: white;
+        font-size: 0.8rem;
+        padding: 0.3rem 0.6rem;
+        border-radius: 20px;
+      }
+
+      .test-category-pill {
+        background-color: #e9ecef;
+        color: var(--primary-blue);
+        border-radius: 20px;
+        padding: 0.2rem 0.8rem;
+        font-size: 0.8rem;
+        font-weight: 500;
+      }
+
+      .trend-up {
+        color: #dc3545;
+      }
+
+      .trend-down {
+        color: #198754;
+      }
+
+      .trend-stable {
+        color: #6c757d;
+      }
+
+      .result-timeline-item {
+        position: relative;
+        padding-left: 30px;
+        margin-bottom: 1.5rem;
+      }
+
+      .result-timeline-item::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        background-color: var(--accent-teal);
+        z-index: 1;
+      }
+
+      .result-timeline-item::after {
+        content: "";
+        position: absolute;
+        left: 7px;
+        top: 15px;
+        width: 2px;
+        height: calc(100% + 10px);
+        background-color: #dee2e6;
+      }
+
+      .result-timeline-item:last-child::after {
+        display: none;
+      }
+
+      .test-result-graph {
+        height: 250px;
+      }
+
+      .nav-tabs .nav-link {
+        color: var(--primary-blue);
+        border: none;
+        border-bottom: 2px solid transparent;
+        margin-right: 1rem;
+      }
+
+      .nav-tabs .nav-link.active {
+        color: var(--accent-teal);
+        background: none;
+        border-bottom: 2px solid var(--accent-teal);
+      }
+
+      .legend-item {
+        display: inline-flex;
+        align-items: center;
+        margin-right: 1rem;
+        font-size: 0.85rem;
+      }
+
+      .legend-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        margin-right: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar medical-header">
+      <div class="container">
+        <a class="navbar-brand text-white" href="#">
+          <i class="fas fa-hospital me-2"></i>MedConnect
+        </a>
+        <div class="dropdown">
+          <button class="btn text-white dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fas fa-user-circle me-2"></i>John Doe
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+            <li><a class="dropdown-item" href="profile.html"><i class="fas fa-id-card me-2"></i>Profile</a></li>
+            <li><a class="dropdown-item" href="settings.html"><i class="fas fa-cog me-2"></i>Settings</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="/logout"><i class="fas fa-sign-out-alt me-2"></i>Log Out</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="w-full">
+      <div class="dashboard-container row g-0 w-full" >
+        <!-- Sidebar -->
+        <div class="col-md-3 sidebar p-4">
+          <div class="d-flex align-items-center mb-4">
+            <i class="fas fa-user-circle fs-1 me-3"></i>
+            <div>
+              <h5 class="mb-0">John Doe</h5>
+              <small class="text-light">Patient</small>
+            </div>
+          </div>
+          <div class="nav flex-column">
+            <a href="dashboard.html" class="nav-link">
+              <i class="fas fa-home"></i>Dashboard
+            </a>
+            <a href="cancer-conditions.html" class="nav-link">
+              <i class="fas fa-disease"></i>Cancer Conditions
+            </a>
+            <a href="disease-status.html" class="nav-link">
+              <i class="fas fa-heartbeat"></i>Disease Status
+            </a>
+            <a href="test-results.html" class="nav-link active">
+              <i class="fas fa-flask"></i>Test Results
+            </a>
+            <a href="tnm-staging.html" class="nav-link">
+              <i class="fas fa-chart-line"></i>TNM Staging
+            </a>
+            <a href="risk-assessments.html" class="nav-link">
+              <i class="fas fa-calculator"></i>Risk Assessments
+            </a>
+            <a href="treatment-plans.html" class="nav-link">
+              <i class="fas fa-clipboard-list"></i>Treatment Plans
+            </a>
+            <a href="appointments.html" class="nav-link">
+              <i class="fas fa-calendar-check"></i>Appointments
+            </a>
+            <a href="reports.html" class="nav-link">
+              <i class="fas fa-file-medical"></i>Reports
+            </a>
+            <a href="profile.html" class="nav-link">
+              <i class="fas fa-user"></i>Profile
+            </a>
+          </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="col-md-9 p-4 bg-white">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Test Results</h2>
+            <div>
+              <button class="btn btn-outline-medical me-2">
+                <i class="fas fa-download me-2"></i>Download Report
+              </button>
+              <button class="btn btn-medical">
+                <i class="fas fa-share-alt me-2"></i>Share With Doctor
+              </button>
+            </div>
+          </div>
+
+          <!-- Test Categories Tabs -->
+          <ul class="nav nav-tabs mb-4" id="testTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="tumor-markers-tab" data-bs-toggle="tab" data-bs-target="#tumor-markers" type="button" role="tab" aria-controls="tumor-markers" aria-selected="true">
+                <i class="fas fa-dna me-2"></i>Tumor Markers
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="imaging-tab" data-bs-toggle="tab" data-bs-target="#imaging" type="button" role="tab" aria-controls="imaging" aria-selected="false">
+                <i class="fas fa-x-ray me-2"></i>Imaging
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="blood-tests-tab" data-bs-toggle="tab" data-bs-target="#blood-tests" type="button" role="tab" aria-controls="blood-tests" aria-selected="false">
+                <i class="fas fa-vial me-2"></i>Blood Tests
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="biopsies-tab" data-bs-toggle="tab" data-bs-target="#biopsies" type="button" role="tab" aria-controls="biopsies" aria-selected="false">
+                <i class="fas fa-microscope me-2"></i>Biopsies
+              </button>
+            </li>
+          </ul>
+
+          <div class="tab-content" id="testTabsContent">
+            <!-- Tumor Markers Tab -->
+            <div class="tab-pane fade show active" id="tumor-markers" role="tabpanel" aria-labelledby="tumor-markers-tab">
+              <!-- Summary Cards -->
+              <div class="row mb-4">
+                <div class="col-md-4">
+                  <div class="card card-medical">
+                    <div class="card-body">
+                      <h6 class="text-muted mb-2">Total Tests</h6>
+                      <div class="d-flex align-items-center">
+                        <h3 class="me-2">8</h3>
+                        <i class="fas fa-flask text-primary"></i>
+                      </div>
+                      <small class="text-muted">Latest: Mar 15, 2025</small>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="card card-medical">
+                    <div class="card-body">
+                      <h6 class="text-muted mb-2">Abnormal Results</h6>
+                      <div class="d-flex align-items-center">
+                        <h3 class="me-2">2</h3>
+                        <i class="fas fa-exclamation-triangle text-warning"></i>
+                      </div>
+                      <small class="text-muted">Review with your doctor</small>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="card card-medical">
+                    <div class="card-body">
+                      <h6 class="text-muted mb-2">Improving Trends</h6>
+                      <div class="d-flex align-items-center">
+                        <h3 class="me-2">3</h3>
+                        <i class="fas fa-chart-line text-success"></i>
+                      </div>
+                      <small class="text-muted">Positive progress indicators</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Main Visualization -->
+              <div class="card card-medical mb-4">
+                <div class="card-header bg-white">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Tumor Marker Trends</h5>
+                    <div>
+                      <span class="legend-item">
+                        <span class="legend-dot" style="background-color: #4ecdc4;"></span>
+                        CA-125
+                      </span>
+                      <span class="legend-item">
+                        <span class="legend-dot" style="background-color: #ff6b6b;"></span>
+                        CEA
+                      </span>
+                      <span class="legend-item">
+                        <span class="legend-dot" style="background-color: #ffcc5c;"></span>
+                        PSA
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <div class="test-result-graph">
+                    <!-- Chart would be rendered here -->
+                    <div class="d-flex align-items-center justify-content-center h-100 text-muted">
+                      <p class="text-center">
+                        <i class="fas fa-chart-line fa-3x mb-3 d-block"></i>
+                        Tumor marker trends visualization would be rendered here.<br>
+                        This would show changes over time for various markers.
+                      </p>
+                    </div>
+                  </div>
+                  <div class="mt-3">
+                    <div class="d-flex align-items-center p-3 bg-light rounded">
+                      <i class="fas fa-lightbulb text-warning me-3 fs-4"></i>
+                      <div>
+                        <h6 class="mb-1">Analysis Insight</h6>
+                        <p class="mb-0 small">CA-125 levels show a declining trend since treatment began, indicating positive response to therapy. CEA remains slightly elevated but stable.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Recent Results Table -->
+              <div class="card card-medical">
+                <div class="card-header bg-white">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Recent Tumor Marker Tests</h5>
+                    <div class="form-group mb-0">
+                      <select class="form-select form-select-sm">
+                        <option selected>Last 6 months</option>
+                        <option>Last year</option>
+                        <option>All results</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>Date</th>
+                          <th>Test</th>
+                          <th>Result</th>
+                          <th>Reference Range</th>
+                          <th>Trend</th>
+                          <th>Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>Mar 15, 2025</td>
+                          <td>
+                            <div>CA-125</div>
+                            <span class="test-category-pill">Ovarian Cancer</span>
+                          </td>
+                          <td>
+                            <span class="test-value-normal">28 U/mL</span>
+                          </td>
+                          <td>0-35 U/mL</td>
+                          <td>
+                            <span class="trend-down"><i class="fas fa-arrow-down me-1"></i>18%</span>
+                          </td>
+                          <td>
+                            <button class="btn btn-sm btn-outline-primary me-1"><i class="fas fa-eye"></i></button>
+                            <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-download"></i></button>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Feb 20, 2025</td>
+                          <td>
+                            <div>CEA</div>
+                            <span class="test-category-pill">Colon Cancer</span>
+                          </td>
+                          <td>
+                            <span class="test-value-abnormal">6.2 ng/mL</span>
+                          </td>
+                          <td>0-5.0 ng/mL</td>
+                          <td>
+                            <span class="trend-stable"><i class="fas fa-equals me-1"></i>0.5%</span>
+                          </td>
+                          <td>
+                            <button class="btn btn-sm btn-outline-primary me-1"><i class="fas fa-eye"></i></button>
+                            <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-download"></i></button>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Feb 20, 2025</td>
+                          <td>
+                            <div>PSA</div>
+                            <span class="test-category-pill">Prostate Cancer</span>
+                          </td>
+                          <td>
+                            <span class="test-value-normal">1.8 ng/mL</span>
+                          </td>
+                          <td>0-4.0 ng/mL</td>
+                          <td>
+                            <span class="trend-down"><i class="fas fa-arrow-down me-1"></i>12%</span>
+                          </td>
+                          <td>
+                            <button class="btn btn-sm btn-outline-primary me-1"><i class="fas fa-eye"></i></button>
+                            <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-download"></i></button>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Jan 05, 2025</td>
+                          <td>
+                            <div>AFP</div>
+                            <span class="test-category-pill">Liver Cancer</span>
+                          </td>
+                          <td>
+                            <span class="test-value-warning">12 ng/mL</span>
+                          </td>
+                          <td>0-10 ng/mL</td>
+                          <td>
+                            <span class="trend-down"><i class="fas fa-arrow-down me-1"></i>25%</span>
+                          </td>
+                          <td>
+                            <button class="btn btn-sm btn-outline-primary me-1"><i class="fas fa-eye"></i></button>
+                            <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-download"></i></button>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Jan 05, 2025</td>
+                          <td>
+                            <div>CA 15-3</div>
+                            <span class="test-category-pill">Breast Cancer</span>
+                          </td>
+                          <td>
+                            <span class="test-value-normal">22 U/mL</span>
+                          </td>
+                          <td>0-30 U/mL</td>
+                          <td>
+                            <span class="trend-stable"><i class="fas fa-equals me-1"></i>2%</span>
+                          </td>
+                          <td>
+                            <button class="btn btn-sm btn-outline-primary me-1"><i class="fas fa-eye"></i></button>
+                            <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-download"></i></button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <div class="card-footer bg-white text-center">
+                  <button class="btn btn-outline-medical">
+                    <i class="fas fa-list me-2"></i>View All Results
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Imaging Tab -->
+            <div class="tab-pane fade" id="imaging" role="tabpanel" aria-labelledby="imaging-tab">
+              <div class="row mb-4">
+                <div class="col-md-4">
+                  <div class="card card-medical">
+                    <div class="card-body">
+                      <h6 class="text-muted mb-2">Total Imaging Studies</h6>
+                      <div class="d-flex align-items-center">
+                        <h3 class="me-2">5</h3>
+                        <i class="fas fa-x-ray text-primary"></i>
+                      </div>
+                      <small class="text-muted">Latest: Mar 10, 2025</small>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-8">
+                  <div class="card card-medical">
+                    <div class="card-body">
+                      <h6 class="text-muted mb-2">Next Scheduled Imaging</h6>
+                      <div class="d-flex align-items-center">
+                        <div class="me-3">
+                          <div class="bg-light rounded p-3 text-center">
+                            <div class="fw-bold text-primary">15</div>
+                            <small>APR</small>
+                          </div>
+                        </div>
+                        <div>
+                          <h5>MRI Follow-up</h5>
+                          <div class="text-muted"><i class="far fa-clock me-2"></i>2:30 PM</div>
+                          <div class="text-muted"><i class="fas fa-map-marker-alt me-2"></i>Radiology Department, Floor 2</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="alert alert-info" role="alert">
+                <i class="fas fa-info-circle me-2"></i>
+                Imaging results are available. Please select a study from the list below to view details.
+              </div>
+
+              <div class="row">
+                <div class="col-12">
+                  <div class="card card-medical">
+                    <div class="card-header bg-white">
+                      <h5 class="mb-0">Imaging Results Timeline</h5>
+                    </div>
+                    <div class="card-body">
+                      <div class="result-timeline-item">
+                        <div class="d-flex justify-content-between">
+                          <h6>MRI Brain with Contrast</h6>
+                          <span class="test-date-badge">Mar 10, 2025</span>
+                        </div>
+                        <p class="text-muted small mb-2">No evidence of metastatic disease in the brain. Previous lesion in left temporal lobe shows 40% reduction in size.</p>
+                        <div>
+                          <button class="btn btn-sm btn-outline-primary me-1"><i class="fas fa-eye me-1"></i>View Images</button>
+                          <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-file-pdf me-1"></i>View Report</button>
+                        </div>
+                      </div>
+
+                      <div class="result-timeline-item">
+                        <div class="d-flex justify-content-between">
+                          <h6>CT Chest/Abdomen/Pelvis</h6>
+                          <span class="test-date-badge">Feb 05, 2025</span>
+                        </div>
+                        <p class="text-muted small mb-2">Partial response to treatment. Primary mass shows 30% reduction in size compared to previous imaging. No new lesions identified.</p>
+                        <div>
+                          <button class="btn btn-sm btn-outline-primary me-1"><i class="fas fa-eye me-1"></i>View Images</button>
+                          <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-file-pdf me-1"></i>View Report</button>
+                        </div>
+                      </div>
+
+                      <div class="result-timeline-item">
+                        <div class="d-flex justify-content-between">
+                          <h6>PET/CT Whole Body</h6>
+                          <span class="test-date-badge">Jan 12, 2025</span>
+                        </div>
+                        <p class="text-muted small mb-2">Metabolically active disease in primary site and known metastatic sites. No new FDG-avid lesions compared to baseline.</p>
+                        <div>
+                          <button class="btn btn-sm btn-outline-primary me-1"><i class="fas fa-eye me-1"></i>View Images</button>
+                          <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-file-pdf me-1"></i>View Report</button>
+                        </div>
+                      </div>
+
+                      <div class="result-timeline-item">
+                        <div class="d-flex justify-content-between">
+                          <h6>MRI Brain with Contrast</h6>
+                          <span class="test-date-badge">Dec 18, 2024</span>
+                        </div>
+                        <p class="text-muted small mb-2">1.5 cm enhancing lesion in left temporal lobe concerning for metastatic disease. Recommended follow-up in 8-10 weeks.</p>
+                        <div>
+                          <button class="btn btn-sm btn-outline-primary me-1"><i class="fas fa-eye me-1"></i>View Images</button>
+                          <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-file-pdf me-1"></i>View Report</button>
+                        </div>
+                      </div>
+
+                      <div class="result-timeline-item">
+                        <div class="d-flex justify-content-between">
+                          <h6>CT Chest/Abdomen/Pelvis with Contrast</h6>
+                          <span class="test-date-badge">Nov 30, 2024</span>
+                        </div>
+                        <p class="text-muted small mb-2">Initial staging scan. Primary mass measuring 4.3 x 3.8 cm with evidence of lymph node involvement and two hepatic lesions concerning for metastases.</p>
+                        <div>
+                          <button class="btn btn-sm btn-outline-primary me-1"><i class="fas fa-eye me-1"></i>View Images</button>
+                          <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-file-pdf me-1"></i>View Report</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Blood Tests Tab -->
+            <div class="tab-pane fade" id="blood-tests" role="tabpanel" aria-labelledby="blood-tests-tab">
+              <div class="alert alert-warning" role="alert">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                Some blood test results show values outside the normal range. Please discuss these with your healthcare provider.
+              </div>
+
+              <div class="card card-medical mb-4">
+                <div class="card-header bg-white">
+                  <h5 class="mb-0">Complete Blood Count (CBC)</h5>
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>Test Component</th>
+                          <th>Result</th>
+                          <th>Reference Range</th>
+                          <th>Previous</th>
+                          <th>Change</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>White Blood Cell Count</td>
+                          <td class="test-value-abnormal">3.2 x10^9/L</td>
+                          <td>4.0 - 11.0 x10^9/L</td>
+                          <td>4.0 - 11.0 x10^9/L</td>
+                          <td>3.5 x10^9/L</td>
+                          <td><span class="trend-down"><i class="fas fa-arrow-down me-1"></i>8.6%</span></td>
+                        </tr>
+                        <tr>
+                          <td>Hemoglobin</td>
+                          <td class="test-value-abnormal">10.2 g/dL</td>
+                          <td>13.5 - 17.5 g/dL</td>
+                          <td>11.0 g/dL</td>
+                          <td><span class="trend-down"><i class="fas fa-arrow-down me-1"></i>7.3%</span></td>
+                        </tr>
+                        <tr>
+                          <td>Platelet Count</td>
+                          <td class="test-value-normal">180 x10^9/L</td>
+                          <td>150 - 450 x10^9/L</td>
+                          <td>165 x10^9/L</td>
+                          <td><span class="trend-up"><i class="fas fa-arrow-up me-1"></i>9.1%</span></td>
+                        </tr>
+                        <tr>
+                          <td>Neutrophils</td>
+                          <td class="test-value-abnormal">1.2 x10^9/L</td>
+                          <td>2.0 - 7.5 x10^9/L</td>
+                          <td>1.5 x10^9/L</td>
+                          <td><span class="trend-down"><i class="fas fa-arrow-down me-1"></i>20%</span></td>
+                        </tr>
+                        <tr>
+                          <td>Lymphocytes</td>
+                          <td class="test-value-normal">1.5 x10^9/L</td>
+                          <td>1.0 - 4.8 x10^9/L</td>
+                          <td>1.6 x10^9/L</td>
+                          <td><span class="trend-down"><i class="fas fa-arrow-down me-1"></i>6.3%</span></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="mt-3">
+                    <div class="d-flex align-items-center p-3 bg-light rounded">
+                      <i class="fas fa-info-circle text-primary me-3 fs-4"></i>
+                      <div>
+                        <h6 class="mb-1">Clinical Notes</h6>
+                        <p class="mb-0 small">Low white blood cell count and neutrophils may be due to recent chemotherapy. Monitor for signs of infection and fever. Consider growth factor support if counts continue to decrease.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card card-medical">
+                <div class="card-header bg-white">
+                  <h5 class="mb-0">Comprehensive Metabolic Panel (CMP)</h5>
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>Test Component</th>
+                          <th>Result</th>
+                          <th>Reference Range</th>
+                          <th>Previous</th>
+                          <th>Change</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>Glucose</td>
+                          <td class="test-value-warning">125 mg/dL</td>
+                          <td>70 - 99 mg/dL</td>
+                          <td>118 mg/dL</td>
+                          <td><span class="trend-up"><i class="fas fa-arrow-up me-1"></i>5.9%</span></td>
+                        </tr>
+                        <tr>
+                          <td>BUN</td>
+                          <td class="test-value-normal">15 mg/dL</td>
+                          <td>7 - 20 mg/dL</td>
+                          <td>14 mg/dL</td>
+                          <td><span class="trend-up"><i class="fas fa-arrow-up me-1"></i>7.1%</span></td>
+                        </tr>
+                        <tr>
+                          <td>Creatinine</td>
+                          <td class="test-value-normal">0.9 mg/dL</td>
+                          <td>0.6 - 1.2 mg/dL</td>
+                          <td>0.85 mg/dL</td>
+                          <td><span class="trend-up"><i class="fas fa-arrow-up me-1"></i>5.9%</span></td>
+                        </tr>
+                        <tr>
+                          <td>ALT</td>
+                          <td class="test-value-abnormal">85 U/L</td>
+                          <td>7 - 55 U/L</td>
+                          <td>72 U/L</td>
+                          <td><span class="trend-up"><i class="fas fa-arrow-up me-1"></i>18.1%</span></td>
+                        </tr>
+                        <tr>
+                          <td>AST</td>
+                          <td class="test-value-abnormal">65 U/L</td>
+                          <td>8 - 48 U/L</td>
+                          <td>58 U/L</td>
+                          <td><span class="trend-up"><i class="fas fa-arrow-up me-1"></i>12.1%</span></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="mt-3">
+                    <div class="d-flex align-items-center p-3 bg-light rounded">
+                      <i class="fas fa-info-circle text-primary me-3 fs-4"></i>
+                      <div>
+                        <h6 class="mb-1">Clinical Notes</h6>
+                        <p class="mb-0 small">Liver function tests show mild elevation. This may be due to medication effects or liver involvement. Monitor closely and consider dose adjustments if values continue to rise.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Biopsies Tab -->
+            <div class="tab-pane fade" id="biopsies" role="tabpanel" aria-labelledby="biopsies-tab">
+              <div class="row mb-4">
+                <div class="col-md-6">
+                  <div class="card card-medical">
+                    <div class="card-header bg-white">
+                      <h5 class="mb-0">Histologic Grade</h5>
+                    </div>
+                    <div class="card-body">
+                      <div class="d-flex align-items-center mb-3">
+                        <div class="me-3">
+                          <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center text-white" style="width: 60px; height: 60px;">
+                            <span class="fs-3">G2</span>
+                          </div>
+                        </div>
+                        <div>
+                          <h5 class="mb-1">Moderately Differentiated</h5>
+                          <p class="text-muted mb-0">Tumor cells show moderate differentiation with some preserved tissue architecture.</p>
+                        </div>
+                      </div>
+                      <div class="mt-3">
+                        <h6>Histologic Characteristics:</h6>
+                        <ul class="text-muted small">
+                          <li>Moderate nuclear pleomorphism</li>
+                          <li>Increased mitotic activity (8-10/HPF)</li>
+                          <li>Focal areas of necrosis</li>
+                          <li>Moderate stromal invasion</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="card card-medical">
+                    <div class="card-header bg-white">
+                      <h5 class="mb-0">Immunohistochemistry</h5>
+                    </div>
+                    <div class="card-body">
+                      <div class="table-responsive">
+                        <table class="table table-sm">
+                          <thead>
+                            <tr>
+                              <th>Marker</th>
+                              <th>Result</th>
+                              <th>Interpretation</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>Ki-67</td>
+                              <td>25%</td>
+                              <td>Moderate proliferation index</td>
+                            </tr>
+                            <tr>
+                              <td>p53</td>
+                              <td>Positive</td>
+                              <td>Abnormal expression</td>
+                            </tr>
+                            <tr>
+                              <td>CD31</td>
+                              <td>Positive</td>
+                              <td>Vascular invasion present</td>
+                            </tr>
+                            <tr>
+                              <td>PD-L1</td>
+                              <td>5%</td>
+                              <td>Low expression</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card card-medical">
+                <div class="card-header bg-white">
+                  <h5 class="mb-0">Biopsy Timeline</h5>
+                </div>
+                <div class="card-body">
+                  <div class="result-timeline-item">
+                    <div class="d-flex justify-content-between">
+                      <h6>Liver Biopsy (Guided by CT)</h6>
+                      <span class="test-date-badge">Mar 02, 2025</span>
+                    </div>
+                    <p class="text-muted small mb-2">Metastatic adenocarcinoma, consistent with known primary. Tumor cells show moderate response to treatment with areas of necrosis and fibrosis.</p>
+                    <div>
+                      <button class="btn btn-sm btn-outline-primary me-1"><i class="fas fa-microscope me-1"></i>View Digital Pathology</button>
+                      <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-file-pdf me-1"></i>View Report</button>
+                    </div>
+                  </div>
+
+                  <div class="result-timeline-item">
+                    <div class="d-flex justify-content-between">
+                      <h6>Primary Tumor Re-biopsy</h6>
+                      <span class="test-date-badge">Jan 25, 2025</span>
+                    </div>
+                    <p class="text-muted small mb-2">Adenocarcinoma with moderate differentiation (Grade 2). Tumor showing evolving response to treatment with 40% viable tumor cells.</p>
+                    <div>
+                      <button class="btn btn-sm btn-outline-primary me-1"><i class="fas fa-microscope me-1"></i>View Digital Pathology</button>
+                      <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-file-pdf me-1"></i>View Report</button>
+                    </div>
+                  </div>
+
+                  <div class="result-timeline-item">
+                    <div class="d-flex justify-content-between">
+                      <h6>Initial Diagnostic Biopsy</h6>
+                      <span class="test-date-badge">Nov 15, 2024</span>
+                    </div>
+                    <p class="text-muted small mb-2">Adenocarcinoma with moderate to poor differentiation (Grade 2-3). Immunohistochemistry profile consistent with primary gastric origin.</p>
+                    <div>
+                      <button class="btn btn-sm btn-outline-primary me-1"><i class="fas fa-microscope me-1"></i>View Digital Pathology</button>
+                      <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-file-pdf me-1"></i>View Report</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="decorative-wave"></div>
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <script>
+      // Example chart initialization code - would be replaced with actual data
+      document.addEventListener('DOMContentLoaded', function() {
+        // This is a placeholder for where you would initialize charts
+        // using Chart.js or another visualization library
+        console.log('Test results page loaded. Charts would be initialized here.');
+        
+        // You could add code to initialize charts with actual patient data
+        // const ctx = document.getElementById('tumorMarkerChart').getContext('2d');
+        // const chart = new Chart(ctx, { type: 'line', data: {...}, options: {...} });
+      });
+    </script>
+  </body>
+</html>
