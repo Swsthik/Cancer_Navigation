@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MedConnect - My Patients</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary-blue: #2a5c82;
+        --secondary-blue: #5c9baf;
+        --accent-teal: #4ecdc4;
+      }
+
+      body {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        min-height: 100vh;
+      }
+
+      .medical-header {
+        background: var(--primary-blue);
+        padding: 1rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .dashboard-container {
+        background: rgba(255, 255, 255, 0.95);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+      }
+
+      .btn-medical {
+        background: var(--accent-teal);
+        color: white;
+        padding: 12px 30px;
+        transition: all 0.3s ease;
+      }
+
+      .btn-medical:hover {
+        background: var(--secondary-blue);
+        transform: translateY(-2px);
+      }
+
+      .btn-outline-medical {
+        color: var(--accent-teal);
+        border: 1px solid var(--accent-teal);
+        transition: all 0.3s ease;
+      }
+
+      .btn-outline-medical:hover {
+        background: var(--accent-teal);
+        color: white;
+      }
+
+      .card-medical {
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+      }
+
+      .card-medical:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .sidebar {
+        background: var(--primary-blue);
+        color: white;
+      }
+
+      .nav-link {
+        color: rgba(255, 255, 255, 0.8);
+        transition: all 0.3s ease;
+        padding: 0.8rem 1rem;
+        border-radius: 10px;
+        margin-bottom: 0.5rem;
+      }
+
+      .nav-link:hover, .nav-link.active {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+      }
+
+      .nav-link i {
+        margin-right: 10px;
+      }
+
+      .health-metric {
+        height: 6px;
+        border-radius: 3px;
+      }
+
+      .decorative-wave {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 150px;
+        background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg"><path fill="%232A5C82" fill-opacity="0.1" d="M0,160L48,170.7C96,181,192,203,288,186.7C384,171,480,117,576,101.3C672,85,768,107,864,138.7C960,171,1056,213,1152,208C1248,203,1344,149,1392,122.7L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
+      }
+
+      .patient-avatar {
+        width: 60px;
+        height: 60px;
+        background: var(--secondary-blue);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        font-weight: bold;
+        font-size: 1.2rem;
+      }
+
+      .patient-card {
+        border-left: 4px solid var(--accent-teal);
+        transition: all 0.3s ease;
+      }
+
+      .patient-card:hover {
+        background-color: rgba(76, 205, 196, 0.05);
+      }
+
+      .patient-card.critical {
+        border-left: 4px solid #dc3545;
+      }
+
+      .patient-card.stable {
+        border-left: 4px solid #198754;
+      }
+
+      .patient-card.attention {
+        border-left: 4px solid #ffc107;
+      }
+
+      .patient-status {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        display: inline-block;
+        margin-right: 5px;
+      }
+
+      .status-stable {
+        background-color: #198754;
+      }
+
+      .status-attention {
+        background-color: #ffc107;
+      }
+
+      .status-critical {
+        background-color: #dc3545;
+      }
+
+      .filter-btn {
+        border-radius: 20px;
+        padding: 5px 15px;
+        margin-right: 5px;
+        background-color: #f8f9fa;
+        border: 1px solid #dee2e6;
+        color: #6c757d;
+        transition: all 0.3s ease;
+      }
+
+      .filter-btn.active {
+        background-color: var(--accent-teal);
+        color: white;
+        border-color: var(--accent-teal);
+      }
+
+      .filter-btn:hover {
+        background-color: #e9ecef;
+      }
+
+      .filter-btn.active:hover {
+        background-color: var(--secondary-blue);
+      }
+
+      .certification-badge {
+        background: var(--primary-blue);
+        color: white;
+        padding: 3px 8px;
+        border-radius: 12px;
+        font-size: 0.7rem;
+        font-weight: bold;
+      }
+
+      .badge-stage {
+        font-size: 0.7rem;
+        padding: 3px 8px;
+        border-radius: 12px;
+      }
+
+      .patient-info-icon {
+        width: 20px;
+        text-align: center;
+        color: var(--secondary-blue);
+      }
+
+      .patient-metrics {
+        height: 4px;
+        border-radius: 2px;
+        margin-top: 8px;
+      }
+
+      .quick-action {
+        padding: 5px 10px;
+        font-size: 0.8rem;
+        border-radius: 15px;
+        margin-right: 5px;
+        background-color: rgba(92, 155, 175, 0.1);
+        color: var(--secondary-blue);
+        border: none;
+        transition: all 0.3s ease;
+      }
+
+      .quick-action:hover {
+        background-color: var(--secondary-blue);
+        color: white;
+      }
+
+      .search-bar {
+        border-radius: 20px;
+        padding: 10px 20px;
+        border: 1px solid #dee2e6;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      }
+
+      .search-bar:focus {
+        border-color: var(--accent-teal);
+        box-shadow: 0 0 0 0.25rem rgba(76, 205, 196, 0.25);
+      }
+
+      .patient-tabs .nav-link {
+        color: #6c757d;
+        border: none;
+        border-bottom: 2px solid transparent;
+        border-radius: 0;
+        padding: 10px 15px;
+        margin-right: 10px;
+        transition: all 0.3s ease;
+      }
+
+      .patient-tabs .nav-link.active {
+        color: var(--primary-blue);
+        background-color: transparent;
+        border-bottom: 2px solid var(--primary-blue);
+      }
+
+      .patient-tabs .nav-link:hover {
+        color: var(--primary-blue);
+        background-color: transparent;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar medical-header">
+      <div class="container">
+        <a class="navbar-brand text-white" href="#">
+          <i class="fas fa-hospital me-2"></i>MedConnect
+        </a>
+        <div class="dropdown">
+          <button class="btn text-white dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fas fa-user-circle me-2"></i>Sarah Johnson
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+            <li><a class="dropdown-item" href="profile.html"><i class="fas fa-id-card me-2"></i>Profile</a></li>
+            <li><a class="dropdown-item" href="settings.html"><i class="fas fa-cog me-2"></i>Settings</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="/logout"><i class="fas fa-sign-out-alt me-2"></i>Log Out</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="w-full">
+      <div class="dashboard-container row g-0 w-full" >
+        <!-- Sidebar -->
+        <div class="col-md-3 sidebar p-4">
+          <div class="d-flex align-items-center mb-4">
+            <i class="fas fa-user-nurse fs-1 me-3"></i>
+            <div>
+              <h5 class="mb-0">Sarah Johnson</h5>
+              <small class="text-light">Caregiver <span class="certification-badge">NFCA</span></small>
+            </div>
+          </div>
+          <div class="nav flex-column">
+            <a href="dashboard.html" class="nav-link">
+              <i class="fas fa-home"></i>Dashboard
+            </a>
+            <a href="patients.html" class="nav-link active">
+              <i class="fas fa-users"></i>My Patients
+            </a>
+            <a href="appointments.html" class="nav-link">
+              <i class="fas fa-calendar-check"></i>Appointments
+            </a>
+            <a href="medications.html" class="nav-link">
+              <i class="fas fa-pills"></i>Medications
+            </a>
+            <a href="care-notes.html" class="nav-link">
+              <i class="fas fa-clipboard"></i>Care Notes
+            </a>
+            <a href="tasks.html" class="nav-link">
+              <i class="fas fa-tasks"></i>Task Management
+            </a>
+            <a href="resources.html" class="nav-link">
+              <i class="fas fa-book-medical"></i>Resources
+            </a>
+            <a href="reports.html" class="nav-link">
+              <i class="fas fa-file-medical"></i>Reports
+            </a>
+            <a href="profile.html" class="nav-link">
+              <i class="fas fa-user"></i>Profile
+            </a>
+          </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="col-md-9 p-4 bg-white">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>My Patients</h2>
+            <button class="btn btn-medical" data-bs-toggle="modal" data-bs-target="#addPatientModal">
+              <i class="fas fa-user-plus me-2"></i>Add New Patient
+            </button>
+          </div>
+          
+          <!-- Search and Filters -->
+          <div class="row mb-4">
+            <div class="col-md-6">
+              <div class="input-group">
+                <span class="input-group-text bg-white border-end-0">
+                  <i class="fas fa-search text-muted"></i>
+                </span>
+                <input type="text" class="form-control search-bar border-start-0" placeholder="Search patients...">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="d-flex justify-content-end">
+                <button class="filter-btn active">All</button>
+                <button class="filter-btn">Critical</button>
+                <button class="filter-btn">Needs Attention</button>
+                <button class="filter-btn">Stable</button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Patient Cards -->
+          <div class="card card-medical mb-4">
+            <div class="card-header bg-white">
+              <ul class="nav nav-tabs patient-tabs" id="patientTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link active" id="list-tab" data-bs-toggle="tab" data-bs-target="#list-view" type="button" role="tab" aria-controls="list-view" aria-selected="true">List View</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="grid-tab" data-bs-toggle="tab" data-bs-target="#grid-view" type="button" role="tab" aria-controls="grid-view" aria-selected="false">Grid View</button>
+                </li>
+              </ul>
+            </div>
+            <div class="card-body">
+              <div class="tab-content" id="patientTabsContent">
+                <!-- List View -->
+                <div class="tab-pane fade show active" id="list-view" role="tabpanel" aria-labelledby="list-tab">
+                  <!-- John Doe - Critical -->
+                  <div class="patient-card critical p-3 mb-3 rounded">
+                    <div class="row align-items-center">
+                      <div class="col-md-1">
+                        <div class="patient-avatar">JD</div>
+                      </div>
+                      <div class="col-md-3">
+                        <h5 class="mb-1">John Doe</h5>
+                        <div class="d-flex align-items-center">
+                          <span class="patient-status status-critical"></span>
+                          <span class="text-danger">Critical</span>
+                          <span class="badge bg-danger ms-2 badge-stage">Stage 3</span>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="mb-1"><i class="fas fa-calendar-alt patient-info-icon"></i> 68 years old</div>
+                        <div class="mb-1"><i class="fas fa-phone patient-info-icon"></i> (555) 123-4567</div>
+                        <div><i class="fas fa-map-marker-alt patient-info-icon"></i> 123 Main St, Apt 4B</div>
+                      </div>
+                      <div class="col-md-2">
+                        <div class="mb-1">Next Appointment:</div>
+                        <div class="fw-bold">Mar 23, 10:00 AM</div>
+                        <div class="text-muted small">Dr. Smith</div>
+                      </div>
+                      <div class="col-md-2">
+                        <div class="d-flex flex-column align-items-end">
+                          <a href="patient-detail.html?id=1" class="btn btn-outline-medical mb-2 w-100">View Profile</a>
+                          <div class="d-flex">
+                            <button class="quick-action"><i class="fas fa-notes-medical"></i></button>
+                            <button class="quick-action"><i class="fas fa-pills"></i></button>
+                            <button class="quick-action"><i class="fas fa-tasks"></i></button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="mt-2">
+                      <span class="text-muted small">Last Update: Today at 8:30 AM</span>
+                      <div class="progress patient-metrics">
+                        <div class="progress-bar bg-danger" role="progressbar" style="width: 70%" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <!-- Emily Martin - Attention Needed -->
+                  <div class="patient-card attention p-3 mb-3 rounded">
+                    <div class="row align-items-center">
+                      <div class="col-md-1">
+                        <div class="patient-avatar" style="background: var(--primary-blue);">EM</div>
+                      </div>
+                      <div class="col-md-3">
+                        <h5 class="mb-1">Emily Martin</h5>
+                        <div class="d-flex align-items-center">
+                          <span class="patient-status status-attention"></span>
+                          <span class="text-warning">Needs Attention</span>
+                          <span class="badge bg-warning text-dark ms-2 badge-stage">Stage 1</span>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="mb-1"><i class="fas fa-calendar-alt patient-info-icon"></i> 54 years old</div>
+                        <div class="mb-1"><i class="fas fa-phone patient-info-icon"></i> (555) 987-6543</div>
+                        <div><i class="fas fa-map-marker-alt patient-info-icon"></i> 456 Oak Ave</div>
+                      </div>
+                      <div class="col-md-2">
+                        <div class="mb-1">Next Appointment:</div>
+                        <div class="fw-bold">Mar 25, 1:30 PM</div>
+                        <div class="text-muted small">Dr. Wilson</div>
+                      </div>
+                      <div class="col-md-2">
+                        <div class="d-flex flex-column align-items-end">
+                          <a href="patient-detail.html?id=2" class="btn btn-outline-medical mb-2 w-100">View Profile</a>
+                          <div class="d-flex">
+                            <button class="quick-action"><i class="fas fa-notes-medical"></i></button>
+                            <button class="quick-action"><i class="fas fa-pills"></i></button>
+                            <button class="quick-action"><i class="fas fa-tasks"></i></button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="mt-2">
+                      <span class="text-muted small">Last Update: Yesterday at 4:15 PM</span>
+                      <div class="progress patient-metrics">
+                        <div class="progress-bar bg-warning" role="progressbar" style="width: 40%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <!-- Robert Wilson - Stable -->
+                  <div class="patient-card stable p-3 rounded">
+                    <div class="row align-items-center">
+                      <div class="col-md-1">
+                        <div class="patient-avatar" style="background: #6c757d;">RW</div>
+                      </div>
+                      <div class="col-md-3">
+                        <h5 class="mb-1">Robert Wilson</h5>
+                        <div class="d-flex align-items-center">
+                          <span class="patient-status status-stable"></span>
+                          <span class="text-success">Stable</span>
+                          <span class="badge bg-success ms-2 badge-stage">Stage 2</span>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="mb-1"><i class="fas fa-calendar-alt patient-info-icon"></i> 62 years old</div>
+                        <div class="mb-1"><i class="fas fa-phone patient-info-icon"></i> (555) 456-7890</div>
+                        <div><i class="fas fa-map-marker-alt patient-info-icon"></i> 789 Pine Street</div>
+                      </div>
+                      <div class="col-md-2">
+                        <div class="mb-1">Next Appointment:</div>
+                        <div class="fw-bold">Apr 2, 11:15 AM</div>
+                        <div class="text-muted small">Dr. Johnson</div>
+                      </div>
+                      <div class="col-md-2">
+                        <div class="d-flex flex-column align-items-end">
+                          <a href="patient-detail.html?id=3" class="btn btn-outline-medical mb-2 w-100">View Profile</a>
+                          <div class="d-flex">
+                            <button class="quick-action"><i class="fas fa-notes-medical"></i></button>
+                            <button class="quick-action"><i class="fas fa-pills"></i></button>
+                            <button class="quick-action"><i class="fas fa-tasks"></i></button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="mt-2">
+                      <span class="text-muted small">Last Update: March 20, 10:00 AM</span>
+                      <div class="progress patient-metrics">
+                        <div class="progress-bar bg-success" role="progressbar" style="width: 85%" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Grid View -->
+                <div class="tab-pane fade" id="grid-view" role="tabpanel" aria-labelledby="grid-tab">
+                  <div class="row">
+                    <!-- John Doe - Grid Card -->
+                    <div class="col-md-4 mb-4">
+                      <div class="card h-100 patient-card critical">
+                        <div class="card-body">
+                          <div class="d-flex align-items-center mb-3">
+                            <div class="patient-avatar me-3">JD</div>
+                            <div>
+                              <h5 class="mb-1">John Doe</h5>
+                              <div class="d-flex align-items-center">
+                                <span class="patient-status status-critical"></span>
+                                <span class="text-danger">Critical</span>
+                                <span class="badge bg-danger ms-2 badge-stage">Stage 3</span>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="mb-3">
+                            <div class="mb-1"><i class="fas fa-calendar-alt patient-info-icon"></i> 68 years old</div>
+                            <div class="mb-1"><i class="fas fa-phone patient-info-icon"></i> (555) 123-4567</div>
+                            <div><i class="fas fa-map-marker-alt patient-info-icon"></i> 123 Main St, Apt 4B</div>
+                          </div>
+                          <div class="mb-3">
+                            <div class="fw-bold">Next Appointment:</div>
+                            <div>Mar 23, 10:00 AM - Dr. Smith</div>
+                          </div>
+                          <div class="mt-2">
+                            <span class="text-muted small">Last Update: Today at 8:30 AM</span>
+                            <div class="progress patient-metrics">
+                              <div class="progress-bar bg-danger" role="progressbar" style="width: 70%" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="card-footer bg-white">
+                          <a href="patient-detail.html?id=1" class="btn btn-outline-medical w-100 mb-2">View Profile</a>
+                          <div class="d-flex justify-content-between">
+                            <button class="quick-action flex-grow-1"><i class="fas fa-notes-medical me-1"></i> Notes</button>
+                            <button class="quick-action flex-grow-1 mx-1"><i class="fas fa-pills me-1"></i> Meds</button>
+                            <button class="quick-action flex-grow-1"><i class="fas fa-tasks me-1"></i> Tasks</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <!-- Emily Martin - Grid Card -->
+                    <div class="col-md-4 mb-4">
+                      <div class="card h-100 patient-card attention">
+                        <div class="card-body">
+                          <div class="d-flex align-items-center mb-3">
+                            <div class="patient-avatar me-3" style="background: var(--primary-blue);">EM</div>
+                            <div>
+                              <h5 class="mb-1">Emily Martin</h5>
+                              <div class="d-flex align-items-center">
+                                <span class="patient-status status-attention"></span>
+                                <span class="text-warning">Needs Attention</span>
+                                <span class="badge bg-warning text-dark ms-2 badge-stage">Stage 1</span>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="mb-3">
+                            <div class="mb-1"><i class="fas fa-calendar-alt patient-info-icon"></i> 54 years old</div>
+                            <div class="mb-1"><i class="fas fa-phone patient-info-icon"></i> (555) 987-6543</div>
+                            <div><i class="fas fa-map-marker-alt patient-info-icon"></i> 456 Oak Ave</div>
+                          </div>
+                          <div class="mb-3">
+                            <div class="fw-bold">Next Appointment:</div>
+                            <div>Mar 25, 1:30 PM - Dr. Wilson</div>
+                          </div>
+                          <div class="mt-2">
+                            <span class="text-muted small">Last Update: Yesterday at 4:15 PM</span>
+                            <div class="progress patient-metrics">
+                              <div class="progress-bar bg-warning" role="progressbar" style="width: 40%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="card-footer bg-white">
+                          <a href="patient-detail.html?id=2" class="btn btn-outline-medical w-100 mb-2">View Profile</a>
+                          <div class="d-flex justify-content-between">
+                            <button class="quick-action flex-grow-1"><i class="fas fa-notes-medical me-1"></i> Notes</button>
+                            <button class="quick-action flex-grow-1 mx-1"><i class="fas fa-pills me-1"></i> Meds</button>
+                            <button class="quick-action flex-grow-1"><i class="fas fa-tasks me-1"></i> Tasks</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <!-- Robert Wilson - Grid Card -->
+                    <div class="col-md-4 mb-4">
+                      <div class="card h-100 patient-card stable">
+                        <div class="card-body">
+                          <div class="d-flex align-items-center mb-3">
+                            <div class="patient-avatar me-3" style="background: #6c757d;">RW</div>
+                            <div>
+                              <h5 class="mb-1">Robert Wilson</h5>
+                              <div class="d-flex align-items-center">
+                                <span class="patient-status status-stable"></span>
+                                <span class="text-success">Stable</span>
+                                <span class="badge bg-success ms-2 badge-stage">Stage 2</span>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="mb-3">
+                            <div class="mb-1"><i class="fas fa-calendar-alt patient-info-icon"></i> 62 years old</div>
+                            <div class="mb-1"><i class="fas fa-phone patient-info-icon"></i> (555) 456-7890</div>
+                            <div><i class="fas fa-map-marker-alt patient-info-icon"></i> 789 Pine Street</div>
+                          </div>
+                          <div class="mb-3">
+                            <div class="fw-bold">Next Appointment:</div>
+                            <div>Apr 2, 11:15 AM - Dr. Johnson</div>
+                          </div>
+                          <div class="mt-2">
+                            <span class="text-muted small">Last Update: March 20, 10:00 AM</span>
+                            <div class="progress patient-metrics">
+                              <div class="progress-bar bg-success" role="progressbar" style="width: 85%" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="card-footer bg-white">
+                          <a href="patient-detail.html?id=3" class="btn btn-outline-medical w-100 mb-2">View Profile</a>
+                          <div class="d-flex justify-content-between">
+                            <button class="quick-action flex-grow-1"><i class="fas fa-notes-medical me-1"></i> Notes</button>
+                            <button class="quick-action flex-grow-1 mx-1"><i class="fas fa-pills me-1"></i>
+                                <button class="quick-action flex-grow-1 mx-1"><i class="fas fa-pills me-1"></i> Meds</button>
+                            <button class="quick-action flex-grow-1"><i class="fas fa-tasks me-1"></i> Tasks</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer bg-white d-flex justify-content-between align-items-center">
+              <div>
+                <span class="text-muted">Showing 3 patients</span>
+              </div>
+              <nav aria-label="Patient pagination">
+                <ul class="pagination mb-0">
+                  <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                  </li>
+                  <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                  <li class="page-item"><a class="page-link" href="#">2</a></li>
+                  <li class="page-item"><a class="page-link" href="#">3</a></li>
+                  <li class="page-item">
+                    <a class="page-link" href="#">Next</a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+          
+          <!-- Patient Statistics -->
+          <div class="row">
+            <div class="col-md-6 mb-4">
+              <div class="card card-medical">
+                <div class="card-header bg-white">
+                  <h5 class="mb-0">Patient Status Overview</h5>
+                </div>
+                <div class="card-body">
+                  <div class="d-flex align-items-center mb-3">
+                    <div class="patient-status status-critical me-2"></div>
+                    <div class="flex-grow-1">Critical</div>
+                    <div class="fw-bold">1</div>
+                  </div>
+                  <div class="d-flex align-items-center mb-3">
+                    <div class="patient-status status-attention me-2"></div>
+                    <div class="flex-grow-1">Needs Attention</div>
+                    <div class="fw-bold">1</div>
+                  </div>
+                  <div class="d-flex align-items-center">
+                    <div class="patient-status status-stable me-2"></div>
+                    <div class="flex-grow-1">Stable</div>
+                    <div class="fw-bold">1</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 mb-4">
+              <div class="card card-medical">
+                <div class="card-header bg-white">
+                  <h5 class="mb-0">Upcoming Patient Activities</h5>
+                </div>
+                <div class="card-body">
+                  <div class="d-flex align-items-center mb-3">
+                    <div class="me-3">
+                      <div class="bg-light rounded p-2 text-center">
+                        <div class="fw-bold text-primary">23</div>
+                        <small>MAR</small>
+                      </div>
+                    </div>
+                    <div>
+                      <h6 class="mb-1">John Doe - Appointment</h6>
+                      <div class="text-muted small">10:00 AM with Dr. Smith</div>
+                    </div>
+                  </div>
+                  <div class="d-flex align-items-center">
+                    <div class="me-3">
+                      <div class="bg-light rounded p-2 text-center">
+                        <div class="fw-bold text-primary">25</div>
+                        <small>MAR</small>
+                      </div>
+                    </div>
+                    <div>
+                      <h6 class="mb-1">Emily Martin - Appointment</h6>
+                      <div class="text-muted small">1:30 PM with Dr. Wilson</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add Patient Modal -->
+    <div class="modal fade" id="addPatientModal" tabindex="-1" aria-labelledby="addPatientModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addPatientModalLabel">Add New Patient</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="row mb-3">
+                <div class="col-md-4">
+                  <label for="firstName" class="form-label">First Name</label>
+                  <input type="text" class="form-control" id="firstName" required>
+                </div>
+                <div class="col-md-4">
+                  <label for="middleName" class="form-label">Middle Name</label>
+                  <input type="text" class="form-control" id="middleName">
+                </div>
+                <div class="col-md-4">
+                  <label for="lastName" class="form-label">Last Name</label>
+                  <input type="text" class="form-control" id="lastName" required>
+                </div>
+              </div>
+              
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="dateOfBirth" class="form-label">Date of Birth</label>
+                  <input type="date" class="form-control" id="dateOfBirth" required>
+                </div>
+                <div class="col-md-6">
+                  <label for="phone" class="form-label">Phone Number</label>
+                  <input type="tel" class="form-control" id="phone" required>
+                </div>
+              </div>
+              
+              <div class="mb-3">
+                <label for="address" class="form-label">Address</label>
+                <input type="text" class="form-control" id="address" required>
+              </div>
+              
+              <div class="row mb-3">
+                <div class="col-md-4">
+                  <label for="city" class="form-label">City</label>
+                  <input type="text" class="form-control" id="city" required>
+                </div>
+                <div class="col-md-4">
+                  <label for="state" class="form-label">State</label>
+                  <input type="text" class="form-control" id="state" required>
+                </div>
+                <div class="col-md-4">
+                  <label for="zipCode" class="form-label">ZIP Code</label>
+                  <input type="text" class="form-control" id="zipCode" required>
+                </div>
+              </div>
+              
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="diagnosis" class="form-label">Cancer Diagnosis</label>
+                  <input type="text" class="form-control" id="diagnosis" required>
+                </div>
+                <div class="col-md-6">
+                  <label for="stage" class="form-label">Stage</label>
+                  <select class="form-select" id="stage" required>
+                    <option value="" selected disabled>Select stage</option>
+                    <option value="1">Stage 1</option>
+                    <option value="2">Stage 2</option>
+                    <option value="3">Stage 3</option>
+                    <option value="4">Stage 4</option>
+                  </select>
+                </div>
+              </div>
+              
+              <div class="mb-3">
+                <label for="emergencyContact" class="form-label">Emergency Contact</label>
+                <input type="text" class="form-control" id="emergencyContact" required>
+              </div>
+              
+              <div class="mb-3">
+                <label for="emergencyPhone" class="form-label">Emergency Contact Phone</label>
+                <input type="tel" class="form-control" id="emergencyPhone" required>
+              </div>
+              
+              <div class="mb-3">
+                <label for="notes" class="form-label">Additional Notes</label>
+                <textarea class="form-control" id="notes" rows="3"></textarea>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-medical">Add Patient</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="decorative-wave"></div>
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  </body>
+</html>
