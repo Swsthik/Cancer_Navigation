@@ -1,0 +1,37 @@
+<nav class="py-3" style="background: #2a5c82;">
+  <div class="container mx-auto px-4 flex justify-between items-center">
+    <a class="text-white flex items-center" href="/navigator/dashboard">
+      <i class="fas fa-hospital mr-2"></i>MedConnect
+    </a>
+    <div class="dropdown relative">
+      <button
+        class="text-white flex items-center"
+        type="button"
+        id="userDropdown"
+        onclick="toggleDropdown()"
+      >
+        <i class="fas fa-user-circle mr-2"></i><%= user.fullName %>
+      </button>
+      <ul class="dropdown-menu absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10" id="dropdownMenu">
+        <li>
+          <a class="block px-4 py-2 text-sm hover:bg-gray-100" href="/navigator/profile">
+            <i class="fas fa-id-card mr-2"></i>Profile
+          </a>
+        </li>
+        <li>
+          <a class="block px-4 py-2 text-sm hover:bg-gray-100" href="/navigator/settings">
+            <i class="fas fa-cog mr-2"></i>Settings
+          </a>
+        </li>
+        <li>
+          <hr class="my-1">
+        </li>
+        <li>
+          <a class="block px-4 py-2 text-sm hover:bg-gray-100" href="/logout">
+            <i class="fas fa-sign-out-alt mr-2"></i>Log Out
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav> 

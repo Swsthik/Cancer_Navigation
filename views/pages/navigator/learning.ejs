@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MedConnect - Learning Resources</title>
+    
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom styles -->
+    <style>
+      .dropdown-menu {
+        display: none;
+      }
+      .dropdown.show .dropdown-menu {
+        display: block;
+      }
+      .resource-card {
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+        border: 1px solid #e2e8f0;
+        margin-bottom: 1.5rem;
+        overflow: hidden;
+      }
+      .resource-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+      .resource-image {
+        height: 200px;
+        background-size: cover;
+        background-position: center;
+      }
+      .category-badge {
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-weight: 500;
+        font-size: 0.875rem;
+      }
+      .progress-small {
+        height: 0.5rem;
+        border-radius: 0.25rem;
+      }
+      .course-progress {
+        font-size: 0.875rem;
+        color: #666;
+      }
+      .learning-path-card {
+        border: 1px solid #e2e8f0;
+        border-radius: 15px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        background: white;
+      }
+      .milestone-marker {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background-color: #4ecdc4;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 1rem;
+      }
+      .achievement-badge {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background-color: #f8f9fa;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1rem;
+        border: 2px solid #4ecdc4;
+      }
+      .achievement-badge i {
+        font-size: 2rem;
+        color: #4ecdc4;
+      }
+      .quiz-card {
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+      .certificate-card {
+        border: 2px solid #4ecdc4;
+        border-radius: 15px;
+        padding: 1.5rem;
+        text-align: center;
+        margin-bottom: 1.5rem;
+      }
+      .learning-stats {
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+      .stat-item {
+        text-align: center;
+        padding: 1rem;
+        border-right: 1px solid #e2e8f0;
+      }
+      .stat-item:last-child {
+        border-right: none;
+      }
+      .recommended-courses {
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-100">
+    <div class="min-h-screen" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
+      <!-- Include header partial -->
+      <%- include('../../partials/navigator-header') %>
+
+      <div class="w-full">
+        <div class="flex flex-wrap w-full">
+          <!-- Include sidebar partial -->
+          <%- include('../../partials/navigator-sidebar') %>
+
+          <!-- Main Content -->
+          <div class="w-full md:w-3/4 p-4 bg-white">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <h2 style="color: var(--primary-blue);">Learning Resources</h2>
+              <div class="d-flex gap-2">
+                <button class="btn btn-outline-secondary" onclick="filterResources('all')">All</button>
+                <button class="btn btn-outline-secondary" onclick="filterResources('courses')">Courses</button>
+                <button class="btn btn-outline-secondary" onclick="filterResources('articles')">Articles</button>
+                <button class="btn btn-outline-secondary" onclick="filterResources('videos')">Videos</button>
+                <button class="btn btn-outline-secondary" onclick="filterResources('quizzes')">Quizzes</button>
+              </div>
+            </div>
+
+            <div class="learning-stats mb-4">
+              <div class="row">
+                <div class="col-md-3 stat-item">
+                  <h3 style="color: var(--primary-blue);">4</h3>
+                  <p class="mb-0">Completed Courses</p>
+                </div>
+                <div class="col-md-3 stat-item">
+                  <h3 style="color: var(--secondary-blue);">12.5</h3>
+                  <p class="mb-0">Hours of Learning</p>
+                </div>
+                <div class="col-md-3 stat-item">
+                  <h3 style="color: var(--accent-teal);">2</h3>
+                  <p class="mb-0">Certificates Earned</p>
+                </div>
+                <div class="col-md-3 stat-item">
+                  <h3 style="color: #10b981;">85%</h3>
+                  <p class="mb-0">Average Quiz Score</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="learning-path-card mb-4">
+              <h4 class="mb-3">Your Learning Path: Cancer Navigation Specialist</h4>
+              <div class="progress mb-4">
+                <div class="progress-bar bg-success" role="progressbar" style="width: 60%"></div>
+              </div>
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="d-flex align-items-center mb-3">
+                    <div class="milestone-marker">
+                      <i class="fas fa-check"></i>
+                    </div>
+                    <div>
+                      <h6 class="mb-1">Fundamentals Complete</h6>
+                      <small class="text-muted">2 courses completed</small>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="d-flex align-items-center mb-3">
+                    <div class="milestone-marker">
+                      <i class="fas fa-clock"></i>
+                    </div>
+                    <div>
+                      <h6 class="mb-1">Advanced Topics</h6>
+                      <small class="text-muted">In progress - 60%</small>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="d-flex align-items-center mb-3">
+                    <div class="milestone-marker">
+                      <i class="fas fa-lock"></i>
+                    </div>
+                    <div>
+                      <h6 class="mb-1">Specialization</h6>
+                      <small class="text-muted">Locked</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="recommended-courses mb-4">
+              <h4 class="mb-3">Recommended for You</h4>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="resource-card">
+                    <div class="resource-image" style="background-image: url('https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');"></div>
+                    <div class="p-4">
+                      <span class="category-badge bg-primary bg-opacity-10 text-primary mb-3 d-inline-block">New Course</span>
+                      <h5>Advanced Patient Communication</h5>
+                      <p class="text-muted">Master the art of effective communication with cancer patients and their families.</p>
+                      <button class="btn btn-medical w-100" onclick="startCourse('comm-101')">
+                        Start Course
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="resource-card">
+                    <div class="resource-image" style="background-image: url('https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');"></div>
+                    <div class="p-4">
+                      <span class="category-badge bg-warning bg-opacity-10 text-warning mb-3 d-inline-block">Popular</span>
+                      <h5>Treatment Side Effects Management</h5>
+                      <p class="text-muted">Learn comprehensive approaches to managing cancer treatment side effects.</p>
+                      <button class="btn btn-medical w-100" onclick="startCourse('effects-101')">
+                        Start Course
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-8">
+                <h4 class="mb-3">Your Current Courses</h4>
+                <div class="resource-card">
+                  <div class="p-4">
+                    <span class="category-badge bg-primary bg-opacity-10 text-primary mb-3 d-inline-block">In Progress</span>
+                    <h5>Cancer Navigation Fundamentals</h5>
+                    <p class="text-muted">Essential skills and knowledge for effective cancer patient navigation.</p>
+                    <div class="course-progress mb-2">
+                      Progress: 60% Complete
+                    </div>
+                    <div class="progress progress-small mb-3">
+                      <div class="progress-bar bg-success" role="progressbar" style="width: 60%"></div>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                      <button class="btn btn-medical" onclick="continueLearning('course-1')">
+                        Continue Learning
+                      </button>
+                      <button class="btn btn-outline-secondary" onclick="viewCourseDetails('course-1')">
+                        View Details
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="quiz-card">
+                  <h5 class="mb-3">Weekly Assessment</h5>
+                  <p>Test your knowledge on this week's materials.</p>
+                  <button class="btn btn-medical" onclick="startQuiz('quiz-1')">
+                    Start Quiz
+                  </button>
+                </div>
+
+                <div class="resource-card">
+                  <div class="p-4">
+                    <span class="category-badge bg-info bg-opacity-10 text-info mb-3 d-inline-block">Article</span>
+                    <h5>Best Practices in Patient Communication</h5>
+                    <p class="text-muted">Effective communication strategies for navigators working with cancer patients.</p>
+                    <button class="btn btn-medical w-100" onclick="readArticle('article-1')">
+                      Read Article
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <h4 class="mb-3">Your Achievements</h4>
+                <div class="certificate-card mb-4">
+                  <div class="achievement-badge">
+                    <i class="fas fa-award"></i>
+                  </div>
+                  <h5>Patient Navigation Fundamentals</h5>
+                  <p class="text-muted mb-3">Completed on March 1, 2024</p>
+                  <button class="btn btn-outline-secondary btn-sm" onclick="viewCertificate('cert-1')">
+                    View Certificate
+                  </button>
+                </div>
+
+                <div class="resource-card">
+                  <div class="p-4">
+                    <h5 class="mb-3">Learning Stats</h5>
+                    <div class="mb-3">
+                      <small class="text-muted">Weekly Learning Time</small>
+                      <div class="progress progress-small">
+                        <div class="progress-bar bg-success" role="progressbar" style="width: 75%"></div>
+                      </div>
+                      <small>6 of 8 hours goal</small>
+                    </div>
+                    <div class="mb-3">
+                      <small class="text-muted">Course Completion Rate</small>
+                      <div class="progress progress-small">
+                        <div class="progress-bar bg-info" role="progressbar" style="width: 90%"></div>
+                      </div>
+                      <small>90% success rate</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Wave background - Fixed SVG data URL -->
+      <div
+        class="absolute bottom-0 left-0 w-full"
+        style="
+          height: 150px;
+          background: url('data:image/svg+xml;utf8,%3Csvg viewBox=%220 0 1440 320%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cpath fill=%22%232A5C82%22 fill-opacity=%220.1%22 d=%22M0,160L48,170.7C96,181,192,203,288,186.7C384,171,480,117,576,101.3C672,85,768,107,864,138.7C960,171,1056,213,1152,208C1248,203,1344,149,1392,122.7L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z%22%3E%3C/path%3E%3C/svg%3E');
+          z-index: -1;
+        "
+      ></div>
+    </div>
+
+    <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
+    <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
+    
+    <!-- Include navigator JavaScript -->
+    <script src="/js/navigator.js"></script>
+  </body>
+</html>

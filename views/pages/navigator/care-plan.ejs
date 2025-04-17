@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MedConnect - Care Plan Management</title>
+    
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Dragula for drag and drop -->
+    <link href="https://cdn.jsdelivr.net/npm/dragula/dist/dragula.min.css" rel="stylesheet" />
+    
+    <!-- Custom styles -->
+    <style>
+      .dropdown-menu {
+        display: none;
+      }
+      .dropdown.show .dropdown-menu {
+        display: block;
+      }
+      .task-item {
+        border-left: 4px solid #4ecdc4;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        background-color: #f8f9fa;
+        border-radius: 0 8px 8px 0;
+        cursor: move;
+      }
+      .task-item.completed {
+        border-left-color: #10b981;
+        background-color: #d1fae5;
+      }
+      .task-item.overdue {
+        border-left-color: #ef4444;
+        background-color: #fee2e2;
+      }
+      .task-item.high-priority {
+        border-left-color: #f59e0b;
+        background-color: #fef3c7;
+      }
+      .milestone-marker {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background-color: #4ecdc4;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 1rem;
+      }
+      .milestone-completed {
+        background-color: #10b981;
+      }
+      .milestone-line {
+        position: relative;
+        padding-left: 45px;
+        margin-bottom: 1.5rem;
+      }
+      .milestone-line::before {
+        content: '';
+        position: absolute;
+        left: 15px;
+        top: 30px;
+        height: calc(100% - 30px);
+        width: 2px;
+        background-color: #4ecdc4;
+      }
+      .template-card {
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+      .template-card:hover {
+        background-color: #f8f9fa;
+        border-color: #4ecdc4;
+      }
+      .task-list {
+        min-height: 100px;
+        padding: 1rem;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+      }
+      .task-list.gu-over {
+        background-color: #e2e8f0;
+      }
+      .collaboration-section {
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        padding: 1rem;
+        margin-top: 2rem;
+      }
+      .comment {
+        border-left: 3px solid #4ecdc4;
+        padding: 0.5rem 1rem;
+        margin-bottom: 1rem;
+        background-color: white;
+        border-radius: 0 8px 8px 0;
+      }
+      .resource-link {
+        display: flex;
+        align-items: center;
+        padding: 0.5rem;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        margin-bottom: 0.5rem;
+        text-decoration: none;
+        color: inherit;
+        transition: all 0.3s ease;
+      }
+      .resource-link:hover {
+        background-color: #f8f9fa;
+        border-color: #4ecdc4;
+      }
+      .phase-indicator {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 2rem;
+      }
+      .phase-step {
+        flex: 1;
+        text-align: center;
+        position: relative;
+      }
+      .phase-step::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 100%;
+        height: 2px;
+        background-color: #e2e8f0;
+        z-index: 1;
+      }
+      .phase-step:last-child::after {
+        display: none;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-100">
+    <div class="min-h-screen" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
+      <!-- Include header partial -->
+      <%- include('../../partials/navigator-header') %>
+
+      <div class="w-full">
+        <div class="flex flex-wrap w-full">
+          <!-- Include sidebar partial -->
+          <%- include('../../partials/navigator-sidebar') %>
+
+          <!-- Main Content -->
+          <div class="w-full md:w-3/4 p-4 bg-white">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <h2 style="color: var(--primary-blue);">Care Plan Management</h2>
+              <div class="d-flex gap-2">
+                <button class="btn btn-outline-secondary" onclick="showTemplates()">
+                  <i class="fas fa-file-medical me-2"></i>Templates
+                </button>
+                <button class="btn btn-medical" onclick="createCarePlan()">
+                  <i class="fas fa-plus me-2"></i>Create New Care Plan
+                </button>
+              </div>
+            </div>
+
+            <div class="care-plan-card p-4">
+              <div class="d-flex justify-content-between align-items-start mb-4">
+                <div>
+                  <h4>Sarah Johnson's Care Plan</h4>
+                  <p class="text-muted mb-0">Breast Cancer Stage II • Started: March 1, 2024</p>
+                </div>
+                <div class="d-flex gap-2">
+                  <button class="btn btn-outline-secondary" onclick="viewHistory('1234')">
+                    <i class="fas fa-history me-2"></i>History
+                  </button>
+                  <button class="btn btn-outline-secondary" onclick="editCarePlan('1234')">
+                    <i class="fas fa-edit me-2"></i>Edit
+                  </button>
+                  <button class="btn btn-medical" onclick="shareCarePlan('1234')">
+                    <i class="fas fa-share-alt me-2"></i>Share
+                  </button>
+                </div>
+              </div>
+
+              <div class="phase-indicator mb-4">
+                <div class="phase-step completed">
+                  <div class="phase-dot"></div>
+                  <small>Initial Assessment</small>
+                </div>
+                <div class="phase-step active">
+                  <div class="phase-dot"></div>
+                  <small>Treatment Planning</small>
+                </div>
+                <div class="phase-step">
+                  <div class="phase-dot"></div>
+                  <small>Active Treatment</small>
+                </div>
+                <div class="phase-step">
+                  <div class="phase-dot"></div>
+                  <small>Recovery</small>
+                </div>
+                <div class="phase-step">
+                  <div class="phase-dot"></div>
+                  <small>Follow-up</small>
+                </div>
+              </div>
+
+              <div class="mb-4">
+                <h5 class="mb-3">Treatment Timeline</h5>
+                <div class="milestone-line">
+                  <div class="d-flex align-items-center">
+                    <div class="milestone-marker milestone-completed">
+                      <i class="fas fa-check"></i>
+                    </div>
+                    <div>
+                      <h6 class="mb-1">Initial Assessment & Diagnosis</h6>
+                      <p class="text-muted mb-0">Completed on March 1, 2024</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="milestone-line">
+                  <div class="d-flex align-items-center">
+                    <div class="milestone-marker">
+                      <i class="fas fa-clock"></i>
+                    </div>
+                    <div>
+                      <h6 class="mb-1">Chemotherapy Treatment</h6>
+                      <p class="text-muted mb-0">Scheduled to start March 15, 2024</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="milestone-line">
+                  <div class="d-flex align-items-center">
+                    <div class="milestone-marker">
+                      <i class="fas fa-calendar"></i>
+                    </div>
+                    <div>
+                      <h6 class="mb-1">Surgery Evaluation</h6>
+                      <p class="text-muted mb-0">Planned for May 2024</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row mb-4">
+                <div class="col-md-6">
+                  <h5 class="mb-3">Current Tasks</h5>
+                  <div id="currentTasks" class="task-list">
+                    <div class="task-item completed">
+                      <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                          <h6 class="mb-1">Initial Consultation</h6>
+                          <p class="mb-0">Complete initial assessment and document patient history</p>
+                        </div>
+                        <span class="badge bg-success">Completed</span>
+                      </div>
+                    </div>
+
+                    <div class="task-item high-priority">
+                      <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                          <h6 class="mb-1">Treatment Schedule Review</h6>
+                          <p class="mb-0">Review and confirm chemotherapy schedule with oncologist</p>
+                        </div>
+                        <span class="badge bg-warning">High Priority</span>
+                      </div>
+                    </div>
+
+                    <div class="task-item overdue">
+                      <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                          <h6 class="mb-1">Support Group Registration</h6>
+                          <p class="mb-0">Register patient for breast cancer support group</p>
+                        </div>
+                        <span class="badge bg-danger">Overdue</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <h5 class="mb-3">Upcoming Tasks</h5>
+                  <div id="upcomingTasks" class="task-list">
+                    <div class="task-item">
+                      <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                          <h6 class="mb-1">Pre-chemotherapy Assessment</h6>
+                          <p class="mb-0">Schedule and complete required pre-chemo tests</p>
+                        </div>
+                        <span class="badge bg-info">Upcoming</span>
+                      </div>
+                    </div>
+
+                    <div class="task-item">
+                      <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                          <h6 class="mb-1">Nutrition Consultation</h6>
+                          <p class="mb-0">Arrange meeting with nutritionist for dietary guidelines</p>
+                        </div>
+                        <span class="badge bg-info">Scheduled</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="collaboration-section">
+                <h5 class="mb-3">Team Collaboration</h5>
+                <div class="row">
+                  <div class="col-md-6">
+                    <h6 class="mb-2">Comments & Notes</h6>
+                    <div class="comments-section">
+                      <div class="comment">
+                        <small class="text-muted">Dr. Smith - Oncologist</small>
+                        <p class="mb-0">Patient showing good response to initial treatment plan.</p>
+                      </div>
+                      <div class="comment">
+                        <small class="text-muted">Jane Doe - Nurse Navigator</small>
+                        <p class="mb-0">Scheduled follow-up appointment for next week.</p>
+                      </div>
+                    </div>
+                    <div class="mt-3">
+                      <textarea class="form-control mb-2" placeholder="Add a comment..."></textarea>
+                      <button class="btn btn-medical btn-sm">Add Comment</button>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <h6 class="mb-2">Resources & Documents</h6>
+                    <div class="resources-section">
+                      <a href="#" class="resource-link">
+                        <i class="fas fa-file-pdf me-2"></i>
+                        Treatment Protocol
+                      </a>
+                      <a href="#" class="resource-link">
+                        <i class="fas fa-file-medical me-2"></i>
+                        Lab Results
+                      </a>
+                      <a href="#" class="resource-link">
+                        <i class="fas fa-file-alt me-2"></i>
+                        Patient Education Materials
+                      </a>
+                    </div>
+                    <button class="btn btn-outline-secondary btn-sm mt-3" onclick="uploadResource()">
+                      <i class="fas fa-upload me-2"></i>Upload Resource
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mt-4">
+                <button class="btn btn-medical w-100" onclick="addTask('1234')">
+                  <i class="fas fa-plus me-2"></i>Add New Task
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Wave background - Fixed SVG data URL -->
+      <div
+        class="absolute bottom-0 left-0 w-full"
+        style="
+          height: 150px;
+          background: url('data:image/svg+xml;utf8,%3Csvg viewBox=%220 0 1440 320%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cpath fill=%22%232A5C82%22 fill-opacity=%220.1%22 d=%22M0,160L48,170.7C96,181,192,203,288,186.7C384,171,480,117,576,101.3C672,85,768,107,864,138.7C960,171,1056,213,1152,208C1248,203,1344,149,1392,122.7L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z%22%3E%3C/path%3E%3C/svg%3E');
+          z-index: -1;
+        "
+      ></div>
+    </div>
+
+    <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
+    <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
+    
+    <!-- Dragula for drag and drop -->
+    <script src="https://cdn.jsdelivr.net/npm/dragula/dist/dragula.min.js"></script>
+    
+    <!-- Include navigator JavaScript -->
+    <script src="/js/navigator.js"></script>
+  </body>
+</html>

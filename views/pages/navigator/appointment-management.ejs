@@ -106,89 +106,13 @@
 </head>
 <body class="bg-gray-100">
   <div class="min-h-screen" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
-    <nav class="py-3" style="background: #2a5c82;">
-      <div class="container mx-auto px-4 flex justify-between items-center">
-        <a class="text-white flex items-center" href="#">
-          <i class="fas fa-hospital mr-2"></i>MedConnect
-        </a>
-        <div class="dropdown relative">
-          <button
-            class="text-white flex items-center"
-            type="button"
-            id="userDropdown"
-            onclick="toggleDropdown()"
-          >
-            <i class="fas fa-user-circle mr-2"></i>Sarah Johnson
-          </button>
-          <ul class="dropdown-menu absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10" id="dropdownMenu">
-            <li>
-              <a class="block px-4 py-2 text-sm hover:bg-gray-100" href="profile.html">
-                <i class="fas fa-id-card mr-2"></i>Profile
-              </a>
-            </li>
-            <li>
-              <a class="block px-4 py-2 text-sm hover:bg-gray-100" href="settings.html">
-                <i class="fas fa-cog mr-2"></i>Settings
-              </a>
-            </li>
-            <li>
-              <hr class="my-1">
-            </li>
-            <li>
-              <a class="block px-4 py-2 text-sm hover:bg-gray-100" href="/logout">
-                <i class="fas fa-sign-out-alt mr-2"></i>Log Out
-              </a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
+    <!-- Include header partial -->
+    <%- include('../../partials/navigator-header') %>
 
     <div class="w-full">
       <div class="flex flex-wrap w-full">
-        <!-- Sidebar -->
-        <div
-          class="w-full md:w-1/4 p-4"
-          style="background: #2a5c82; color: white; min-height: calc(100vh - 62px);"
-        >
-          <div class="flex items-center mb-4">
-            <i class="fas fa-user-nurse text-3xl mr-3"></i>
-            <div>
-              <h5 class="mb-0">Sarah Johnson</h5>
-              <small class="text-gray-200">Patient Navigator</small>
-            </div>
-          </div>
-          <div class="flex flex-col">
-            <a href="dashboard.html" class="py-2 text-white opacity-75 hover:opacity-100">
-              <i class="fas fa-home mr-2"></i>Dashboard
-            </a>
-            <a
-              href="appointment-management.html"
-              class="py-2 text-white opacity-100"
-              style="background: rgba(255, 255, 255, 0.1); border-radius: 10px; padding-left: 10px;"
-            >
-              <i class="fas fa-calendar-check mr-2"></i>Appointments
-            </a>
-            <a href="patient-management.html" class="py-2 text-white opacity-75 hover:opacity-100">
-              <i class="fas fa-users mr-2"></i>Patient Management
-            </a>
-            <a href="care-plan.html" class="py-2 text-white opacity-75 hover:opacity-100">
-              <i class="fas fa-clipboard-list mr-2"></i>Care Plans
-            </a>
-            <a href="progress-tracking.html" class="py-2 text-white opacity-75 hover:opacity-100">
-              <i class="fas fa-chart-line mr-2"></i>Progress Tracking
-            </a>
-            <a href="learning.html" class="py-2 text-white opacity-75 hover:opacity-100">
-              <i class="fas fa-book-medical mr-2"></i>Learning Resources
-            </a>
-            <a href="profile.html" class="py-2 text-white opacity-75 hover:opacity-100">
-              <i class="fas fa-user mr-2"></i>Profile
-            </a>
-            <a href="settings.html" class="py-2 text-white opacity-75 hover:opacity-100">
-              <i class="fas fa-cog mr-2"></i>Settings
-            </a>
-          </div>
-        </div>
+        <!-- Include sidebar partial -->
+        <%- include('../../partials/navigator-sidebar') %>
 
         <!-- Main Content -->
         <div class="w-full md:w-3/4 p-4 bg-white">
@@ -609,34 +533,7 @@
   <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
   <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
   
-  <!-- JavaScript for dropdown functionality -->
-  <script>
-    function toggleDropdown() {
-      document.getElementById("dropdownMenu").parentElement.classList.toggle("show");
-    }
-
-    // Close the dropdown menu if the user clicks outside of it
-    window.onclick = function(event) {
-      if (!event.target.matches('#userDropdown')) {
-        var dropdowns = document.getElementsByClassName("dropdown");
-        for (var i = 0; i < dropdowns.length; i++) {
-          var openDropdown = dropdowns[i];
-          if (openDropdown.classList.contains('show')) {
-            openDropdown.classList.remove('show');
-          }
-        }
-      }
-    }
-
-    // Make table rows hoverable
-    document.querySelectorAll('tbody tr').forEach(row => {
-      row.addEventListener('mouseover', () => {
-        row.style.backgroundColor = '#f9fafb';
-      });
-      row.addEventListener('mouseout', () => {
-        row.style.backgroundColor = '';
-      });
-    });
-  </script>
+  <!-- Include navigator JavaScript -->
+  <script src="/js/navigator.js"></script>
 </body>
 </html>

@@ -1,0 +1,42 @@
+<!-- Sidebar -->
+<div
+  class="w-full md:w-1/4 p-4"
+  style="background: #2a5c82; color: white; min-height: calc(100vh - 62px);"
+>
+  <div class="flex items-center mb-4">
+    <i class="fas fa-user-nurse text-3xl mr-3"></i>
+    <div>
+      <h5 class="mb-0"><%= user.fullName %></h5>
+      <small class="text-gray-200">Patient Navigator</small>
+    </div>
+  </div>
+  <div class="flex flex-col">
+    <a href="/navigator/dashboard" class="py-2 text-white opacity-75 hover:opacity-100">
+      <i class="fas fa-home mr-2"></i>Dashboard
+    </a>
+    <a
+      href="/navigator/appointment-management"
+      class="py-2 text-white opacity-75 hover:opacity-100"
+    >
+      <i class="fas fa-calendar-check mr-2"></i>Appointments
+    </a>
+    <a href="/navigator/patient-management" class="py-2 text-white opacity-75 hover:opacity-100">
+      <i class="fas fa-users mr-2"></i>Patient Management
+    </a>
+    <a href="/navigator/care-plan" class="py-2 text-white opacity-75 hover:opacity-100">
+      <i class="fas fa-clipboard-list mr-2"></i>Care Plans
+    </a>
+    <a href="/navigator/progress-tracking" class="py-2 text-white opacity-75 hover:opacity-100">
+      <i class="fas fa-chart-line mr-2"></i>Progress Tracking
+    </a>
+    <a href="/navigator/learning" class="py-2 text-white opacity-75 hover:opacity-100">
+      <i class="fas fa-book-medical mr-2"></i>Learning Resources
+    </a>
+    <a href="/navigator/profile" class="py-2 text-white opacity-75 hover:opacity-100">
+      <i class="fas fa-user mr-2"></i>Profile
+    </a>
+    <a href="/navigator/settings" class="py-2 text-white opacity-75 hover:opacity-100">
+      <i class="fas fa-cog mr-2"></i>Settings
+    </a>
+  </div>
+</div> 
